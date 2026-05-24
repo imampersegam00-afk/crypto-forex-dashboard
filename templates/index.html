@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🏦 CRYPTO FOREX NEWS HUB — Elite AI Dashboard</title>
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #05070d;
+      --bg2:       #0c1020;
+      --bg3:       #111827;
+      --border:    #1e293b;
+      --green:     #00ff99;
+      --green2:    #00cc77;
+      --red:       #ff4d4d;
+      --red2:      #cc2222;
+      --yellow:    #f59e0b;
+      --blue:      #38bdf8;
+      --purple:    #a78bfa;
+      --text:      #e2e8f0;
+      --muted:     #64748b;
+      --glow:      rgba(0,255,153,0.15);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', Arial, sans-serif;
+      font-size: 14px;
+      line-height: 1.5;
+      padding: 0;
+    }
+
+    /* ── Scrollbar ── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg2); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+    /* ── Top Header ── */
+    .header {
+      background: linear-gradient(135deg, #0c1020 0%, #0a1628 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    }
+
+    .header-left h1 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--green);
+      letter-spacing: 1px;
+    }
+
+    .header-left p {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .live-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0,255,153,0.08);
+      border: 1px solid rgba(0,255,153,0.2);
+      border-radius: 20px;
+      padding: 5px 12px;
+      font-size: 11px;
+      color: var(--green);
+      font-weight: 600;
+    }
+
+    .live-dot {
+      width: 7px; height: 7px;
+      background: var(--green);
+      border-radius: 50%;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%,100% { opacity:1; transform:scale(1); }
+      50%      { opacity:0.4; transform:scale(1.4); }
+    }
+
+    .clock {
+      font-size: 12px;
+      color: var(--muted);
+      font-family: monospace;
+    }
+
+    /* ── Summary Bar ── */
+    .summary-bar {
+      display: flex;
+      gap: 12px;
+      padding: 14px 24px;
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .summary-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      min-width: 100px;
+    }
+
+    .summary-item.buy   { border-color: rgba(0,255,153,0.3); color: var(--green); }
+    .summary-item.sell  { border-color: rgba(255,77,77,0.3); color: var(--red); }
+    .summary-item.hold  { border-color: rgba(245,158,11,0.3); color: var(--yellow); }
+
+    .summary-label { color: var(--muted); font-size: 11px; font-weight: 400; }
+
+    .market-sentiment {
+      margin-left: auto;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* ── Main Layout ── */
+    .main {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 20px;
+      padding: 20px 24px;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 1100px) {
+      .main { grid-template-columns: 1fr; }
+    }
+
+    /* ── Cards Grid ── */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      transition: transform .2s, box-shadow .2s, border-color .2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 32px rgba(0,255,153,0.08);
+      border-color: rgba(0,255,153,0.2);
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      border-radius: 16px 16px 0 0;
+    }
+
+    .card.buy-card::before    { background: linear-gradient(90deg, var(--green), var(--blue)); }
+    .card.sell-card::before   { background: linear-gradient(90deg, var(--red), #ff8c00); }
+    .card.hold-card::before   { background: linear-gradient(90deg, var(--yellow), var(--purple)); }
+    .card.strong-buy-card::before  { background: linear-gradient(90deg, var(--green), var(--green2)); box-shadow: 0 0 15px var(--green); }
+    .card.strong-sell-card::before { background: linear-gradient(90deg, var(--red), var(--red2)); }
+
+    /* ── Card Header ── */
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .asset-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: white;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .asset-icon { font-size: 22px; }
+
+    .asset-type {
+      font-size: 10px;
+      color: var(--muted);
+      background: var(--bg3);
+      border-radius: 4px;
+      padding: 2px 6px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .signal-badge {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+    }
+
+    .signal-tag {
+      font-size: 13px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 20px;
+      letter-spacing: 1px;
+    }
+
+    .strong-buy  { background: rgba(0,255,153,0.15); color: var(--green);  border: 1px solid var(--green); }
+    .buy         { background: rgba(0,204,119,0.1);  color: #4ade80;        border: 1px solid #4ade80; }
+    .strong-sell { background: rgba(255,77,77,0.15); color: var(--red);    border: 1px solid var(--red); }
+    .sell        { background: rgba(204,34,34,0.1);  color: #f87171;        border: 1px solid #f87171; }
+    .hold        { background: rgba(245,158,11,0.1); color: var(--yellow); border: 1px solid var(--yellow); }
+
+    .confidence-bar-wrap {
+      width: 90px;
+    }
+
+    .conf-label {
+      font-size: 10px;
+      color: var(--muted);
+      text-align: right;
+      margin-bottom: 2px;
+    }
+
+    .confidence-bar {
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .confidence-fill {
+      height: 100%;
+      border-radius: 2px;
+      transition: width .5s;
+    }
+
+    .strong-buy-fill  { background: var(--green); }
+    .buy-fill         { background: #4ade80; }
+    .strong-sell-fill { background: var(--red); }
+    .sell-fill        { background: #f87171; }
+    .hold-fill        { background: var(--yellow); }
+
+    /* ── Price ── */
+    .price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .price {
+      font-size: 26px;
+      font-weight: 700;
+      color: white;
+      font-family: monospace;
+    }
+
+    .change-pos { color: var(--green); font-size: 13px; font-weight: 600; }
+    .change-neg { color: var(--red);   font-size: 13px; font-weight: 600; }
+    .change-neu { color: var(--muted); font-size: 13px; }
+
+    /* ── Metrics Grid ── */
+    .metrics {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .metric {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 10px;
+    }
+
+    .metric-label {
+      font-size: 10px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 2px;
+    }
+
+    .metric-value {
+      font-size: 13px;
+      font-weight: 600;
+      color: white;
+      font-family: monospace;
+    }
+
+    /* ── Indicators Row ── */
+    .indicators {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 14px;
+    }
+
+    .ind-chip {
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+
+    .ind-bull { background: rgba(0,255,153,0.05); border-color: rgba(0,255,153,0.2); color: var(--green); }
+    .ind-bear { background: rgba(255,77,77,0.05); border-color: rgba(255,77,77,0.2); color: var(--red); }
+    .ind-neut { background: rgba(245,158,11,0.05); border-color: rgba(245,158,11,0.2); color: var(--yellow); }
+
+    /* ── Sniper / TP SL ── */
+    .sniper-row {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .sniper-entry { font-size: 13px; font-weight: 700; color: var(--blue); }
+
+    .tp-sl {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .tp-val { color: var(--green); font-weight: 600; }
+    .sl-val { color: var(--red);   font-weight: 600; }
+
+    /* ── Reasons ── */
+    .reasons {
+      font-size: 11px;
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 4px;
+    }
+
+    .reason-tag {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2px 6px;
+    }
+
+    /* ── Update time ── */
+    .update-time {
+      font-size: 10px;
+      color: var(--muted);
+      text-align: right;
+      margin-top: 10px;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* ── News Panel ── */
+    .news-panel {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .panel-header {
+      background: var(--bg3);
+      padding: 14px 18px;
+      font-size: 13px;
+      font-weight: 700;
+      color: white;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .news-list { padding: 8px; }
+
+    .news-item {
+      padding: 10px 12px;
+      border-radius: 8px;
+      margin-bottom: 4px;
+      transition: background .2s;
+      cursor: pointer;
+    }
+
+    .news-item:hover { background: var(--bg3); }
+
+    .news-title {
+      font-size: 12px;
+      color: var(--text);
+      line-height: 1.4;
+      margin-bottom: 3px;
+    }
+
+    .news-title a {
+      color: inherit;
+      text-decoration: none;
+    }
+    .news-title a:hover { color: var(--blue); }
+
+    .news-time { font-size: 10px; color: var(--muted); }
+
+    /* ── Market Overview ── */
+    .overview-panel {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .overview-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--border);
+      font-size: 12px;
+    }
+
+    .overview-row:last-child { border-bottom: none; }
+
+    .ov-name { color: white; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+    .ov-price { font-family: monospace; color: var(--blue); }
+
+    /* ── BB Bar ── */
+    .bb-bar-wrap {
+      margin: 8px 0 4px;
+    }
+
+    .bb-label-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--muted);
+      margin-bottom: 3px;
+    }
+
+    .bb-bar {
+      height: 6px;
+      background: var(--border);
+      border-radius: 3px;
+      position: relative;
+      overflow: visible;
+    }
+
+    .bb-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--red), var(--yellow), var(--green));
+      border-radius: 3px;
+    }
+
+    .bb-dot {
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 10px;
+      height: 10px;
+      background: white;
+      border-radius: 50%;
+      border: 2px solid var(--blue);
+    }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      padding: 20px;
+      color: var(--muted);
+      font-size: 11px;
+      border-top: 1px solid var(--border);
+      margin-top: 20px;
+    }
+
+    /* ── Auto Refresh Notice ── */
+    .refresh-notice {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    #countdown { color: var(--blue); font-weight: 600; }
+  </style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<div class="header">
+  <div class="header-left">
+    <h1>🏦 CRYPTO FOREX NEWS HUB</h1>
+    <p>Elite Institutional AI Dashboard · Real Market Data</p>
+  </div>
+  <div class="header-right">
+    <div class="live-badge">
+      <div class="live-dot"></div>
+      LIVE
+    </div>
+    <div class="clock" id="clock">{{ now }}</div>
+    <div class="refresh-notice">Auto-refresh in <span id="countdown">60</span>s</div>
+  </div>
+</div>
+
+<!-- ── SUMMARY BAR ── -->
+<div class="summary-bar">
+  <div class="summary-item buy">
+    <span>📈</span>
+    <div>
+      <div>{{ buy_count }}</div>
+      <div class="summary-label">BUY</div>
+    </div>
+  </div>
+  <div class="summary-item sell">
+    <span>📉</span>
+    <div>
+      <div>{{ sell_count }}</div>
+      <div class="summary-label">SELL</div>
+    </div>
+  </div>
+  <div class="summary-item hold">
+    <span>⏸️</span>
+    <div>
+      <div>{{ hold_count }}</div>
+      <div class="summary-label">HOLD</div>
+    </div>
+  </div>
+  <div class="market-sentiment">
+    {% if buy_count > sell_count %}
+      🟢 Market Sentiment: <strong style="color:var(--green)">BULLISH</strong>
+    {% elif sell_count > buy_count %}
+      🔴 Market Sentiment: <strong style="color:var(--red)">BEARISH</strong>
+    {% else %}
+      🟡 Market Sentiment: <strong style="color:var(--yellow)">NEUTRAL</strong>
+    {% endif %}
+  </div>
+</div>
+
+<!-- ── MAIN ── -->
+<div class="main">
+
+  <!-- Cards -->
+  <div class="cards-grid">
+    {% for name, d in data.items() %}
+    <div class="card {{ d.signal_class }}-card">
+
+      <!-- Header -->
+      <div class="card-header">
+        <div>
+          <div class="asset-name">
+            <span class="asset-icon">{{ d.icon }}</span>
+            {{ name }}
+          </div>
+          <span class="asset-type">{{ d.type }}</span>
+        </div>
+        <div class="signal-badge">
+          <span class="signal-tag {{ d.signal_class }}">{{ d.signal_icon }} {{ d.signal }}</span>
+          <div class="confidence-bar-wrap">
+            <div class="conf-label">Confidence {{ d.confidence }}%</div>
+            <div class="confidence-bar">
+              <div class="confidence-fill {{ d.signal_class }}-fill" style="width:{{ d.confidence }}%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Price -->
+      <div class="price-row">
+        <div class="price">{{ d.price }}</div>
+        <div class="{% if d.change_pct > 0 %}change-pos{% elif d.change_pct < 0 %}change-neg{% else %}change-neu{% endif %}">
+          {% if d.change_pct > 0 %}▲{% elif d.change_pct < 0 %}▼{% endif %}
+          {{ d.change_pct }}%
+        </div>
+      </div>
+
+      <!-- Metrics -->
+      <div class="metrics">
+        <div class="metric">
+          <div class="metric-label">RSI (14)</div>
+          <div class="metric-value" style="color:{% if d.rsi > 70 %}var(--red){% elif d.rsi < 30 %}var(--green){% else %}white{% endif %}">{{ d.rsi }}</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Trend</div>
+          <div class="metric-value" style="font-size:11px;color:{% if 'UP' in d.trend %}var(--green){% elif 'DOWN' in d.trend %}var(--red){% else %}var(--yellow){% endif %}">{{ d.trend }}</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">EMA 20</div>
+          <div class="metric-value">{{ d.ema20 }}</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">EMA 50</div>
+          <div class="metric-value">{{ d.ema50 }}</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">ATR</div>
+          <div class="metric-value">{{ d.atr }}</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">MACD Hist</div>
+          <div class="metric-value" style="color:{% if d.macd > 0 %}var(--green){% else %}var(--red){% endif %}">{{ d.macd }}</div>
+        </div>
+      </div>
+
+      <!-- Bollinger Band position -->
+      <div class="bb-bar-wrap">
+        <div class="bb-label-row">
+          <span>BB Lower {{ d.bb_lower }}</span>
+          <span>BB Position</span>
+          <span>BB Upper {{ d.bb_upper }}</span>
+        </div>
+        <div class="bb-bar">
+          <div class="bb-fill" style="width:100%"></div>
+          <div class="bb-dot" style="left:{{ d.bb_pos }}%"></div>
+        </div>
+      </div>
+
+      <!-- Indicator chips -->
+      <div class="indicators" style="margin-top:12px;">
+        <span class="ind-chip {% if d.smart_money != '🔴 WEAK' %}ind-bull{% else %}ind-bear{% endif %}">{{ d.smart_money }}</span>
+        <span class="ind-chip {% if d.volatility == '🔥 HIGH' %}ind-bear{% elif d.volatility == '🟢 NORMAL' %}ind-bull{% else %}ind-neut{% endif %}">{{ d.volatility }}</span>
+        <span class="ind-chip {% if d.stoch_k > d.stoch_d %}ind-bull{% else %}ind-bear{% endif %}">Stoch {{ d.stoch_k }}/{{ d.stoch_d }}</span>
+      </div>
+
+      <!-- Sniper Entry -->
+      <div class="sniper-row">
+        <div>
+          <div style="font-size:10px;color:var(--muted);margin-bottom:2px;">SNIPER ENTRY</div>
+          <div class="sniper-entry">{{ d.sniper }}</div>
+        </div>
+        {% if 'BUY' in d.signal %}
+        <div class="tp-sl">
+          TP <span class="tp-val">{{ d.tp_long }}</span> &nbsp;|&nbsp;
+          SL <span class="sl-val">{{ d.sl_long }}</span>
+        </div>
+        {% elif 'SELL' in d.signal %}
+        <div class="tp-sl">
+          TP <span class="tp-val">{{ d.tp_short }}</span> &nbsp;|&nbsp;
+          SL <span class="sl-val">{{ d.sl_short }}</span>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Reasons -->
+      <div class="reasons">
+        {% for r in d.reasons %}
+          <span class="reason-tag">{{ r }}</span>
+        {% endfor %}
+      </div>
+
+      <div class="update-time">Updated {{ d.update_time }}</div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+
+    <!-- Market Overview -->
+    <div class="overview-panel">
+      <div class="panel-header">📊 Market Overview</div>
+      {% for name, d in data.items() %}
+      <div class="overview-row">
+        <div class="ov-name">{{ d.icon }} {{ name }}</div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="ov-price">{{ d.price }}</div>
+          <span class="signal-tag {{ d.signal_class }}" style="font-size:10px;padding:2px 7px;">{{ d.signal }}</span>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- News -->
+    <div class="news-panel">
+      <div class="panel-header">📰 Forex Live News</div>
+      <div class="news-list">
+        {% for item in news %}
+        <div class="news-item">
+          <div class="news-title">
+            <a href="{{ item.link }}" target="_blank">{{ item.title }}</a>
+          </div>
+          {% if item.time %}
+          <div class="news-time">{{ item.time[:25] }}</div>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Disclaimer -->
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:14px 16px;">
+      <div style="font-size:11px;color:var(--muted);line-height:1.6;">
+        ⚠️ <strong style="color:var(--yellow)">Disclaimer</strong><br>
+        This dashboard is for informational purposes only. Not financial advice. Always use proper risk management. Past signals do not guarantee future results.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="footer">
+  🏦 CRYPTO FOREX NEWS HUB &nbsp;·&nbsp; Elite Institutional AI Dashboard &nbsp;·&nbsp; Built with Flask + yfinance + TA-Lib
+</div>
+
+<script>
+  // Live clock
+  function updateClock() {
+    const now = new Date();
+    document.getElementById('clock').textContent =
+      now.toLocaleString('id-ID', { weekday:'long', year:'numeric', month:'long', day:'numeric', hour:'2-digit', minute:'2-digit', second:'2-digit' });
+  }
+  setInterval(updateClock, 1000);
+  updateClock();
+
+  // Countdown to refresh
+  let secs = 60;
+  function tick() {
+    secs--;
+    document.getElementById('countdown').textContent = secs;
+    if (secs <= 0) location.reload();
+  }
+  setInterval(tick, 1000);
+</script>
+</body>
+</html>
