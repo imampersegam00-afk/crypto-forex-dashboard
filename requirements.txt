@@ -1,7 +1,9 @@
 flask
+gunicorn
 yfinance
 ta
 pandas
 numpy
 requests
 feedparser
+scikit-learn
