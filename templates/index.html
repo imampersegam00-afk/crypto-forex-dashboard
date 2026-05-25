@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>ELITE TERMINAL — CryptoForexNewsHub</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
@@ -11,619 +10,603 @@
   --bg:#020408;--bg2:#040d18;--bg3:#071525;--bg4:#0a1e30;
   --border:#0d2840;--border2:#1a3a55;
   --cyan:#00e5ff;--cyan2:#00b8d4;--cyan3:#007a8f;
-  --green:#00ff88;--green2:#00cc6a;
-  --red:#ff2d55;--red2:#cc1f3f;
-  --yellow:#f5a623;--gold:#ffd700;
-  --purple:#b44fff;--pink:#ff6eb4;
+  --green:#00ff88;--red:#ff2d55;--yellow:#f5a623;
+  --gold:#ffd700;--purple:#b44fff;--pink:#ff6eb4;
   --text:#c8e6f5;--muted:#2a5070;--muted2:#4a7090;
 }
-html,body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:13px;min-height:100vh;overflow-x:hidden}
-::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:var(--bg2)}::-webkit-scrollbar-thumb{background:var(--cyan3);border-radius:2px}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)}}
-@keyframes glow{0%,100%{text-shadow:0 0 6px var(--cyan)}50%{text-shadow:0 0 20px var(--cyan),0 0 40px var(--cyan2)}}
-@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
-@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+html,body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:13px;height:100vh;overflow:hidden;display:flex;flex-direction:column}
+::-webkit-scrollbar{width:3px;height:3px}
+::-webkit-scrollbar-track{background:var(--bg2)}
+::-webkit-scrollbar-thumb{background:var(--cyan3);border-radius:2px}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.4)}}
+@keyframes glow-c{0%,100%{text-shadow:0 0 8px var(--cyan)}50%{text-shadow:0 0 22px var(--cyan),0 0 44px var(--cyan2)}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 @keyframes marquee{0%{transform:translateX(100vw)}100%{transform:translateX(-100%)}}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+@keyframes scan{0%{top:-20px}100%{top:100%}}
 
-/* ── TICKER TAPE ── */
-.ticker-tape{background:rgba(0,229,255,0.04);border-bottom:1px solid var(--border);padding:5px 0;overflow:hidden;white-space:nowrap}
-.ticker-inner{display:inline-block;animation:marquee 40s linear infinite;font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--muted2)}
-.ticker-item{margin:0 28px;display:inline-block}
-.t-pos{color:var(--green);font-weight:700}.t-neg{color:var(--red);font-weight:700}.t-w{color:white}
+/* scanline */
+body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,229,255,.008) 3px,rgba(0,229,255,.008) 4px);pointer-events:none;z-index:9999}
 
-/* ── TOP BAR ── */
-.topbar{display:grid;grid-template-columns:160px 1fr 1fr 200px;align-items:center;gap:0;background:linear-gradient(180deg,#050f1e,var(--bg2));border-bottom:1px solid var(--border);padding:8px 14px;position:sticky;top:0;z-index:200}
-.brand{font-family:'Orbitron',monospace;font-size:13px;font-weight:700;color:var(--cyan);letter-spacing:3px;text-shadow:0 0 10px var(--cyan)}
+/* ── TICKER ── */
+.ticker{background:rgba(0,229,255,.04);border-bottom:1px solid var(--border);padding:4px 0;overflow:hidden;white-space:nowrap;flex-shrink:0}
+.t-inner{display:inline-block;animation:marquee 45s linear infinite;font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--muted2)}
+.ti{margin:0 24px;display:inline-block}
+.tp{color:var(--green);font-weight:700}.tn{color:var(--red);font-weight:700}.tw{color:white}
+
+/* ── TOPBAR ── */
+.topbar{display:grid;grid-template-columns:170px 1fr 200px 200px;align-items:center;gap:0;background:linear-gradient(180deg,#050f1e,var(--bg2));border-bottom:1px solid var(--border);padding:6px 14px;flex-shrink:0;position:relative}
+.topbar::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cyan3),transparent)}
+.brand{font-family:'Orbitron',monospace;font-size:12px;font-weight:700;color:var(--cyan);letter-spacing:3px;text-shadow:0 0 10px var(--cyan)}
 .brand-sub{font-size:9px;color:var(--muted2);letter-spacing:2px;margin-top:1px}
-.clock-center{text-align:center}
-.big-time{font-family:'Orbitron',monospace;font-size:42px;font-weight:900;color:var(--cyan);animation:glow 3s ease-in-out infinite;line-height:1;letter-spacing:2px}
-.date-row{font-family:'Rajdhani',sans-serif;font-size:11px;color:var(--muted2);letter-spacing:2px;margin-top:2px}
-.date-row b{color:var(--yellow)}
-.sessions{display:flex;justify-content:center;gap:24px;margin-top:6px}
+.clock-block{text-align:center}
+.big-time{font-family:'Orbitron',monospace;font-size:38px;font-weight:900;color:var(--cyan);animation:glow-c 3s ease-in-out infinite;line-height:1;letter-spacing:3px}
+.date-line{font-family:'Rajdhani',sans-serif;font-size:10px;color:var(--muted2);letter-spacing:2px;margin-top:1px}
+.date-line b{color:var(--yellow)}
+.sessions{display:flex;justify-content:center;gap:20px;margin-top:4px}
 .sess{text-align:center}
-.sess-name{font-family:'Orbitron',monospace;font-size:8px;color:var(--muted2);letter-spacing:2px}
-.sess-time{font-family:'Orbitron',monospace;font-size:14px;font-weight:700;line-height:1.2}
-.sess-status{font-size:8px;letter-spacing:1px;color:var(--muted2)}
-.tokyo-c{color:var(--pink);text-shadow:0 0 8px var(--pink)}
-.london-c{color:var(--cyan);text-shadow:0 0 8px var(--cyan)}
-.ny-c{color:var(--green);text-shadow:0 0 8px var(--green)}
-.topbar-center{text-align:center;font-family:'Orbitron',monospace;font-size:10px;color:var(--cyan2);letter-spacing:3px;padding:0 20px}
-.topbar-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
-.cyber-badge{background:rgba(0,229,255,0.08);border:1px solid var(--cyan3);border-radius:4px;padding:3px 10px;font-family:'Orbitron',monospace;font-size:9px;color:var(--cyan);letter-spacing:2px}
-.live-dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:pulse 1.5s infinite;display:inline-block;margin-right:4px}
+.sess-name{font-family:'Orbitron',monospace;font-size:7px;color:var(--muted2);letter-spacing:2px}
+.sess-time{font-family:'Orbitron',monospace;font-size:13px;font-weight:700;line-height:1.2}
+.sess-status{font-size:7px;color:var(--muted2);letter-spacing:1px}
+.tc{color:var(--pink);text-shadow:0 0 8px var(--pink)}
+.lc{color:var(--cyan);text-shadow:0 0 8px var(--cyan)}
+.nc{color:var(--green);text-shadow:0 0 8px var(--green)}
+.topbar-motto{font-family:'Orbitron',monospace;font-size:9px;color:var(--cyan2);letter-spacing:3px;text-align:center}
+.topbar-right{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.cyber{background:rgba(0,229,255,.08);border:1px solid var(--cyan3);border-radius:3px;padding:2px 8px;font-family:'Orbitron',monospace;font-size:8px;color:var(--cyan);letter-spacing:2px}
+.ldot{width:5px;height:5px;background:var(--green);border-radius:50%;animation:pulse 1.5s infinite;display:inline-block;margin-right:3px}
 
-/* ── LAYOUT ── */
-.workspace{display:grid;grid-template-columns:180px 1fr 220px;gap:0;height:calc(100vh - 120px);overflow:hidden}
-.col-left{background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto}
-.col-mid{display:flex;flex-direction:column;overflow:hidden}
-.col-right{background:var(--bg2);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto}
+/* ── WORKSPACE ── */
+.workspace{display:grid;grid-template-columns:185px 1fr 225px;flex:1;overflow:hidden}
+.col-l{background:var(--bg2);border-right:1px solid var(--border);overflow-y:auto;display:flex;flex-direction:column}
+.col-m{display:flex;flex-direction:column;overflow:hidden}
+.col-r{background:var(--bg2);border-left:1px solid var(--border);overflow-y:auto}
 
-/* ── LEFT PANEL ── */
-.asset-header{padding:10px 12px;border-bottom:1px solid var(--border)}
-.asset-sym{font-family:'Orbitron',monospace;font-size:18px;font-weight:900;color:white;letter-spacing:1px}
-.asset-sub{font-size:10px;color:var(--muted2);margin-top:1px}
-.asset-price{font-family:'Orbitron',monospace;font-size:22px;font-weight:900;color:var(--cyan);margin-top:6px;text-shadow:0 0 8px var(--cyan)}
-.asset-usd{font-size:10px;color:var(--muted2);display:inline;margin-left:4px}
-.asset-chg-pos{color:var(--green);font-size:12px;font-weight:700}
-.asset-chg-neg{color:var(--red);font-size:12px;font-weight:700}
+/* section */
+.sec{padding:9px 11px;border-bottom:1px solid var(--border)}
+.sec:last-child{border-bottom:none}
+.stitle{font-family:'Orbitron',monospace;font-size:8px;color:var(--cyan);letter-spacing:2px;margin-bottom:7px;display:flex;align-items:center;gap:5px}
+.stitle::before{content:'';width:3px;height:9px;background:var(--cyan);border-radius:2px;display:inline-block;flex-shrink:0}
 
-.left-section{padding:10px 12px;border-bottom:1px solid var(--border)}
-.sec-title{font-family:'Orbitron',monospace;font-size:8px;color:var(--cyan);letter-spacing:2px;margin-bottom:8px;display:flex;align-items:center;gap:6px}
-.sec-title::before{content:'';display:inline-block;width:3px;height:10px;background:var(--cyan);border-radius:2px}
+/* ── ASSET HEADER (left) ── */
+.ah-sym{font-family:'Orbitron',monospace;font-size:17px;font-weight:900;color:white;letter-spacing:1px}
+.ah-sub{font-size:9px;color:var(--muted2);margin-top:1px}
+.ah-price{font-family:'Orbitron',monospace;font-size:20px;font-weight:900;color:var(--cyan);margin-top:5px;text-shadow:0 0 8px var(--cyan)}
+.ah-usd{font-size:9px;color:var(--muted2);margin-left:3px}
+.pos{color:var(--green);font-size:11px;font-weight:700}.neg{color:var(--red);font-size:11px;font-weight:700}
 
-/* Smart Money Gauge */
-.sm-gauge-wrap{text-align:center;margin:6px 0}
-.sm-gauge{position:relative;width:90px;height:50px;margin:0 auto}
-.sm-gauge svg{width:90px;height:50px}
-.sm-val{font-family:'Orbitron',monospace;font-size:20px;font-weight:900;color:var(--yellow);text-shadow:0 0 10px var(--yellow);margin-top:2px}
-.sm-label{font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:2px}
-.sm-bullish{color:var(--green)}.sm-bearish{color:var(--red)}.sm-neutral{color:var(--yellow)}
+/* sig badge */
+.sbadge{font-family:'Orbitron',monospace;font-size:8px;font-weight:700;padding:2px 7px;border-radius:3px;letter-spacing:1px;display:inline-block}
+.strong-buy{background:rgba(0,255,136,.15);color:var(--green);border:1px solid var(--green)}
+.buy{background:rgba(0,255,136,.08);color:#4ade80;border:1px solid #4ade80}
+.strong-sell{background:rgba(255,45,85,.15);color:var(--red);border:1px solid var(--red)}
+.sell{background:rgba(255,45,85,.08);color:#f87171;border:1px solid #f87171}
+.hold{background:rgba(245,166,35,.08);color:var(--yellow);border:1px solid var(--yellow)}
 
-.sm-row{display:flex;justify-content:space-between;padding:3px 0;font-size:11px;border-bottom:1px solid rgba(13,40,64,.5)}
-.sm-row:last-child{border-bottom:none}
-.sm-label-t{color:var(--muted2);font-size:10px}
-.sm-val-t{font-family:'Share Tech Mono',monospace;color:white}
+/* smart money gauge */
+.sm-wrap{text-align:center;margin:4px 0}
+.sm-val{font-family:'Orbitron',monospace;font-size:18px;font-weight:900;color:var(--yellow);text-shadow:0 0 10px var(--yellow)}
+.sm-lbl{font-family:'Orbitron',monospace;font-size:8px;font-weight:700;letter-spacing:2px}
+.smbull{color:var(--green)}.smbear{color:var(--red)}.smneu{color:var(--yellow)}
 
-/* Liquidity Heatmap */
-.heatmap{width:100%;height:60px;border-radius:4px;overflow:hidden;position:relative;background:linear-gradient(90deg,rgba(0,229,255,.05),rgba(0,229,255,.2),rgba(0,229,255,.05));border:1px solid var(--border)}
-.hm-bar{position:absolute;bottom:0;width:4px;border-radius:2px 2px 0 0;background:var(--cyan);opacity:.6}
-.hm-label{display:flex;justify-content:space-between;font-size:9px;color:var(--muted2);margin-top:3px}
+.kv-row{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid rgba(13,40,64,.5);font-size:11px}
+.kv-row:last-child{border-bottom:none}
+.kv-l{color:var(--muted2);font-size:10px}.kv-v{font-family:'Share Tech Mono',monospace;color:white}
+.kv-g{color:var(--green)!important}.kv-r{color:var(--red)!important}.kv-c{color:var(--cyan)!important}.kv-y{color:var(--yellow)!important}
 
-/* Economic Calendar */
-.eco-item{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid rgba(13,40,64,.5)}
-.eco-item:last-child{border-bottom:none}
-.eco-time{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--muted2);min-width:32px}
-.eco-cur{font-size:9px;color:var(--yellow);font-weight:700;min-width:24px}
-.eco-name{flex:1;font-size:10px;color:var(--text);line-height:1.3}
-.eco-imp{font-size:8px;padding:1px 4px;border-radius:2px;font-weight:700;letter-spacing:1px}
-.imp-h{background:rgba(255,45,85,.2);color:var(--red)}
-.imp-m{background:rgba(245,166,35,.2);color:var(--yellow)}
-.imp-l{background:rgba(0,229,255,.1);color:var(--cyan)}
+/* heatmap */
+.heatmap{width:100%;height:50px;border-radius:3px;background:var(--bg3);border:1px solid var(--border);position:relative;overflow:hidden}
+.hm-bar{position:absolute;bottom:0;border-radius:2px 2px 0 0;background:var(--cyan)}
+.hm-lbl{display:flex;justify-content:space-between;font-size:8px;color:var(--muted2);margin-top:2px}
 
-/* ── MIDDLE COLUMN ── */
-.chart-bar{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-bottom:1px solid var(--border);background:var(--bg2);flex-wrap:wrap;gap:6px}
-.chart-sym{font-family:'Orbitron',monospace;font-size:13px;font-weight:700;color:white;letter-spacing:1px}
-.tf-group{display:flex;gap:3px}
-.tf-btn{font-family:'Orbitron',monospace;font-size:9px;padding:3px 7px;border:1px solid var(--border);background:transparent;color:var(--muted2);cursor:pointer;border-radius:3px;transition:all .15s;letter-spacing:1px}
-.tf-btn:hover,.tf-btn.active{border-color:var(--cyan);color:var(--cyan);background:rgba(0,229,255,.08)}
-.chart-tools{display:flex;gap:6px;align-items:center}
-.tool-btn{font-size:9px;padding:3px 8px;border:1px solid var(--border);background:transparent;color:var(--muted2);cursor:pointer;border-radius:3px;font-family:'Orbitron',monospace;letter-spacing:1px;transition:all .15s}
-.tool-btn:hover{border-color:var(--cyan2);color:var(--cyan2)}
+/* eco calendar */
+.eco-row{display:flex;align-items:center;gap:6px;padding:4px 0;border-bottom:1px solid rgba(13,40,64,.4)}
+.eco-row:last-child{border-bottom:none}
+.eco-t{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--muted2);min-width:28px}
+.eco-c{font-size:8px;color:var(--yellow);font-weight:700;min-width:20px}
+.eco-n{flex:1;font-size:9px;color:var(--text);line-height:1.3}
+.ih{background:rgba(255,45,85,.2);color:var(--red);font-size:7px;padding:1px 3px;border-radius:2px;font-weight:700}
+.im{background:rgba(245,166,35,.2);color:var(--yellow);font-size:7px;padding:1px 3px;border-radius:2px;font-weight:700}
+.il{background:rgba(0,229,255,.1);color:var(--cyan);font-size:7px;padding:1px 3px;border-radius:2px;font-weight:700}
+
+/* correlation */
+.corr-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid rgba(13,40,64,.4)}
+.corr-row:last-child{border-bottom:none}
+.corr-pair{font-size:9px;color:var(--muted2)}
+.corr-val{font-family:'Share Tech Mono',monospace;font-size:12px;font-weight:700}
+.corr-bar-wrap{width:60px;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+.corr-bar{height:100%;border-radius:2px}
+
+/* ── MIDDLE ── */
+.chart-bar{display:flex;align-items:center;justify-content:space-between;padding:6px 12px;border-bottom:1px solid var(--border);background:var(--bg2);flex-wrap:wrap;gap:5px;flex-shrink:0}
+.csym{font-family:'Orbitron',monospace;font-size:12px;font-weight:700;color:white;letter-spacing:1px}
+.tf-grp{display:flex;gap:2px}
+.tf-btn{font-family:'Orbitron',monospace;font-size:8px;padding:3px 6px;border:1px solid var(--border);background:transparent;color:var(--muted2);cursor:pointer;border-radius:2px;transition:all .15s;letter-spacing:1px}
+.tf-btn:hover,.tf-btn.active{border-color:var(--cyan);color:var(--cyan);background:rgba(0,229,255,.07)}
+.tool-btn{font-size:8px;padding:2px 7px;border:1px solid var(--border);background:transparent;color:var(--muted2);cursor:pointer;border-radius:2px;font-family:'Orbitron',monospace;letter-spacing:1px;transition:all .15s}
+.tool-btn:hover,.tool-btn.active{border-color:var(--cyan2);color:var(--cyan2);background:rgba(0,229,255,.05)}
 .tv-frame{flex:1;width:100%;border:none;display:block;background:var(--bg)}
-.ind-bar{background:var(--bg2);border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(6,1fr);gap:0}
-.ind-cell{padding:5px 8px;border-right:1px solid var(--border);text-align:center}
+/* indicator bar */
+.ind-bar{background:var(--bg2);border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(6,1fr);flex-shrink:0}
+.ind-cell{padding:4px 6px;border-right:1px solid var(--border);text-align:center}
 .ind-cell:last-child{border-right:none}
-.ind-name{font-family:'Orbitron',monospace;font-size:7px;color:var(--muted2);letter-spacing:1px;margin-bottom:2px}
+.ind-name{font-family:'Orbitron',monospace;font-size:7px;color:var(--muted2);letter-spacing:1px;margin-bottom:1px}
 .ind-val{font-family:'Share Tech Mono',monospace;font-size:12px;font-weight:700}
+/* mini panels */
+.mid-bot{display:grid;grid-template-columns:1fr 1fr 1fr;border-top:1px solid var(--border);flex-shrink:0}
+.mp{padding:7px 9px;border-right:1px solid var(--border)}
+.mp:last-child{border-right:none}
+.mp-title{font-family:'Orbitron',monospace;font-size:7px;color:var(--cyan2);letter-spacing:2px;margin-bottom:5px}
+.mp-chart{width:100%;height:64px;background:var(--bg3);border-radius:3px;overflow:hidden;border:1px solid var(--border)}
+.mp-chart svg{width:100%;height:64px}
 
-/* Bottom Panels */
-.mid-bottom{display:grid;grid-template-columns:1fr 1fr 1fr;border-top:1px solid var(--border)}
-.mini-panel{padding:8px 10px;border-right:1px solid var(--border)}
-.mini-panel:last-child{border-right:none}
-.mini-title{font-family:'Orbitron',monospace;font-size:8px;color:var(--cyan2);letter-spacing:2px;margin-bottom:6px}
-.mini-chart{width:100%;height:70px;background:var(--bg3);border-radius:4px;overflow:hidden;border:1px solid var(--border)}
-.mini-chart svg{width:100%;height:70px}
-
-/* ── RIGHT PANEL ── */
-.right-section{padding:10px 12px;border-bottom:1px solid var(--border)}
-.r-title{font-family:'Orbitron',monospace;font-size:8px;color:var(--cyan);letter-spacing:2px;margin-bottom:8px}
-
-/* Elite Analysis */
-.bias-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid rgba(13,40,64,.5)}
-.bias-row:last-child{border-bottom:none}
-.b-label{font-family:'Orbitron',monospace;font-size:8px;color:var(--muted2);letter-spacing:1px}
-.b-val{font-family:'Share Tech Mono',monospace;font-size:12px;font-weight:700}
-
-/* Confidence Ring */
-.conf-ring-wrap{display:flex;align-items:center;gap:10px;padding:6px 0}
-.conf-ring{position:relative;width:60px;height:60px}
-.conf-ring svg{width:60px;height:60px}
-.conf-pct{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Orbitron',monospace;font-size:14px;font-weight:900;color:var(--yellow);text-shadow:0 0 8px var(--yellow)}
-.conf-info{}
-.conf-level{font-family:'Orbitron',monospace;font-size:11px;color:var(--yellow);font-weight:700}
-.conf-sub{font-size:10px;color:var(--muted2);letter-spacing:1px}
-
-/* Key Levels */
-.level-row{display:flex;justify-content:space-between;padding:4px 6px;border-radius:3px;margin-bottom:2px}
-.lvl-res{background:rgba(255,45,85,.06);border:1px solid rgba(255,45,85,.15)}
-.lvl-sup{background:rgba(0,255,136,.06);border:1px solid rgba(0,255,136,.15)}
-.lvl-lbl{font-family:'Orbitron',monospace;font-size:8px;letter-spacing:1px}
-.lvl-res .lvl-lbl{color:var(--red)}.lvl-sup .lvl-lbl{color:var(--green)}
-.lvl-val{font-family:'Share Tech Mono',monospace;font-size:12px;color:white}
-
-/* Position Calculator */
-.pos-row{display:flex;justify-content:space-between;align-items:center;padding:3px 0;border-bottom:1px solid rgba(13,40,64,.5)}
-.pos-row:last-child{border-bottom:none}
-.pos-label{font-size:10px;color:var(--muted2)}
-.pos-val{font-family:'Share Tech Mono',monospace;font-size:12px;color:white}
-.risk-slider{width:100%;height:3px;background:linear-gradient(90deg,var(--green),var(--yellow),var(--red));border-radius:2px;margin:6px 0}
-.rr-big{font-family:'Orbitron',monospace;font-size:18px;font-weight:700;color:var(--cyan);text-align:center;margin-top:4px;text-shadow:0 0 10px var(--cyan)}
-
-/* News */
-.news-item{display:flex;gap:8px;padding:6px 0;border-bottom:1px solid rgba(13,40,64,.5)}
-.news-item:last-child{border-bottom:none}
-.n-time{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--muted2);min-width:32px}
-.n-cur{font-size:9px;color:var(--yellow);font-weight:700;min-width:22px}
-.n-title{flex:1;font-size:10px;color:var(--text);line-height:1.35}
-.n-title a{color:inherit;text-decoration:none}.n-title a:hover{color:var(--cyan)}
-.n-imp{font-size:8px;padding:1px 4px;border-radius:2px;font-weight:700;letter-spacing:1px;white-space:nowrap;align-self:flex-start}
-.n-src{font-size:9px;color:var(--cyan2);font-weight:700;margin-top:1px}
-
-/* Gold Target */
-.gt-row{display:flex;justify-content:space-between;align-items:center;padding:5px 8px;border-radius:3px;margin-bottom:3px;border:1px solid}
-.gt-tp3{background:rgba(0,255,136,.06);border-color:rgba(0,255,136,.2)}
-.gt-tp2{background:rgba(0,255,136,.04);border-color:rgba(0,255,136,.15)}
-.gt-tp1{background:rgba(0,255,136,.02);border-color:rgba(0,255,136,.1)}
-.gt-buy{background:rgba(0,229,255,.06);border-color:rgba(0,229,255,.3)}
-.gt-sl{background:rgba(255,45,85,.06);border-color:rgba(255,45,85,.2)}
-.gt-lbl{font-family:'Orbitron',monospace;font-size:9px;font-weight:700}
+/* ── RIGHT ── */
+.r-sec{padding:9px 11px;border-bottom:1px solid var(--border)}
+.rtitle{font-family:'Orbitron',monospace;font-size:8px;color:var(--cyan);letter-spacing:2px;margin-bottom:7px}
+/* bias rows */
+.b-row{display:flex;justify-content:space-between;align-items:center;padding:3px 0;border-bottom:1px solid rgba(13,40,64,.4)}
+.b-row:last-child{border-bottom:none}
+.b-lbl{font-family:'Orbitron',monospace;font-size:7px;color:var(--muted2);letter-spacing:1px}
+.b-val{font-family:'Share Tech Mono',monospace;font-size:11px;font-weight:700}
+/* conf ring */
+.conf-wrap{display:flex;align-items:center;gap:8px;padding:5px 0}
+.conf-ring{position:relative;width:52px;height:52px;flex-shrink:0}
+.conf-ring svg{width:52px;height:52px}
+.conf-pct{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Orbitron',monospace;font-size:13px;font-weight:900;color:var(--yellow);text-shadow:0 0 8px var(--yellow)}
+.conf-level{font-family:'Orbitron',monospace;font-size:10px;color:var(--yellow);font-weight:700}
+.conf-sub{font-size:9px;color:var(--muted2);letter-spacing:1px}
+/* levels */
+.lvl-row{display:flex;justify-content:space-between;padding:4px 7px;border-radius:2px;margin-bottom:2px;border:1px solid}
+.lvl-r{background:rgba(255,45,85,.05);border-color:rgba(255,45,85,.15)}
+.lvl-s{background:rgba(0,255,136,.05);border-color:rgba(0,255,136,.15)}
+.lvl-lbl{font-family:'Orbitron',monospace;font-size:7px;letter-spacing:1px}
+.lvl-r .lvl-lbl{color:var(--red)}.lvl-s .lvl-lbl{color:var(--green)}
+.lvl-val{font-family:'Share Tech Mono',monospace;font-size:11px;color:white}
+/* gold target */
+.gt-row{display:flex;justify-content:space-between;align-items:center;padding:4px 7px;border-radius:2px;margin-bottom:2px;border:1px solid}
+.gt-tp3,.gt-tp2,.gt-tp1{background:rgba(0,255,136,.05);border-color:rgba(0,255,136,.15)}
+.gt-en{background:rgba(0,229,255,.05);border-color:rgba(0,229,255,.3)}
+.gt-sl{background:rgba(255,45,85,.05);border-color:rgba(255,45,85,.2)}
+.gt-lbl{font-family:'Orbitron',monospace;font-size:8px;font-weight:700}
 .gt-tp3 .gt-lbl,.gt-tp2 .gt-lbl,.gt-tp1 .gt-lbl{color:var(--green)}
-.gt-buy .gt-lbl{color:var(--cyan)}
-.gt-sl  .gt-lbl{color:var(--red)}
-.gt-val{font-family:'Share Tech Mono',monospace;font-size:13px;font-weight:700;color:white}
+.gt-en .gt-lbl{color:var(--cyan)}.gt-sl .gt-lbl{color:var(--red)}
+.gt-val{font-family:'Share Tech Mono',monospace;font-size:12px;font-weight:700;color:white}
+/* pos calc */
+.pos-row{display:flex;justify-content:space-between;align-items:center;padding:3px 0;border-bottom:1px solid rgba(13,40,64,.4)}
+.pos-row:last-child{border-bottom:none}
+.pos-lbl{font-size:9px;color:var(--muted2)}
+.pos-val{font-family:'Share Tech Mono',monospace;font-size:11px;color:white}
+.rr{font-family:'Orbitron',monospace;font-size:16px;font-weight:700;color:var(--cyan);text-align:center;margin-top:4px;text-shadow:0 0 10px var(--cyan)}
+.risk-bar{width:100%;height:3px;background:linear-gradient(90deg,var(--green),var(--yellow),var(--red));border-radius:2px;margin:5px 0}
+/* news */
+.n-item{display:flex;gap:6px;padding:5px 0;border-bottom:1px solid rgba(13,40,64,.4)}
+.n-item:last-child{border-bottom:none}
+.n-t{font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--muted2);min-width:28px}
+.n-c{font-size:8px;color:var(--yellow);font-weight:700;min-width:20px}
+.n-txt{flex:1;font-size:9px;color:var(--text);line-height:1.35}
+.n-txt a{color:inherit;text-decoration:none}.n-txt a:hover{color:var(--cyan)}
+.n-src{font-size:8px;color:var(--cyan2);font-weight:700;margin-top:1px}
+/* portfolio */
+.port-row{display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid rgba(13,40,64,.4);font-size:10px}
+.port-row:last-child{border-bottom:none}
+.port-name{color:var(--cyan);font-family:'Share Tech Mono',monospace}
+.port-lot{font-family:'Share Tech Mono',monospace;color:white}
+/* warroom */
+.wr-badge{text-align:center;padding:8px 0}
+.wr-lbl{font-family:'Orbitron',monospace;font-size:12px;font-weight:700;letter-spacing:2px}
+.wr-sub{font-size:10px;color:var(--muted2);margin-top:3px}
+.wr-bars{display:flex;gap:4px;margin-top:6px;align-items:flex-end;justify-content:center}
+.wr-b{border-radius:2px 2px 0 0;min-width:18px;text-align:center;font-size:9px;font-weight:700;padding-top:2px}
 
-/* Bottom ticker */
-.bottom-bar{display:flex;align-items:center;justify-content:space-between;padding:5px 14px;background:var(--bg3);border-top:1px solid var(--border);font-family:'Share Tech Mono',monospace;font-size:11px;position:sticky;bottom:0;z-index:100;flex-wrap:wrap;gap:4px}
-.btm-item{display:flex;align-items:center;gap:5px}
-.btm-sym{color:var(--cyan2);font-size:10px}
-.btm-prc{color:white}
-.btm-chg-p{color:var(--green);font-weight:700}.btm-chg-n{color:var(--red);font-weight:700}
-.quote{font-family:'Rajdhani',sans-serif;font-size:10px;color:var(--muted2);font-style:italic;flex:1;text-align:center}
+/* market overview right */
+.mkt-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid rgba(13,40,64,.4)}
+.mkt-row:last-child{border-bottom:none}
+.mkt-n{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--cyan)}
+.mkt-p{font-family:'Share Tech Mono',monospace;color:white;font-size:12px}
 
-/* Signal badge */
-.sig-badge{font-family:'Orbitron',monospace;font-size:9px;font-weight:700;padding:3px 8px;border-radius:3px;letter-spacing:1px;display:inline-block}
-.sig-strong-buy{background:rgba(0,255,136,.15);color:var(--green);border:1px solid var(--green)}
-.sig-buy{background:rgba(0,255,136,.08);color:#4ade80;border:1px solid #4ade80}
-.sig-strong-sell{background:rgba(255,45,85,.15);color:var(--red);border:1px solid var(--red)}
-.sig-sell{background:rgba(255,45,85,.08);color:#f87171;border:1px solid #f87171}
-.sig-hold{background:rgba(245,166,35,.08);color:var(--yellow);border:1px solid var(--yellow)}
+/* ── BOTTOM BAR ── */
+.botbar{display:flex;align-items:center;justify-content:space-between;padding:4px 12px;background:var(--bg3);border-top:1px solid var(--border);font-family:'Share Tech Mono',monospace;font-size:10px;flex-shrink:0;flex-wrap:wrap;gap:3px}
+.bi{display:flex;align-items:center;gap:4px}
+.bs{color:var(--cyan2);font-size:9px}.bp{color:white}
+.bcp{color:var(--green);font-weight:700}.bcn{color:var(--red);font-weight:700}
+.quote{font-family:'Rajdhani',sans-serif;font-size:9px;color:var(--muted2);font-style:italic;flex:1;text-align:center}
 
-/* Scrollable right col sections */
-.right-scroll{flex:1;overflow-y:auto}
-
-@media(max-width:1100px){
-  .workspace{grid-template-columns:1fr;height:auto}
-  .col-left,.col-right{display:none}
-}
+@media(max-width:1100px){.workspace{grid-template-columns:1fr}.col-l,.col-r{display:none}}
 </style>
 </head>
 <body>
 
 <!-- TICKER -->
-<div class="ticker-tape">
-  <div class="ticker-inner">
-    {% for name,d in data.items() %}
-    <span class="ticker-item">
-      <span class="t-w">{{ name }}</span>
-      <span class="t-w"> {{ d.price }}</span>
-      <span class="{% if d.change_pct>0 %}t-pos{% else %}t-neg{% endif %}">
-        {% if d.change_pct>0 %}▲{% else %}▼{% endif %}{{ d.change_pct }}%
-      </span>
-    </span>
-    {% endfor %}
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    {% for name,d in data.items() %}
-    <span class="ticker-item">
-      <span class="t-w">{{ name }}</span>
-      <span class="t-w"> {{ d.price }}</span>
-      <span class="{% if d.change_pct>0 %}t-pos{% else %}t-neg{% endif %}">
-        {% if d.change_pct>0 %}▲{% else %}▼{% endif %}{{ d.change_pct }}%
-      </span>
-    </span>
-    {% endfor %}
+<div class="ticker">
+  <div class="t-inner">
+    {% for n,d in data.items() %}<span class="ti"><span class="tw">{{n}}</span> <span class="tw">{{d.price}}</span> <span class="{{'tp' if d.change_pct>0 else 'tn'}}">{{'+' if d.change_pct>0 else ''}}{{d.change_pct}}%</span></span>{% endfor %}
+    &nbsp;&nbsp;&nbsp;
+    {% for n,d in data.items() %}<span class="ti"><span class="tw">{{n}}</span> <span class="tw">{{d.price}}</span> <span class="{{'tp' if d.change_pct>0 else 'tn'}}">{{'+' if d.change_pct>0 else ''}}{{d.change_pct}}%</span></span>{% endfor %}
   </div>
 </div>
 
-<!-- TOP BAR -->
+<!-- TOPBAR -->
 <div class="topbar">
-  <div>
-    <div class="brand">ELITE TERMINAL</div>
-    <div class="brand-sub">CRYPTOFOREXNEWSHUB</div>
-  </div>
-  <div class="clock-center">
-    <div class="big-time" id="big-time">--:--</div>
-    <div class="date-row" id="date-row"><b>--</b></div>
+  <div><div class="brand">ELITE TERMINAL</div><div class="brand-sub">CRYPTOFOREXNEWSHUB</div></div>
+  <div class="clock-block">
+    <div class="big-time" id="bt">--:--</div>
+    <div class="date-line" id="dl">--</div>
     <div class="sessions">
-      <div class="sess"><div class="sess-name">TOKYO</div><div class="sess-time tokyo-c" id="s-tok">--:--</div><div class="sess-status">OPEN</div></div>
-      <div class="sess"><div class="sess-name">LONDON</div><div class="sess-time london-c" id="s-lon">--:--</div><div class="sess-status">OPEN</div></div>
-      <div class="sess"><div class="sess-name">NEW YORK</div><div class="sess-time ny-c" id="s-ny">--:--</div><div class="sess-status">OPEN</div></div>
+      <div class="sess"><div class="sess-name">TOKYO</div><div class="sess-time tc" id="st">--:--</div><div class="sess-status">OPEN</div></div>
+      <div class="sess"><div class="sess-name">LONDON</div><div class="sess-time lc" id="sl">--:--</div><div class="sess-status">OPEN</div></div>
+      <div class="sess"><div class="sess-name">NEW YORK</div><div class="sess-time nc" id="sn">--:--</div><div class="sess-status">OPEN</div></div>
     </div>
   </div>
-  <div class="topbar-center">
-    PRECISION. DISCIPLINE. EXECUTION.
-  </div>
+  <div class="topbar-motto">PRECISION. DISCIPLINE. EXECUTION.</div>
   <div class="topbar-right">
-    <div class="cyber-badge"><span class="live-dot"></span>CYBER MODE</div>
-    <div style="font-size:9px;color:var(--muted2);font-family:'Orbitron',monospace;letter-spacing:1px">AUTO-REFRESH <span id="cd" style="color:var(--cyan)">90</span>s</div>
-    <div style="font-size:9px;color:var(--muted2)">{{ now }}</div>
+    <div class="cyber"><span class="ldot"></span>CYBER MODE</div>
+    <div style="font-size:8px;color:var(--muted2);font-family:'Orbitron',monospace">REFRESH <span id="cd" style="color:var(--cyan)">90</span>s</div>
+    <div style="font-size:8px;color:var(--muted2)" id="tz">{{now}} (UTC+7)</div>
   </div>
 </div>
 
 <!-- WORKSPACE -->
 <div class="workspace">
 
-  <!-- ═══ LEFT COL ═══ -->
-  <div class="col-left">
+<!-- ═══ LEFT ═══ -->
+<div class="col-l">
+  {% set g=gold %}
 
-    <!-- Asset Header (Gold default) -->
-    {% set g = gold %}
-    <div class="asset-header">
-      <div class="asset-sym">XAUUSD</div>
-      <div class="asset-sub">Gold Spot / U.S. Dollar</div>
-      <div class="asset-price">{{ g.price }}<span class="asset-usd">USD</span></div>
-      <div class="{% if g.change_pct>0 %}asset-chg-pos{% else %}asset-chg-neg{% endif %}">
-        {% if g.change_pct>0 %}+{% endif %}{{ g.change_abs }} ({% if g.change_pct>0 %}+{% endif %}{{ g.change_pct }}%)
-      </div>
-      <div style="display:flex;gap:6px;margin-top:6px;flex-wrap:wrap">
-        <div style="font-size:9px;color:var(--muted2)">SPREAD<br><span style="color:white;font-family:'Share Tech Mono',monospace">{{ g.spread }}</span></div>
-        <div style="font-size:9px;color:var(--muted2)">SESSION<br><span style="color:var(--cyan);font-family:'Share Tech Mono',monospace">NEW YORK</span></div>
-        <div style="margin-left:auto"><span class="sig-badge sig-{{ g.signal_class }}">{{ g.signal }}</span></div>
-      </div>
+  <!-- Asset Header -->
+  <div class="sec">
+    <div class="ah-sym">XAUUSD</div>
+    <div class="ah-sub">Gold Spot / U.S. Dollar</div>
+    <div class="ah-price">{{g.price}}<span class="ah-usd">USD</span></div>
+    <div class="{{'pos' if g.change_pct>0 else 'neg'}}">{{'+' if g.change_pct>0 else ''}}{{g.change_abs}} ({{'+' if g.change_pct>0 else ''}}{{g.change_pct}}%)</div>
+    <div style="display:flex;gap:8px;margin-top:5px;flex-wrap:wrap;align-items:center">
+      <div style="font-size:8px;color:var(--muted2)">SPREAD<br><span style="color:white;font-family:'Share Tech Mono',monospace">{{g.spread}}</span></div>
+      <div style="font-size:8px;color:var(--muted2)">SESSION<br><span style="color:var(--cyan);font-family:'Share Tech Mono',monospace">NEW YORK</span></div>
+      <div style="margin-left:auto"><span class="sbadge {{g.signal_class}}">{{g.signal}}</span></div>
     </div>
+  </div>
 
-    <!-- Smart Money -->
-    <div class="left-section">
-      <div class="sec-title">SMART MONEY FLOW</div>
-      <div class="sm-gauge-wrap">
-        <div class="sm-gauge">
-          <svg viewBox="0 0 90 50">
-            <defs><linearGradient id="sg" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stop-color="#ff2d55"/>
-              <stop offset="50%" stop-color="#f5a623"/>
-              <stop offset="100%" stop-color="#00ff88"/>
-            </linearGradient></defs>
-            <path d="M8,46 A37,37 0 0,1 82,46" stroke="url(#sg)" stroke-width="5" fill="none" stroke-linecap="round"/>
-            <line id="sm-needle" x1="45" y1="46" x2="45" y2="14"
-              stroke="white" stroke-width="2" stroke-linecap="round"
-              style="transform-origin:45px 46px;transform:rotate({{ (g.smart_money_pct/100*180-90)|round(0) }}deg)"/>
-            <circle cx="45" cy="46" r="3" fill="white"/>
-          </svg>
-        </div>
-        <div class="sm-val">{{ g.smart_money_pct }}%</div>
-        <div class="sm-label sm-{{ g.smart_money|lower }}">{{ g.smart_money }}</div>
-      </div>
-      <div class="sm-row"><span class="sm-label-t">INSTITUTIONAL</span><span class="sm-val-t">{{ g.institutional }}%</span></div>
-      <div class="sm-row"><span class="sm-label-t">RETAIL SENTIMENT</span><span class="sm-val-t">{{ g.retail_sent }}%</span></div>
-      <div class="sm-row"><span class="sm-label-t">DELTA VOLUME</span><span class="sm-val-t" style="color:{% if g.delta_vol>0 %}var(--green){% else %}var(--red){% endif %}">{% if g.delta_vol>0 %}+{% endif %}{{ "{:,.0f}".format(g.delta_vol) }}</span></div>
+  <!-- Smart Money -->
+  <div class="sec">
+    <div class="stitle">SMART MONEY FLOW</div>
+    <div class="sm-wrap">
+      <svg width="100" height="56" viewBox="0 0 100 56" style="display:block;margin:0 auto">
+        <defs><linearGradient id="sg" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#ff2d55"/><stop offset="50%" stop-color="#f5a623"/><stop offset="100%" stop-color="#00ff88"/>
+        </linearGradient></defs>
+        <path d="M10,52 A40,40 0 0,1 90,52" stroke="url(#sg)" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <path d="M10,52 A40,40 0 0,1 90,52" stroke="rgba(255,255,255,0.04)" stroke-width="5" fill="none"/>
+        <line x1="50" y1="52" x2="50" y2="16"
+          stroke="white" stroke-width="2" stroke-linecap="round"
+          style="transform-origin:50px 52px;transform:rotate({{((g.smart_money_pct/100*180)-90)|round(0)}}deg)"/>
+        <circle cx="50" cy="52" r="3" fill="white"/>
+      </svg>
+      <div class="sm-val">{{g.smart_money_pct}}%</div>
+      <div class="sm-lbl sm{{'bull' if g.smart_money=='BULLISH' else ('bear' if g.smart_money=='BEARISH' else 'neu')}}">{{g.smart_money}}</div>
     </div>
+    <div class="kv-row"><span class="kv-l">INSTITUTIONAL</span><span class="kv-v kv-c">{{g.institutional}}%</span></div>
+    <div class="kv-row"><span class="kv-l">RETAIL SENTIMENT</span><span class="kv-v">{{g.retail_sent}}%</span></div>
+    <div class="kv-row"><span class="kv-l">DELTA VOLUME</span><span class="kv-v {{'kv-g' if g.delta_vol>0 else 'kv-r'}}">{{'+' if g.delta_vol>0 else ''}}{{'{:,.0f}'.format(g.delta_vol)}}</span></div>
+    <div class="kv-row" style="margin-top:3px"><span class="kv-l">NARRATIVE</span><span class="kv-v" style="font-size:9px;color:var(--yellow)">{{g.narrative}}</span></div>
+  </div>
 
-    <!-- Liquidity Heatmap -->
-    <div class="left-section">
-      <div class="sec-title">LIQUIDITY HEATMAP</div>
-      <div class="heatmap" id="heatmap">
-        {% for i in range(20) %}
-        <div class="hm-bar" style="left:{{ i*5+1 }}%;height:{{ [20,35,50,40,60,45,70,55,80,65,75,50,45,60,70,55,40,65,50,35][i] }}%;opacity:{{ 0.3 + i*0.03 }}"></div>
-        {% endfor %}
-      </div>
-      <div class="hm-label"><span>LOW LIQUIDITY</span><span>HIGH LIQUIDITY</span></div>
-    </div>
+  <!-- Hedge Fund Mode -->
+  <div class="sec">
+    <div class="stitle">HEDGE FUND MODE</div>
+    <div class="kv-row"><span class="kv-l">HF SIGNAL</span><span class="kv-v" style="font-size:10px;color:var(--gold)">{{g.hf_signal}}</span></div>
+    <div class="kv-row"><span class="kv-l">HF SCORE</span><span class="kv-v kv-c">{{g.hf_score}}/100</span></div>
+    <div class="kv-row"><span class="kv-l">TREND</span><span class="kv-v" style="font-size:9px">{{g.hf_trend}}</span></div>
+    <div class="kv-row"><span class="kv-l">WHALE</span><span class="kv-v" style="font-size:9px">{{g.hf_whale}}</span></div>
+    <div class="kv-row"><span class="kv-l">SMART $</span><span class="kv-v" style="font-size:9px">{{g.hf_smartmoney}}</span></div>
+    <div class="kv-row"><span class="kv-l">MACRO</span><span class="kv-v" style="font-size:9px">{{g.macro}}</span></div>
+  </div>
 
-    <!-- Economic Calendar -->
-    <div class="left-section">
-      <div class="sec-title">ECONOMIC CALENDAR</div>
-      {% for item in news[:4] %}
-      <div class="eco-item">
-        <span class="eco-time">LIVE</span>
-        <span class="eco-cur">USD</span>
-        <span class="eco-name">{{ item.title[:35] }}{% if item.title|length>35 %}…{% endif %}</span>
-        <span class="eco-imp {% if loop.index==1 or loop.index==3 %}imp-h{% elif loop.index==2 %}imp-m{% else %}imp-l{% endif %}">
-          {% if loop.index==1 or loop.index==3 %}HIGH{% elif loop.index==2 %}MED{% else %}LOW{% endif %}
-        </span>
-      </div>
+  <!-- Liquidity Heatmap -->
+  <div class="sec">
+    <div class="stitle">LIQUIDITY HEATMAP</div>
+    <div class="heatmap">
+      {% for i in range(20) %}
+      <div class="hm-bar" style="left:{{i*5+1}}%;width:3.5%;height:{{[22,35,50,38,62,44,70,54,80,63,73,48,44,61,68,52,38,66,49,34][i]}}%;opacity:{{0.3+i*0.035|round(2)}}"></div>
       {% endfor %}
     </div>
-
+    <div class="hm-lbl"><span>LOW</span><span>HIGH LIQUIDITY</span></div>
+    <div class="kv-row" style="margin-top:4px"><span class="kv-l">LIQ STATUS</span><span class="kv-v" style="font-size:9px;color:var(--cyan)">{{g.liquidity}}</span></div>
+    <div class="kv-row"><span class="kv-l">WHALE ACTIVITY</span><span class="kv-v" style="font-size:9px">{{g.whale}}</span></div>
+    <div class="kv-row"><span class="kv-l">VOL RATIO</span><span class="kv-v kv-y">{{g.vol_ratio}}x</span></div>
+    <div class="kv-row"><span class="kv-l">ORDER BLOCK</span><span class="kv-v" style="font-size:9px">{{g.orderblock}}</span></div>
   </div>
 
-  <!-- ═══ MIDDLE COL ═══ -->
-  <div class="col-mid">
-
-    <!-- Chart Bar -->
-    <div class="chart-bar">
-      <div style="display:flex;align-items:center;gap:10px">
-        <span class="chart-sym">XAUUSD</span>
-        <div class="tf-group">
-          <button class="tf-btn" onclick="setTF('1')">1m</button>
-          <button class="tf-btn" onclick="setTF('5')">5m</button>
-          <button class="tf-btn active" onclick="setTF('15')">15m</button>
-          <button class="tf-btn" onclick="setTF('60')">1h</button>
-          <button class="tf-btn" onclick="setTF('240')">4h</button>
-          <button class="tf-btn" onclick="setTF('D')">D</button>
-          <button class="tf-btn" onclick="setTF('W')">W</button>
-        </div>
-      </div>
-      <div class="chart-tools">
-        <button class="tool-btn" onclick="switchSym('XAUUSD')">🥇 GOLD</button>
-        <button class="tool-btn" onclick="switchSym('BTCUSD')">₿ BTC</button>
-        <button class="tool-btn" onclick="switchSym('ETHUSD')">⟠ ETH</button>
-        <button class="tool-btn" onclick="switchSym('EURUSD')">€ EUR</button>
-        <button class="tool-btn" onclick="switchSym('TVC:DXY')">💵 DXY</button>
+  <!-- Correlation -->
+  <div class="sec">
+    <div class="stitle">CORRELATION ENGINE</div>
+    {% for c in corr %}
+    <div class="corr-row">
+      <div><div style="font-size:9px;color:var(--cyan2)">{{c.pair}}</div><div style="font-size:8px;color:var(--muted2)">{{c.status}}</div></div>
+      <div style="text-align:right">
+        <div class="corr-val {{'kv-g' if c.positive else 'kv-r'}}">{{c.corr}}</div>
+        <div class="corr-bar-wrap"><div class="corr-bar" style="width:{{c.strength}}%;background:{{'var(--green)' if c.positive else 'var(--red)'}}"></div></div>
       </div>
     </div>
-
-    <!-- TradingView Chart -->
-    <iframe id="tv-chart" class="tv-frame" style="flex:1"
-      src="https://s.tradingview.com/widgetembed/?frameElementId=tv-chart&symbol=XAUUSD&interval=15&hidesidetoolbar=0&hidetoptoolbar=0&theme=dark&style=1&locale=en&timezone=Asia%2FJakarta&withdateranges=1&hide_legend=0&studies=RSI%40tv-basicstudies,MAExp%4020,MAExp%4050"
-    ></iframe>
-
-    <!-- Indicator Bar -->
-    <div class="ind-bar">
-      <div class="ind-cell">
-        <div class="ind-name">RSI 14</div>
-        <div class="ind-val" style="color:{% if g.rsi>70 %}var(--red){% elif g.rsi<30 %}var(--green){% else %}var(--cyan){% endif %}">{{ g.rsi }}</div>
-      </div>
-      <div class="ind-cell">
-        <div class="ind-name">EMA 20</div>
-        <div class="ind-val" style="color:var(--cyan)">{{ g.ema20 }}</div>
-      </div>
-      <div class="ind-cell">
-        <div class="ind-name">EMA 50</div>
-        <div class="ind-val" style="color:var(--purple)">{{ g.ema50 }}</div>
-      </div>
-      <div class="ind-cell">
-        <div class="ind-name">MACD</div>
-        <div class="ind-val" style="color:{% if g.macd>0 %}var(--green){% else %}var(--red){% endif %}">{{ g.macd }}</div>
-      </div>
-      <div class="ind-cell">
-        <div class="ind-name">ATR</div>
-        <div class="ind-val" style="color:var(--yellow)">{{ g.atr }}</div>
-      </div>
-      <div class="ind-cell">
-        <div class="ind-name">STOCH</div>
-        <div class="ind-val" style="color:{% if g.stoch_k>g.stoch_d %}var(--green){% else %}var(--red){% endif %}">{{ g.stoch_k }}</div>
-      </div>
-    </div>
-
-    <!-- Bottom Mini Panels -->
-    <div class="mid-bottom">
-
-      <!-- RSI Panel -->
-      <div class="mini-panel">
-        <div class="mini-title">RSI 14</div>
-        <div class="mini-chart">
-          <svg viewBox="0 0 200 70" preserveAspectRatio="none">
-            <line x1="0" y1="21" x2="200" y2="21" stroke="rgba(255,45,85,.3)" stroke-width="0.5" stroke-dasharray="4"/>
-            <line x1="0" y1="49" x2="200" y2="49" stroke="rgba(0,255,136,.3)" stroke-width="0.5" stroke-dasharray="4"/>
-            <polyline points="0,45 25,42 50,38 75,44 100,46 125,50 150,47 175,44 200,{{ (70-(g.rsi/100*70))|round(0) }}"
-              fill="none" stroke="var(--purple)" stroke-width="1.5" stroke-linejoin="round"/>
-            <circle cx="200" cy="{{ (70-(g.rsi/100*70))|round(0) }}" r="3" fill="var(--purple)"/>
-            <text x="4" y="19" font-size="8" fill="rgba(255,45,85,.6)">70</text>
-            <text x="4" y="62" font-size="8" fill="rgba(0,255,136,.6)">30</text>
-            <text x="170" y="{{ (70-(g.rsi/100*70))|round(0) }}" font-size="9" fill="var(--purple)" font-weight="bold">{{ g.rsi }}</text>
-          </svg>
-        </div>
-      </div>
-
-      <!-- Market Structure -->
-      <div class="mini-panel">
-        <div class="mini-title">MARKET STRUCTURE (M15)</div>
-        <div class="mini-chart">
-          <svg viewBox="0 0 200 70" preserveAspectRatio="none">
-            {% if 'DOWN' in g.trend_str %}
-            <polyline points="0,20 30,25 60,18 90,35 120,30 150,45 180,40 200,55"
-              fill="none" stroke="var(--red)" stroke-width="1.5" stroke-linejoin="round"/>
-            <text x="5"  y="30" font-size="8" fill="var(--red)">HH</text>
-            <text x="80" y="44" font-size="8" fill="var(--red)">LH</text>
-            <text x="35" y="16" font-size="8" fill="rgba(255,45,85,.6)">LL</text>
-            <text x="145" y="58" font-size="8" fill="rgba(255,45,85,.6)">LL</text>
-            {% else %}
-            <polyline points="0,55 30,45 60,50 90,35 120,40 150,25 180,28 200,15"
-              fill="none" stroke="var(--green)" stroke-width="1.5" stroke-linejoin="round"/>
-            <text x="5"  y="64" font-size="8" fill="var(--green)">LL</text>
-            <text x="80" y="32" font-size="8" fill="var(--green)">HH</text>
-            <text x="35" y="58" font-size="8" fill="rgba(0,255,136,.6)">LH</text>
-            {% endif %}
-          </svg>
-        </div>
-      </div>
-
-      <!-- Volume Profile -->
-      <div class="mini-panel">
-        <div class="mini-title">VOLUME PROFILE</div>
-        <div class="mini-chart">
-          <svg viewBox="0 0 200 70" preserveAspectRatio="none">
-            {% for i in range(7) %}
-            <rect x="{{ i*28+2 }}" y="{{ 10+i*4 }}" width="{{ [60,45,80,55,70,40,65][i] }}" height="8"
-              fill="{% if i<3 %}rgba(0,255,136,.4){% elif i==3 %}rgba(0,229,255,.6){% else %}rgba(255,45,85,.4){% endif %}"
-              rx="1"/>
-            {% endfor %}
-            <line x1="0" y1="38" x2="200" y2="38" stroke="var(--cyan)" stroke-width="0.5" stroke-dasharray="3"/>
-            <text x="155" y="36" font-size="8" fill="var(--cyan)">{{ g.price }}</text>
-          </svg>
-        </div>
-      </div>
-
-    </div>
-
+    {% endfor %}
   </div>
 
-  <!-- ═══ RIGHT COL ═══ -->
-  <div class="col-right">
-    <div class="right-scroll">
-
-      <!-- Elite Analysis -->
-      <div class="right-section">
-        <div class="r-title">ELITE ANALYSIS</div>
-        <div class="bias-row">
-          <span class="b-label">BIAS</span>
-          <span class="b-val" style="color:{% if g.bias=='LONG' %}var(--green){% else %}var(--red){% endif %}">
-            NEUTRAL → {{ g.bias }}
-          </span>
-        </div>
-        <!-- Confidence Ring -->
-        <div class="conf-ring-wrap">
-          <div class="conf-ring">
-            <svg viewBox="0 0 60 60">
-              <circle cx="30" cy="30" r="24" fill="none" stroke="var(--border2)" stroke-width="5"/>
-              <circle cx="30" cy="30" r="24" fill="none"
-                stroke="{% if g.confidence>70 %}var(--green){% elif g.confidence>40 %}var(--yellow){% else %}var(--red){% endif %}"
-                stroke-width="5" stroke-linecap="round"
-                stroke-dasharray="{{ (g.confidence/100*150.8)|round(1) }} 150.8"
-                transform="rotate(-90 30 30)"/>
-            </svg>
-            <div class="conf-pct">{{ g.confidence }}%</div>
-          </div>
-          <div class="conf-info">
-            <div class="conf-level">{% if g.confidence>70 %}HIGH{% elif g.confidence>40 %}MEDIUM{% else %}LOW{% endif %}</div>
-            <div class="conf-sub">PROBABILITY</div>
-          </div>
-        </div>
-        <div class="bias-row"><span class="b-label">STRUCTURE</span><span class="b-val" style="color:{% if g.structure=='BULLISH' %}var(--green){% else %}var(--red){% endif %}">{{ g.structure }}</span></div>
-        <div class="bias-row"><span class="b-label">TREND</span><span class="b-val" style="color:var(--cyan);font-size:10px">{{ g.trend_str }}</span></div>
-        <div class="bias-row"><span class="b-label">ORDERFLOW</span><span class="b-val" style="color:var(--yellow);font-size:10px">{{ g.orderflow }}</span></div>
-      </div>
-
-      <!-- Key Levels -->
-      <div class="right-section">
-        <div class="r-title">KEY LEVELS</div>
-        <div class="level-row lvl-res"><span class="lvl-lbl">RESISTANCE 1</span><span class="lvl-val">{{ g.resistance1 }}</span></div>
-        <div class="level-row lvl-res"><span class="lvl-lbl">RESISTANCE 2</span><span class="lvl-val">{{ g.resistance2 }}</span></div>
-        <div class="level-row lvl-sup"><span class="lvl-lbl">SUPPORT 1</span><span class="lvl-val">{{ g.support1 }}</span></div>
-        <div class="level-row lvl-sup"><span class="lvl-lbl">SUPPORT 2</span><span class="lvl-val">{{ g.support2 }}</span></div>
-      </div>
-
-      <!-- Gold Target -->
-      <div class="right-section">
-        <div class="r-title">GOLD TARGET</div>
-        {% if 'BUY' in g.signal %}
-        <div class="gt-row gt-tp3"><span class="gt-lbl">TP 3</span><span class="gt-val">{{ g.tp3_long }}</span></div>
-        <div class="gt-row gt-tp2"><span class="gt-lbl">TP 2</span><span class="gt-val">{{ g.tp2_long }}</span></div>
-        <div class="gt-row gt-tp1"><span class="gt-lbl">TP 1</span><span class="gt-val">{{ g.tp1_long }}</span></div>
-        <div class="gt-row gt-buy"><span class="gt-lbl">{{ g.signal_icon }}</span><span class="gt-val">{{ g.price }}</span></div>
-        <div class="gt-row gt-sl"><span class="gt-lbl">SL</span><span class="gt-val">{{ g.sl_long }}</span></div>
-        {% else %}
-        <div class="gt-row gt-sl" style="border-color:rgba(255,45,85,.3)"><span class="gt-lbl" style="color:var(--red)">SL</span><span class="gt-val">{{ g.sl_short }}</span></div>
-        <div class="gt-row gt-buy"><span class="gt-lbl">{{ g.signal_icon }}</span><span class="gt-val">{{ g.price }}</span></div>
-        <div class="gt-row gt-tp1"><span class="gt-lbl">TP 1</span><span class="gt-val">{{ g.tp1_short }}</span></div>
-        <div class="gt-row gt-tp2"><span class="gt-lbl">TP 2</span><span class="gt-val">{{ g.tp2_short }}</span></div>
-        <div class="gt-row gt-tp3"><span class="gt-lbl">TP 3</span><span class="gt-val">{{ g.tp3_short }}</span></div>
-        {% endif %}
-      </div>
-
-      <!-- Position Size Calculator -->
-      <div class="right-section">
-        <div class="r-title">POSITION SIZE CALCULATOR</div>
-        <div class="risk-slider"></div>
-        <div class="pos-row"><span class="pos-label">RISK</span><span class="pos-val">1.00%</span></div>
-        <div class="pos-row"><span class="pos-label">STOP LOSS</span><span class="pos-val">{{ g.atr|round(0)|int }} pips</span></div>
-        <div class="pos-row"><span class="pos-label">TAKE PROFIT 1</span><span class="pos-val">{{ (g.atr*2)|round(0)|int }} pips</span></div>
-        <div class="pos-row"><span class="pos-label">TAKE PROFIT 2</span><span class="pos-val">{{ (g.atr*4)|round(0)|int }} pips</span></div>
-        <div class="rr-big">1 : 2.00</div>
-      </div>
-
-      <!-- Upcoming News -->
-      <div class="right-section">
-        <div class="r-title">UPCOMING NEWS</div>
-        {% for item in news[:5] %}
-        <div class="news-item">
-          <div>
-            <div class="n-time">LIVE</div>
-            <div class="n-cur">USD</div>
-          </div>
-          <div class="n-title">
-            <a href="{{ item.link }}" target="_blank">{{ item.title[:55] }}{% if item.title|length>55 %}…{% endif %}</a>
-            <div class="n-src">{{ item.source }}</div>
-          </div>
-          <span class="n-imp {% if loop.index%3==0 %}imp-m{% else %}imp-h{% endif %}">
-            {% if loop.index%3==0 %}MED{% else %}HIGH{% endif %}
-          </span>
-        </div>
-        {% endfor %}
-      </div>
-
-      <!-- Market Overview -->
-      <div class="right-section">
-        <div class="r-title">MARKET OVERVIEW</div>
-        {% for name,d in data.items() %}
-        <div style="display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid rgba(13,40,64,.5)">
-          <div>
-            <div style="font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--cyan)">{{ name }}</div>
-            <div style="font-size:9px;color:var(--muted2)">{{ d.type|upper }}</div>
-          </div>
-          <div style="text-align:right">
-            <div style="font-family:'Share Tech Mono',monospace;color:white;font-size:13px">{{ d.price }}</div>
-            <div class="{% if d.change_pct>0 %}t-pos{% else %}t-neg{% endif %}" style="font-size:11px">
-              {% if d.change_pct>0 %}+{% endif %}{{ d.change_pct }}%
-            </div>
-          </div>
-        </div>
-        {% endfor %}
-      </div>
-
-    </div><!-- /right-scroll -->
+  <!-- Economic Calendar -->
+  <div class="sec">
+    <div class="stitle">ECONOMIC CALENDAR</div>
+    {% for item in news[:5] %}
+    <div class="eco-row">
+      <span class="eco-t">LIVE</span>
+      <span class="eco-c">USD</span>
+      <span class="eco-n">{{item.title[:38]}}{% if item.title|length>38 %}…{% endif %}</span>
+      <span class="{{'ih' if loop.index%3!=0 else 'im'}}">{{('HIGH' if loop.index%3!=0 else 'MED')}}</span>
+    </div>
+    {% endfor %}
   </div>
 
+</div><!-- /col-l -->
+
+<!-- ═══ MIDDLE ═══ -->
+<div class="col-m">
+
+  <!-- Chart bar -->
+  <div class="chart-bar">
+    <div style="display:flex;align-items:center;gap:8px">
+      <span class="csym" id="cur-sym">XAUUSD</span>
+      <div class="tf-grp">
+        <button class="tf-btn" onclick="setTF('1')">1m</button>
+        <button class="tf-btn" onclick="setTF('5')">5m</button>
+        <button class="tf-btn active" onclick="setTF('15')">15m</button>
+        <button class="tf-btn" onclick="setTF('60')">1h</button>
+        <button class="tf-btn" onclick="setTF('240')">4h</button>
+        <button class="tf-btn" onclick="setTF('D')">D</button>
+        <button class="tf-btn" onclick="setTF('W')">W</button>
+      </div>
+    </div>
+    <div style="display:flex;gap:4px;flex-wrap:wrap">
+      <button class="tool-btn active" onclick="sw('XAUUSD','🥇 GOLD')">🥇 GOLD</button>
+      <button class="tool-btn" onclick="sw('BTCUSD','₿ BTC')">₿ BTC</button>
+      <button class="tool-btn" onclick="sw('ETHUSD','⟠ ETH')">⟠ ETH</button>
+      <button class="tool-btn" onclick="sw('EURUSD','€ EUR')">€ EUR</button>
+      <button class="tool-btn" onclick="sw('TVC:DXY','💵 DXY')">💵 DXY</button>
+      <button class="tool-btn" onclick="sw('USOIL','🛢 OIL')">🛢 OIL</button>
+    </div>
+  </div>
+
+  <!-- TradingView Chart -->
+  <iframe id="tv" class="tv-frame"
+    src="https://s.tradingview.com/widgetembed/?frameElementId=tv&symbol=XAUUSD&interval=15&hidesidetoolbar=0&hidetoptoolbar=0&theme=dark&style=1&locale=en&timezone=Asia%2FJakarta&withdateranges=1&hide_legend=0&studies=RSI%40tv-basicstudies,MAExp%4020,MAExp%4050"
+  ></iframe>
+
+  <!-- Indicator Bar -->
+  <div class="ind-bar">
+    <div class="ind-cell"><div class="ind-name">RSI 14</div><div class="ind-val" style="color:{{'var(--red)' if g.rsi>70 else ('var(--green)' if g.rsi<30 else 'var(--cyan)')}}">{{g.rsi}}</div></div>
+    <div class="ind-cell"><div class="ind-name">EMA 20</div><div class="ind-val" style="color:var(--cyan)">{{g.ema20}}</div></div>
+    <div class="ind-cell"><div class="ind-name">EMA 50</div><div class="ind-val" style="color:var(--purple)">{{g.ema50}}</div></div>
+    <div class="ind-cell"><div class="ind-name">MACD</div><div class="ind-val" style="color:{{'var(--green)' if g.macd>0 else 'var(--red)'}}">{{g.macd}}</div></div>
+    <div class="ind-cell"><div class="ind-name">ATR</div><div class="ind-val" style="color:var(--yellow)">{{g.atr}}</div></div>
+    <div class="ind-cell"><div class="ind-name">STOCH K/D</div><div class="ind-val" style="color:{{'var(--green)' if g.stoch_k>g.stoch_d else 'var(--red)'}}">{{g.stoch_k}}</div></div>
+  </div>
+
+  <!-- Mini panels -->
+  <div class="mid-bot">
+    <!-- RSI chart -->
+    <div class="mp">
+      <div class="mp-title">RSI 14</div>
+      <div class="mp-chart">
+        <svg viewBox="0 0 200 64" preserveAspectRatio="none">
+          <line x1="0" y1="19" x2="200" y2="19" stroke="rgba(255,45,85,.3)" stroke-width="0.5" stroke-dasharray="4"/>
+          <line x1="0" y1="45" x2="200" y2="45" stroke="rgba(0,255,136,.3)" stroke-width="0.5" stroke-dasharray="4"/>
+          <polyline points="0,42 30,39 60,35 90,41 120,44 150,{{(64-(g.rsi/100*60))|round(0)}} 200,{{(64-(g.rsi/100*60))|round(0)}}"
+            fill="none" stroke="var(--purple)" stroke-width="1.5" stroke-linejoin="round"/>
+          <circle cx="200" cy="{{(64-(g.rsi/100*60))|round(0)}}" r="3" fill="var(--purple)"/>
+          <text x="3" y="17" font-size="7" fill="rgba(255,45,85,.7)">70</text>
+          <text x="3" y="58" font-size="7" fill="rgba(0,255,136,.7)">30</text>
+          <text x="168" y="{{(64-(g.rsi/100*60))|round(0)}}" font-size="9" fill="var(--purple)" font-weight="bold">{{g.rsi}}</text>
+        </svg>
+      </div>
+    </div>
+    <!-- Market Structure -->
+    <div class="mp">
+      <div class="mp-title">MARKET STRUCTURE (M15)</div>
+      <div class="mp-chart">
+        <svg viewBox="0 0 200 64" preserveAspectRatio="none">
+          {% if 'DOWN' in g.trend_str %}
+          <polyline points="0,18 35,24 70,16 100,32 130,28 165,44 200,54" fill="none" stroke="var(--red)" stroke-width="1.5" stroke-linejoin="round"/>
+          <text x="4" y="27" font-size="7" fill="var(--red)">HH</text><text x="92" y="46" font-size="7" fill="var(--red)">LH</text>
+          <text x="38" y="14" font-size="7" fill="rgba(255,45,85,.6)">LL</text>
+          {% else %}
+          <polyline points="0,52 35,42 70,46 100,32 130,37 165,22 200,14" fill="none" stroke="var(--green)" stroke-width="1.5" stroke-linejoin="round"/>
+          <text x="4" y="60" font-size="7" fill="var(--green)">LL</text><text x="92" y="29" font-size="7" fill="var(--green)">HH</text>
+          {% endif %}
+        </svg>
+      </div>
+    </div>
+    <!-- Volume Profile -->
+    <div class="mp">
+      <div class="mp-title">VOLUME PROFILE</div>
+      <div class="mp-chart">
+        <svg viewBox="0 0 200 64" preserveAspectRatio="none">
+          {% set bars=[58,42,75,52,68,38,62,80,44,55] %}
+          {% for i in range(10) %}
+          <rect x="{{i*20+2}}" y="{{64-bars[i]-4}}" width="16" height="{{bars[i]}}"
+            fill="{{'rgba(0,255,136,.35)' if i<5 else 'rgba(255,45,85,.35)'}}" rx="1"/>
+          {% endfor %}
+          <line x1="0" y1="32" x2="200" y2="32" stroke="var(--cyan)" stroke-width="0.5" stroke-dasharray="3"/>
+          <text x="152" y="30" font-size="8" fill="var(--cyan)">{{g.price}}</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /col-m -->
+
+<!-- ═══ RIGHT ═══ -->
+<div class="col-r">
+
+  <!-- Elite Analysis -->
+  <div class="r-sec">
+    <div class="rtitle">ELITE ANALYSIS</div>
+    <div class="b-row"><span class="b-lbl">BIAS</span><span class="b-val" style="color:{{'var(--green)' if g.bias=='LONG' else 'var(--red)'}}">NEUTRAL → {{g.bias}}</span></div>
+    <div class="conf-wrap">
+      <div class="conf-ring">
+        <svg viewBox="0 0 52 52">
+          <circle cx="26" cy="26" r="20" fill="none" stroke="var(--border2)" stroke-width="5"/>
+          <circle cx="26" cy="26" r="20" fill="none"
+            stroke="{{'var(--green)' if g.confidence>70 else ('var(--yellow)' if g.confidence>40 else 'var(--red)')}}"
+            stroke-width="5" stroke-linecap="round"
+            stroke-dasharray="{{(g.confidence/100*125.6)|round(1)}} 125.6"
+            transform="rotate(-90 26 26)"/>
+        </svg>
+        <div class="conf-pct">{{g.confidence}}%</div>
+      </div>
+      <div><div class="conf-level">{{'HIGH' if g.confidence>70 else ('MEDIUM' if g.confidence>40 else 'LOW')}}</div><div class="conf-sub">PROBABILITY</div></div>
+    </div>
+    <div class="b-row"><span class="b-lbl">STRUCTURE</span><span class="b-val" style="color:{{'var(--green)' if g.structure=='BULLISH' else 'var(--red)'}}">{{g.structure}}</span></div>
+    <div class="b-row"><span class="b-lbl">TREND</span><span class="b-val" style="color:var(--cyan);font-size:9px">{{g.trend_str}}</span></div>
+    <div class="b-row"><span class="b-lbl">ORDERFLOW</span><span class="b-val" style="color:var(--yellow);font-size:9px">{{g.orderflow}}</span></div>
+    <div class="b-row"><span class="b-lbl">SCALP</span><span class="b-val" style="font-size:9px">{{g.scalp}}</span></div>
+    <div class="b-row"><span class="b-lbl">MULTI-TF</span><span class="b-val" style="color:var(--cyan);font-size:9px">{{g.hf_signal}}</span></div>
+  </div>
+
+  <!-- Key Levels -->
+  <div class="r-sec">
+    <div class="rtitle">KEY LEVELS</div>
+    <div class="lvl-row lvl-r"><span class="lvl-lbl">RESISTANCE 2</span><span class="lvl-val">{{g.resistance2}}</span></div>
+    <div class="lvl-row lvl-r"><span class="lvl-lbl">RESISTANCE 1</span><span class="lvl-val">{{g.resistance1}}</span></div>
+    <div class="lvl-row lvl-s"><span class="lvl-lbl">SUPPORT 1</span><span class="lvl-val">{{g.support1}}</span></div>
+    <div class="lvl-row lvl-s"><span class="lvl-lbl">SUPPORT 2</span><span class="lvl-val">{{g.support2}}</span></div>
+  </div>
+
+  <!-- Gold Target -->
+  <div class="r-sec">
+    <div class="rtitle">GOLD TARGET</div>
+    {% if 'BUY' in g.signal %}
+    <div class="gt-row gt-tp3"><span class="gt-lbl">TP 3</span><span class="gt-val">{{g.tp3_long}}</span></div>
+    <div class="gt-row gt-tp2"><span class="gt-lbl">TP 2</span><span class="gt-val">{{g.tp2_long}}</span></div>
+    <div class="gt-row gt-tp1"><span class="gt-lbl">TP 1</span><span class="gt-val">{{g.tp1_long}}</span></div>
+    <div class="gt-row gt-en"><span class="gt-lbl">{{g.signal}}</span><span class="gt-val">{{g.price}}</span></div>
+    <div class="gt-row gt-sl"><span class="gt-lbl">SL</span><span class="gt-val">{{g.sl_long}}</span></div>
+    {% else %}
+    <div class="gt-row gt-sl"><span class="gt-lbl">SL</span><span class="gt-val">{{g.sl_short}}</span></div>
+    <div class="gt-row gt-en"><span class="gt-lbl">{{g.signal}}</span><span class="gt-val">{{g.price}}</span></div>
+    <div class="gt-row gt-tp1"><span class="gt-lbl">TP 1</span><span class="gt-val">{{g.tp1_short}}</span></div>
+    <div class="gt-row gt-tp2"><span class="gt-lbl">TP 2</span><span class="gt-val">{{g.tp2_short}}</span></div>
+    <div class="gt-row gt-tp3"><span class="gt-lbl">TP 3</span><span class="gt-val">{{g.tp3_short}}</span></div>
+    {% endif %}
+  </div>
+
+  <!-- Position Size Calculator -->
+  <div class="r-sec">
+    <div class="rtitle">POSITION SIZE CALCULATOR</div>
+    <div class="risk-bar"></div>
+    <div class="pos-row"><span class="pos-lbl">RISK</span><span class="pos-val">1.00%</span></div>
+    <div class="pos-row"><span class="pos-lbl">STOP LOSS</span><span class="pos-val">{{g.atr|round(0)|int}} pips</span></div>
+    <div class="pos-row"><span class="pos-lbl">TAKE PROFIT 1</span><span class="pos-val">{{(g.atr*2)|round(0)|int}} pips</span></div>
+    <div class="pos-row"><span class="pos-lbl">TAKE PROFIT 2</span><span class="pos-val">{{(g.atr*4)|round(0)|int}} pips</span></div>
+    <div class="rr">1 : 2.00</div>
+  </div>
+
+  <!-- War Room -->
+  <div class="r-sec">
+    <div class="rtitle">AI WAR ROOM</div>
+    <div class="wr-badge">
+      <div class="wr-lbl" style="color:{{'var(--green)' if 'ON' in warroom else ('var(--red)' if 'OFF' in warroom else 'var(--yellow)')}}">{{warroom}}</div>
+      <div class="wr-sub">{{bulls}} BULL · {{bears}} BEAR · {{hold_count}} NEUTRAL</div>
+      <div class="wr-bars">
+        <div class="wr-b" style="height:{{bulls*14+10}}px;background:var(--green);color:var(--bg)">{{bulls}}</div>
+        <div class="wr-b" style="height:{{hold_count*14+10}}px;background:var(--yellow);color:var(--bg)">{{hold_count}}</div>
+        <div class="wr-b" style="height:{{bears*14+10}}px;background:var(--red);color:white">{{bears}}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Portfolio Manager -->
+  <div class="r-sec">
+    <div class="rtitle">PORTFOLIO MANAGER</div>
+    {% for p in portfolio %}
+    <div class="port-row">
+      <div><span class="port-name">{{p.name}}</span> <span class="sbadge {{p.signal.lower().replace(' ','-')}}" style="font-size:7px">{{p.signal}}</span></div>
+      <div style="text-align:right"><div class="port-lot">{{p.lot}} lot</div><div style="font-size:8px;color:var(--muted2)">${{p.risk_usd}} risk</div></div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- News -->
+  <div class="r-sec">
+    <div class="rtitle">UPCOMING NEWS</div>
+    {% for item in news[:6] %}
+    <div class="n-item">
+      <div><div class="n-t">LIVE</div><div class="n-c">USD</div></div>
+      <div class="n-txt">
+        <a href="{{item.link}}" target="_blank">{{item.title[:55]}}{% if item.title|length>55 %}…{% endif %}</a>
+        <div class="n-src">{{item.source}}</div>
+      </div>
+      <span class="{{'ih' if loop.index%3!=0 else 'im'}}">{{('HIGH' if loop.index%3!=0 else 'MED')}}</span>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Market Overview -->
+  <div class="r-sec">
+    <div class="rtitle">MARKET OVERVIEW</div>
+    {% for n,d in data.items() %}
+    <div class="mkt-row">
+      <div><div class="mkt-n">{{n}}</div><div style="font-size:8px;color:var(--muted2)">{{d.type|upper}}</div></div>
+      <div style="text-align:right"><div class="mkt-p">{{d.price}}</div><div class="{{'pos' if d.change_pct>0 else 'neg'}}">{{'+' if d.change_pct>0 else ''}}{{d.change_pct}}%</div></div>
+    </div>
+    {% endfor %}
+  </div>
+
+</div><!-- /col-r -->
 </div><!-- /workspace -->
 
 <!-- BOTTOM BAR -->
-<div class="bottom-bar">
-  {% for name,d in data.items() %}
-  <div class="btm-item">
-    <span class="btm-sym">{{ name }}</span>
-    <span class="btm-prc">{{ d.price }}</span>
-    <span class="{% if d.change_pct>0 %}btm-chg-p{% else %}btm-chg-n{% endif %}">
-      {% if d.change_pct>0 %}+{% endif %}{{ d.change_pct }}%
-    </span>
-  </div>
+<div class="botbar">
+  {% for n,d in data.items() %}
+  <div class="bi"><span class="bs">{{n}}</span><span class="bp">{{d.price}}</span><span class="{{'bcp' if d.change_pct>0 else 'bcn'}}">{{'+' if d.change_pct>0 else ''}}{{d.change_pct}}%</span></div>
   {% endfor %}
   <div class="quote">"THE BEST TRADES ARE PLANNED, NOT PREDICTED." — ELITE COUNCIL</div>
-  <div style="font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--muted2)" id="bottom-time">{{ now }}</div>
+  <div style="font-family:'Share Tech Mono',monospace;font-size:9px;color:var(--muted2)" id="bt2">{{now}} (UTC+7)</div>
 </div>
 
 <script>
 function pad(n){return String(n).padStart(2,'0')}
-function updateClocks(){
+function tick(){
   const now=new Date();
-  document.getElementById('big-time').textContent=pad(now.getHours())+':'+pad(now.getMinutes());
+  document.getElementById('bt').textContent=pad(now.getHours())+':'+pad(now.getMinutes());
   const days=['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'];
   const months=['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
-  document.getElementById('date-row').innerHTML='<b>'+days[now.getDay()]+'</b> '+pad(now.getDate())+' '+months[now.getMonth()]+' '+now.getFullYear();
+  document.getElementById('dl').innerHTML='<b>'+days[now.getDay()]+'</b> '+pad(now.getDate())+' '+months[now.getMonth()]+' '+now.getFullYear();
   const utc=now.getTime()+now.getTimezoneOffset()*60000;
-  const tok=new Date(utc+9*3600000);
-  const lon=new Date(utc+1*3600000);
-  const ny=new Date(utc-4*3600000);
+  const tok=new Date(utc+9*3600000),lon=new Date(utc+1*3600000),ny=new Date(utc-4*3600000);
   const fmt=d=>pad(d.getHours())+':'+pad(d.getMinutes());
-  document.getElementById('s-tok').textContent=fmt(tok);
-  document.getElementById('s-lon').textContent=fmt(lon);
-  document.getElementById('s-ny').textContent=fmt(ny);
-  document.getElementById('bottom-time').textContent=pad(now.getHours())+':'+pad(now.getMinutes())+':'+pad(now.getSeconds())+' (UTC+7)';
+  document.getElementById('st').textContent=fmt(tok);
+  document.getElementById('sl').textContent=fmt(lon);
+  document.getElementById('sn').textContent=fmt(ny);
+  const ts=pad(now.getHours())+':'+pad(now.getMinutes())+':'+pad(now.getSeconds());
+  document.getElementById('bt2').textContent=ts+' (UTC+7)';
+  document.getElementById('tz').textContent=ts+' (UTC+7)';
 }
-setInterval(updateClocks,1000);updateClocks();
+setInterval(tick,1000);tick();
+
+// Fear & Greed
+fetch('https://api.alternative.me/fng/?limit=1').then(r=>r.json()).then(d=>{
+  const val=parseInt(d.data[0].value);
+  // Update needle angle in SVG if needed
+}).catch(()=>{});
 
 let curSym='XAUUSD',curTF='15';
-function buildSrc(sym,tf){
-  return'https://s.tradingview.com/widgetembed/?frameElementId=tv-chart&symbol='+sym+'&interval='+tf+'&hidesidetoolbar=0&hidetoptoolbar=0&theme=dark&style=1&locale=en&timezone=Asia%2FJakarta&withdateranges=1&hide_legend=0&studies=RSI%40tv-basicstudies,MAExp%4020,MAExp%4050';
-}
+function buildSrc(s,t){return'https://s.tradingview.com/widgetembed/?frameElementId=tv&symbol='+s+'&interval='+t+'&hidesidetoolbar=0&hidetoptoolbar=0&theme=dark&style=1&locale=en&timezone=Asia%2FJakarta&withdateranges=1&hide_legend=0&studies=RSI%40tv-basicstudies,MAExp%4020,MAExp%4050';}
 function setTF(tf){
   curTF=tf;
   document.querySelectorAll('.tf-btn').forEach(b=>b.classList.remove('active'));
   event.target.classList.add('active');
-  document.getElementById('tv-chart').src=buildSrc(curSym,curTF);
+  document.getElementById('tv').src=buildSrc(curSym,curTF);
 }
-function switchSym(sym){
+function sw(sym,label){
   curSym=sym;
-  document.getElementById('tv-chart').src=buildSrc(curSym,curTF);
+  document.getElementById('cur-sym').textContent=label;
+  document.querySelectorAll('.tool-btn').forEach(b=>b.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('tv').src=buildSrc(curSym,curTF);
 }
 
 let secs=90;
