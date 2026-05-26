@@ -211,6 +211,15 @@ body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:r
 .quote{font-family:'Rajdhani',sans-serif;font-size:9px;color:var(--muted2);font-style:italic;flex:1;text-align:center}
 
 @media(max-width:1100px){.workspace{grid-template-columns:1fr}.col-l,.col-r{display:none}}
+
+/* CME Panel */
+.cme-row{display:flex;align-items:center;gap:6px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.cme-row:last-child{border-bottom:none}
+.cme-icon{font-size:14px;width:20px;text-align:center}
+.cme-info{flex:1;min-width:0}
+.cme-label{font-family:'Orbitron',monospace;font-size:8px;color:var(--cyan);letter-spacing:1px}
+.cme-name{font-size:9px;color:var(--muted2)}
+.cme-price{text-align:right;font-family:'Share Tech Mono',monospace;font-size:11px;font-weight:700}
 </style>
 </head>
 <body>
@@ -555,6 +564,30 @@ body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:r
     {% endfor %}
   </div>
 
+
+<!-- ═══ CME GROUP FUTURES PANEL ═══ -->
+<div class="panel" id="cme-panel">
+  <div class="panel-title">
+    <span style="color:var(--gold)">⚡</span> CME GROUP FUTURES
+    <span style="font-size:9px;color:var(--muted2);margin-left:auto">LIVE</span>
+  </div>
+  <div id="cme-rows">
+  {% for f in cme %}
+  <div class="cme-row">
+    <span class="cme-icon">{{f.icon}}</span>
+    <div class="cme-info">
+      <div class="cme-label">{{f.label}}</div>
+      <div class="cme-name">{{f.name}}</div>
+    </div>
+    <div class="cme-price" style="color:{{f.color}}">
+      <div>{{f.price}}</div>
+      <div style="font-size:9px">{{f.dir}} {{f.pct}}%</div>
+    </div>
+  </div>
+  {% endfor %}
+  </div>
+</div>
+
 </div><!-- /col-r -->
 </div><!-- /workspace -->
 
@@ -679,6 +712,31 @@ setInterval(()=>{
   if(el) el.textContent=secs;
   if(secs<=0){ secs=90; fetchData(); }
 },1000);
+
+// ── CME Live Update ───────────────────────────────────────────
+function fetchCME(){
+  fetch('/api/cme')
+    .then(r=>r.json())
+    .then(data=>{
+      const box = document.getElementById('cme-rows');
+      if(!box||!data.length) return;
+      box.innerHTML = data.map(f=>`
+        <div class="cme-row">
+          <span class="cme-icon">${f.icon}</span>
+          <div class="cme-info">
+            <div class="cme-label">${f.label}</div>
+            <div class="cme-name">${f.name}</div>
+          </div>
+          <div class="cme-price" style="color:${f.color}">
+            <div>${f.price}</div>
+            <div style="font-size:9px">${f.dir} ${f.pct}%</div>
+          </div>
+        </div>`).join('');
+    }).catch(()=>{});
+}
+fetchCME();
+setInterval(fetchCME, 120000);
+
 </script>
 </body>
 </html>
