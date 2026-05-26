@@ -516,6 +516,17 @@ def api_data():
         out[name] = d
     return jsonify(out)
 
+
+@app.route("/api/asset/<path:key>")
+def api_asset(key):
+    key = key.replace("_", "/").upper()
+    info = ASSETS.get(key)
+    if not info:
+        return jsonify({"error": "not found"}), 404
+    d = compute_signal(key, info["ticker"])
+    d["tv"] = info["tv"]
+    return jsonify(d)
+
 @app.route("/api/news")
 def api_news():
     return jsonify(get_news())
