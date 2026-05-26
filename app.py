@@ -478,6 +478,55 @@ def compute_signal(name, ticker):
 # ─────────────────────────────────────────────
 #  ROUTES
 # ─────────────────────────────────────────────
+
+# ── CME GROUP FUTURES DATA (via yfinance) ─────────────────────
+CME_FUTURES = {
+    "GC=F":  {"name": "Gold",          "label": "XAU FUTURES",   "icon": "🥇"},
+    "SI=F":  {"name": "Silver",        "label": "XAG FUTURES",   "icon": "🪙"},
+    "CL=F":  {"name": "Crude Oil",     "label": "WTI FUTURES",   "icon": "🛢"},
+    "ES=F":  {"name": "S&P500 E-mini", "label": "ES FUTURES",    "icon": "📈"},
+    "NQ=F":  {"name": "Nasdaq E-mini", "label": "NQ FUTURES",    "icon": "💻"},
+    "BTC=F": {"name": "Bitcoin CME",   "label": "BTC FUTURES",   "icon": "₿"},
+    "ETH=F": {"name": "Ethereum CME",  "label": "ETH FUTURES",   "icon": "⟠"},
+    "6E=F":  {"name": "EUR/USD",       "label": "EUR FUTURES",   "icon": "€"},
+    "ZB=F":  {"name": "30Y Bond",      "label": "BOND FUTURES",  "icon": "🏦"},
+}
+
+_cme_cache = {"data": [], "ts": 0}
+
+def get_cme_futures():
+    import time
+    now = time.time()
+    if now - _cme_cache["ts"] < 120:
+        return _cme_cache["data"]
+    result = []
+    for sym, info in CME_FUTURES.items():
+        try:
+            t = yf.Ticker(sym)
+            fi = t.fast_info
+            price = fi.last_price
+            prev  = fi.previous_close
+            if price and prev and prev != 0:
+                chg = round(price - prev, 4)
+                pct = round((chg / prev) * 100, 2)
+                result.append({
+                    "sym":   sym,
+                    "name":  info["name"],
+                    "label": info["label"],
+                    "icon":  info["icon"],
+                    "price": round(price, 4),
+                    "chg":   chg,
+                    "pct":   pct,
+                    "dir":   "▲" if chg >= 0 else "▼",
+                    "color": "var(--green)" if chg >= 0 else "var(--red)",
+                })
+        except:
+            pass
+    _cme_cache["data"] = result
+    _cme_cache["ts"]   = now
+    return result
+
+
 @app.route("/")
 def home():
     market_data = {}
@@ -498,7 +547,8 @@ def home():
     now_str      = datetime.now().strftime("%H:%M:%S")
     date_str     = datetime.now().strftime("%A, %d %B %Y").upper()
 
-    return render_template("index.html",
+    cme = get_cme_futures()
+    return render_template("index.html", cme=cme,
         data=market_data, gold=gold,
         news=news_data, corr=corr_data,
         portfolio=portfolio, warroom=warroom,
@@ -526,6 +576,11 @@ def api_asset(key):
     d = compute_signal(key, info["ticker"])
     d["tv"] = info["tv"]
     return jsonify(d)
+
+
+@app.route("/api/cme")
+def api_cme():
+    return jsonify(get_cme_futures())
 
 @app.route("/api/news")
 def api_news():
