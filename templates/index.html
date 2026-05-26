@@ -220,6 +220,32 @@ body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:r
 .cme-label{font-family:'Orbitron',monospace;font-size:8px;color:var(--cyan);letter-spacing:1px}
 .cme-name{font-size:9px;color:var(--muted2)}
 .cme-price{text-align:right;font-family:'Share Tech Mono',monospace;font-size:11px;font-weight:700}
+
+/* COT Report Panel */
+.cot-panel{background:rgba(0,255,136,.04);border:1px solid rgba(0,255,136,.15);border-radius:6px;padding:8px;margin-bottom:8px}
+.cot-title{font-family:'Orbitron',monospace;font-size:9px;color:var(--gold);letter-spacing:2px;margin-bottom:6px;display:flex;justify-content:space-between}
+.cot-date{font-size:8px;color:var(--muted2)}
+.cot-bar-row{margin-bottom:5px}
+.cot-bar-label{display:flex;justify-content:space-between;font-size:9px;margin-bottom:2px}
+.cot-bar-label span:first-child{color:var(--cyan)}
+.cot-bar-track{height:8px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden;display:flex}
+.cot-bar-long{background:linear-gradient(90deg,#00ff88,#00cc66);height:100%;transition:.4s}
+.cot-bar-short{background:linear-gradient(90deg,#ff3366,#cc0033);height:100%}
+.cot-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:6px}
+.cot-stat{background:rgba(255,255,255,.04);border-radius:4px;padding:4px 6px;text-align:center}
+.cot-stat-val{font-family:'Share Tech Mono',monospace;font-size:11px;font-weight:700;color:var(--cyan)}
+.cot-stat-lbl{font-size:8px;color:var(--muted2);margin-top:1px}
+.cot-sentiment{text-align:center;font-family:'Orbitron',monospace;font-size:10px;font-weight:700;padding:5px;border-radius:4px;margin-top:6px;letter-spacing:1px}
+.sent-bull{background:rgba(0,255,136,.15);color:#00ff88}
+.sent-bear{background:rgba(255,51,102,.15);color:#ff3366}
+.sent-neut{background:rgba(255,255,255,.08);color:#aaa}
+/* Gold CME Live */
+.gold-live{background:rgba(255,215,0,.05);border:1px solid rgba(255,215,0,.2);border-radius:6px;padding:7px;margin-bottom:8px}
+.gold-live-title{font-family:'Orbitron',monospace;font-size:9px;color:var(--gold);letter-spacing:2px;margin-bottom:5px}
+.gold-live-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px}
+.gl-item{background:rgba(255,255,255,.04);border-radius:3px;padding:3px 5px;text-align:center}
+.gl-val{font-family:'Share Tech Mono',monospace;font-size:10px;font-weight:700;color:var(--fg)}
+.gl-lbl{font-size:7px;color:var(--muted2);margin-top:1px}
 </style>
 </head>
 <body>
@@ -566,6 +592,72 @@ body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:r
 
 
 <!-- ═══ CME GROUP FUTURES PANEL ═══ -->
+
+<!-- ═══ GOLD CME LIVE (COMEX) ═══ -->
+<div class="gold-live" id="gold-cme-panel">
+  <div class="gold-live-title">⚡ GOLD CME — COMEX LIVE</div>
+  <div class="gold-live-grid">
+    <div class="gl-item"><div class="gl-val" id="gl-oi">—</div><div class="gl-lbl">OPEN INTEREST</div></div>
+    <div class="gl-item"><div class="gl-val" id="gl-vol">—</div><div class="gl-lbl">VOLUME</div></div>
+    <div class="gl-item"><div class="gl-val" id="gl-bid">—</div><div class="gl-lbl">BID</div></div>
+    <div class="gl-item"><div class="gl-val" id="gl-ask">—</div><div class="gl-lbl">ASK</div></div>
+    <div class="gl-item"><div class="gl-val" id="gl-52h">—</div><div class="gl-lbl">52W HIGH</div></div>
+    <div class="gl-item"><div class="gl-val" id="gl-52l">—</div><div class="gl-lbl">52W LOW</div></div>
+  </div>
+</div>
+
+<!-- ═══ COT REPORT PANEL (CFTC) ═══ -->
+<div class="cot-panel" id="cot-panel">
+  <div class="cot-title">
+    📊 COT REPORT — GOLD COMEX
+    <span class="cot-date" id="cot-date">LOADING...</span>
+  </div>
+
+  <!-- Hedge Funds (NonCommercial) -->
+  <div class="cot-bar-row">
+    <div class="cot-bar-label">
+      <span>HEDGE FUNDS</span>
+      <span><span id="cot-nc-long" style="color:#00ff88">—L</span> / <span id="cot-nc-short" style="color:#ff3366">S—</span></span>
+    </div>
+    <div class="cot-bar-track">
+      <div class="cot-bar-long" id="cot-nc-bar-long" style="width:50%"></div>
+      <div class="cot-bar-short" id="cot-nc-bar-short" style="width:50%"></div>
+    </div>
+  </div>
+
+  <!-- Commercial (Banks/Producers) -->
+  <div class="cot-bar-row">
+    <div class="cot-bar-label">
+      <span>COMMERCIAL</span>
+      <span><span id="cot-com-long" style="color:#00ff88">—L</span> / <span id="cot-com-short" style="color:#ff3366">S—</span></span>
+    </div>
+    <div class="cot-bar-track">
+      <div class="cot-bar-long" id="cot-com-bar-long" style="width:50%"></div>
+      <div class="cot-bar-short" id="cot-com-bar-short" style="width:50%"></div>
+    </div>
+  </div>
+
+  <!-- Retail -->
+  <div class="cot-bar-row">
+    <div class="cot-bar-label">
+      <span>RETAIL</span>
+      <span><span id="cot-ret-long" style="color:#00ff88">—L</span> / <span id="cot-ret-short" style="color:#ff3366">S—</span></span>
+    </div>
+    <div class="cot-bar-track">
+      <div class="cot-bar-long" id="cot-ret-bar-long" style="width:50%"></div>
+      <div class="cot-bar-short" id="cot-ret-bar-short" style="width:50%"></div>
+    </div>
+  </div>
+
+  <div class="cot-grid">
+    <div class="cot-stat"><div class="cot-stat-val" id="cot-oi">—</div><div class="cot-stat-lbl">OPEN INTEREST</div></div>
+    <div class="cot-stat"><div class="cot-stat-val" id="cot-chg-oi">—</div><div class="cot-stat-lbl">CHANGE OI</div></div>
+    <div class="cot-stat"><div class="cot-stat-val" id="cot-traders">—</div><div class="cot-stat-lbl">TOTAL TRADERS</div></div>
+    <div class="cot-stat"><div class="cot-stat-val" id="cot-net">—</div><div class="cot-stat-lbl">HF NET POS</div></div>
+  </div>
+
+  <div class="cot-sentiment" id="cot-sentiment">—</div>
+</div>
 <div class="panel" id="cme-panel">
   <div class="panel-title">
     <span style="color:var(--gold)">⚡</span> CME GROUP FUTURES
@@ -736,6 +828,76 @@ function fetchCME(){
 }
 fetchCME();
 setInterval(fetchCME, 120000);
+
+
+// ── COT Report + Gold CME Live ────────────────────────────────
+function fmt(n){ 
+  if(n===undefined||n===null||n==='N/A') return '—';
+  if(typeof n==='number'){
+    if(n>=1000000) return (n/1000000).toFixed(1)+'M';
+    if(n>=1000)    return (n/1000).toFixed(1)+'K';
+    return n.toLocaleString();
+  }
+  return n;
+}
+
+function fetchCOT(){
+  fetch('/api/cot').then(r=>r.json()).then(d=>{
+    if(d.error) return;
+    document.getElementById('cot-date').textContent = 'as of '+d.report_date;
+    document.getElementById('cot-nc-long').textContent  = fmt(d.nc_long)+'L';
+    document.getElementById('cot-nc-short').textContent = 'S'+fmt(d.nc_short);
+    document.getElementById('cot-com-long').textContent  = fmt(d.com_long)+'L';
+    document.getElementById('cot-com-short').textContent = 'S'+fmt(d.com_short);
+    document.getElementById('cot-ret-long').textContent  = fmt(d.ret_long)+'L';
+    document.getElementById('cot-ret-short').textContent = 'S'+fmt(d.ret_short);
+    document.getElementById('cot-oi').textContent      = fmt(d.oi);
+    document.getElementById('cot-chg-oi').textContent  = (d.chg_oi>=0?'+':'')+fmt(d.chg_oi);
+    document.getElementById('cot-traders').textContent = fmt(d.traders_total);
+    document.getElementById('cot-net').textContent     = (d.nc_net>=0?'+':'')+fmt(d.nc_net);
+
+    // Bars
+    const ncTot = d.nc_long + d.nc_short;
+    const comTot= d.com_long + d.com_short;
+    const retTot= d.ret_long + d.ret_short;
+    if(ncTot>0){
+      document.getElementById('cot-nc-bar-long').style.width  = (d.nc_long/ncTot*100).toFixed(1)+'%';
+      document.getElementById('cot-nc-bar-short').style.width = (d.nc_short/ncTot*100).toFixed(1)+'%';
+    }
+    if(comTot>0){
+      document.getElementById('cot-com-bar-long').style.width  = (d.com_long/comTot*100).toFixed(1)+'%';
+      document.getElementById('cot-com-bar-short').style.width = (d.com_short/comTot*100).toFixed(1)+'%';
+    }
+    if(retTot>0){
+      document.getElementById('cot-ret-bar-long').style.width  = (d.ret_long/retTot*100).toFixed(1)+'%';
+      document.getElementById('cot-ret-bar-short').style.width = (d.ret_short/retTot*100).toFixed(1)+'%';
+    }
+
+    // Sentiment badge
+    const el = document.getElementById('cot-sentiment');
+    el.textContent = d.sentiment;
+    el.className = 'cot-sentiment ' + 
+      (d.sentiment.includes('BULL') ? 'sent-bull' : 
+       d.sentiment.includes('BEAR') ? 'sent-bear' : 'sent-neut');
+  }).catch(()=>{});
+}
+
+function fetchGoldCME(){
+  fetch('/api/gold').then(r=>r.json()).then(d=>{
+    if(d.error) return;
+    document.getElementById('gl-oi').textContent  = fmt(d.open_interest);
+    document.getElementById('gl-vol').textContent = fmt(d.volume);
+    document.getElementById('gl-bid').textContent = d.bid!=='N/A' ? d.bid.toLocaleString() : '—';
+    document.getElementById('gl-ask').textContent = d.ask!=='N/A' ? d.ask.toLocaleString() : '—';
+    document.getElementById('gl-52h').textContent = d.week52_high!=='N/A' ? d.week52_high.toLocaleString() : '—';
+    document.getElementById('gl-52l').textContent = d.week52_low!=='N/A'  ? d.week52_low.toLocaleString()  : '—';
+  }).catch(()=>{});
+}
+
+fetchCOT();
+fetchGoldCME();
+setInterval(fetchCOT, 21600000);   // refresh every 6h (COT weekly)
+setInterval(fetchGoldCME, 120000); // refresh every 2min
 
 </script>
 </body>
