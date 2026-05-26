@@ -255,12 +255,12 @@ body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:r
   <div class="sec">
     <div class="ah-sym">XAUUSD</div>
     <div class="ah-sub">Gold Spot / U.S. Dollar</div>
-    <div class="ah-price">{{g.price}}<span class="ah-usd">USD</span></div>
+    <div class="ah-price"><span id="cur-price">{{g.price}}</span><span class="ah-usd">USD</span></div>
     <div class="{{'pos' if g.change_pct>0 else 'neg'}}">{{'+' if g.change_pct>0 else ''}}{{g.change_abs}} ({{'+' if g.change_pct>0 else ''}}{{g.change_pct}}%)</div>
     <div style="display:flex;gap:8px;margin-top:5px;flex-wrap:wrap;align-items:center">
       <div style="font-size:8px;color:var(--muted2)">SPREAD<br><span style="color:white;font-family:'Share Tech Mono',monospace">{{g.spread}}</span></div>
       <div style="font-size:8px;color:var(--muted2)">SESSION<br><span style="color:var(--cyan);font-family:'Share Tech Mono',monospace">NEW YORK</span></div>
-      <div style="margin-left:auto"><span class="sbadge {{g.signal_class}}">{{g.signal}}</span></div>
+      <div style="margin-left:auto"><span id="cur-sig" class="sbadge {{g.signal_class}}">{{g.signal}}</span></div>
     </div>
   </div>
 
@@ -351,22 +351,22 @@ body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:r
     <div style="display:flex;align-items:center;gap:8px">
       <span class="csym" id="cur-sym">XAUUSD</span>
       <div class="tf-grp">
-        <button class="tf-btn" onclick="setTF('1')">1m</button>
-        <button class="tf-btn" onclick="setTF('5')">5m</button>
-        <button class="tf-btn active" onclick="setTF('15')">15m</button>
-        <button class="tf-btn" onclick="setTF('60')">1h</button>
-        <button class="tf-btn" onclick="setTF('240')">4h</button>
-        <button class="tf-btn" onclick="setTF('D')">D</button>
-        <button class="tf-btn" onclick="setTF('W')">W</button>
+        <button class="tf-btn" onclick="setTF(this,'1')">1m</button>
+        <button class="tf-btn" onclick="setTF(this,'5')">5m</button>
+        <button class="tf-btn active" onclick="setTF(this,'15')">15m</button>
+        <button class="tf-btn" onclick="setTF(this,'60')">1h</button>
+        <button class="tf-btn" onclick="setTF(this,'240')">4h</button>
+        <button class="tf-btn" onclick="setTF(this,'D')">D</button>
+        <button class="tf-btn" onclick="setTF(this,'W')">W</button>
       </div>
     </div>
     <div style="display:flex;gap:4px;flex-wrap:wrap">
-      <button class="tool-btn active" onclick="sw('XAUUSD','🥇 GOLD')">🥇 GOLD</button>
-      <button class="tool-btn" onclick="sw('BTCUSD','₿ BTC')">₿ BTC</button>
-      <button class="tool-btn" onclick="sw('ETHUSD','⟠ ETH')">⟠ ETH</button>
-      <button class="tool-btn" onclick="sw('EURUSD','€ EUR')">€ EUR</button>
-      <button class="tool-btn" onclick="sw('TVC:DXY','💵 DXY')">💵 DXY</button>
-      <button class="tool-btn" onclick="sw('USOIL','🛢 OIL')">🛢 OIL</button>
+      <button class="tool-btn active" data-sym="XAUUSD"  data-key="XAU/USD"  onclick="sw(this,'XAUUSD','🥇 GOLD')">🥇 GOLD</button>
+      <button class="tool-btn"        data-sym="BTCUSD"  data-key="BTC/USD"  onclick="sw(this,'BTCUSD','₿ BTC')">₿ BTC</button>
+      <button class="tool-btn"        data-sym="ETHUSD"  data-key="ETH/USD"  onclick="sw(this,'ETHUSD','⟠ ETH')">⟠ ETH</button>
+      <button class="tool-btn"        data-sym="EURUSD"  data-key="EUR/USD"  onclick="sw(this,'EURUSD','€ EUR')">€ EUR</button>
+      <button class="tool-btn"        data-sym="TVC:DXY" data-key="DXY"      onclick="sw(this,'TVC:DXY','💵 DXY')">💵 DXY</button>
+      <button class="tool-btn"        data-sym="USOIL"   data-key="OIL"      onclick="sw(this,'USOIL','🛢 OIL')">🛢 OIL</button>
     </div>
   </div>
 
@@ -376,7 +376,7 @@ body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:r
   ></iframe>
 
   <!-- Indicator Bar -->
-  <div class="ind-bar">
+  <div class="ind-bar" id="ind-bar">
     <div class="ind-cell"><div class="ind-name">RSI 14</div><div class="ind-val" style="color:{{'var(--red)' if g.rsi>70 else ('var(--green)' if g.rsi<30 else 'var(--cyan)')}}">{{g.rsi}}</div></div>
     <div class="ind-cell"><div class="ind-name">EMA 20</div><div class="ind-val" style="color:var(--cyan)">{{g.ema20}}</div></div>
     <div class="ind-cell"><div class="ind-name">EMA 50</div><div class="ind-val" style="color:var(--purple)">{{g.ema50}}</div></div>
@@ -455,7 +455,7 @@ body::after{content:'';position:fixed;top:0;left:0;right:0;bottom:0;background:r
             stroke-dasharray="{{(g.confidence/100*125.6)|round(1)}} 125.6"
             transform="rotate(-90 26 26)"/>
         </svg>
-        <div class="conf-pct">{{g.confidence}}%</div>
+        <div class="conf-pct" id="cur-conf">{{g.confidence}}%</div>
       </div>
       <div><div class="conf-level">{{'HIGH' if g.confidence>70 else ('MEDIUM' if g.confidence>40 else 'LOW')}}</div><div class="conf-sub">PROBABILITY</div></div>
     </div>
@@ -593,24 +593,92 @@ fetch('https://api.alternative.me/fng/?limit=1').then(r=>r.json()).then(d=>{
   // Update needle angle in SVG if needed
 }).catch(()=>{});
 
-let curSym='XAUUSD',curTF='15';
-function buildSrc(s,t){return'https://s.tradingview.com/widgetembed/?frameElementId=tv&symbol='+s+'&interval='+t+'&hidesidetoolbar=0&hidetoptoolbar=0&theme=dark&style=1&locale=en&timezone=Asia%2FJakarta&withdateranges=1&hide_legend=0&studies=RSI%40tv-basicstudies,MAExp%4020,MAExp%4050';}
-function setTF(tf){
-  curTF=tf;
-  document.querySelectorAll('.tf-btn').forEach(b=>b.classList.remove('active'));
-  event.target.classList.add('active');
-  document.getElementById('tv').src=buildSrc(curSym,curTF);
-}
-function sw(sym,label){
-  curSym=sym;
-  document.getElementById('cur-sym').textContent=label;
-  document.querySelectorAll('.tool-btn').forEach(b=>b.classList.remove('active'));
-  event.target.classList.add('active');
-  document.getElementById('tv').src=buildSrc(curSym,curTF);
+// ── Pair & TF Switch ──────────────────────────────────────────
+let curSym='XAUUSD', curTF='15', curKey='XAU/USD';
+let allData = {};
+
+function buildSrc(s,t){
+  return 'https://s.tradingview.com/widgetembed/?frameElementId=tv&symbol='+encodeURIComponent(s)
+    +'&interval='+t
+    +'&hidesidetoolbar=0&hidetoptoolbar=0&theme=dark&style=1&locale=en'
+    +'&timezone=Asia%2FJakarta&withdateranges=1&hide_legend=0'
+    +'&studies=RSI%40tv-basicstudies,MAExp%4020,MAExp%4050';
 }
 
+function setTF(el, tf){
+  curTF = tf;
+  document.querySelectorAll('.tf-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('tv').src = buildSrc(curSym, curTF);
+}
+
+function sw(el, sym, label){
+  curSym = sym;
+  curKey = el.dataset.key || curKey;
+  document.getElementById('cur-sym').textContent = label;
+  document.querySelectorAll('.tool-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  // Update chart
+  document.getElementById('tv').src = buildSrc(curSym, curTF);
+  // Update indicator bar & panels dari cache
+  if(allData[curKey]) updatePanels(allData[curKey]);
+}
+
+// ── Live Panel Update ─────────────────────────────────────────
+function clr(v){ return v>0 ? 'var(--green)' : 'var(--red)'; }
+function rsiClr(v){ return v>70 ? 'var(--red)' : (v<30 ? 'var(--green)' : 'var(--cyan)'); }
+
+function updatePanels(d){
+  const ib = document.getElementById('ind-bar');
+  if(ib){
+    ib.innerHTML =
+      '<div class="ind-cell"><div class="ind-name">RSI 14</div><div class="ind-val" style="color:'+rsiClr(d.rsi)+'">'+d.rsi+'</div></div>'+
+      '<div class="ind-cell"><div class="ind-name">EMA 20</div><div class="ind-val" style="color:var(--cyan)">'+d.ema20+'</div></div>'+
+      '<div class="ind-cell"><div class="ind-name">EMA 50</div><div class="ind-val" style="color:var(--purple)">'+d.ema50+'</div></div>'+
+      '<div class="ind-cell"><div class="ind-name">MACD</div><div class="ind-val" style="color:'+clr(d.macd)+'">'+d.macd+'</div></div>'+
+      '<div class="ind-cell"><div class="ind-name">ATR</div><div class="ind-val" style="color:var(--yellow)">'+d.atr+'</div></div>'+
+      '<div class="ind-cell"><div class="ind-name">STOCH K/D</div><div class="ind-val" style="color:'+(d.stoch_k>d.stoch_d?'var(--green)':'var(--red)')+'">'+d.stoch_k+'</div></div>';
+  }
+  // Indicator badge bawah layar kiri-kanan
+  const els = {
+    'cur-sig':    [d.signal,      d.signal_class],
+    'cur-rsi':    [d.rsi,         rsiClr(d.rsi)],
+    'cur-conf':   [d.confidence+'%', 'var(--yellow)'],
+    'cur-bias':   [d.bias,        d.bias==='LONG'?'var(--green)':'var(--red)'],
+    'cur-hf':     [d.hf_signal,   'var(--gold)'],
+    'cur-whale':  [d.whale,       ''],
+    'cur-macro':  [d.macro,       ''],
+    'cur-narrative': [d.narrative, 'var(--cyan)'],
+    'cur-price':  [d.price,       'white'],
+    'cur-change': [(d.change_pct>0?'+':'')+d.change_pct+'%', clr(d.change_pct)],
+  };
+  Object.entries(els).forEach(([id,[val,color]])=>{
+    const el=document.getElementById(id);
+    if(el){el.textContent=val; if(color)el.style.color=color;}
+  });
+}
+
+// ── Fetch live data semua pair ────────────────────────────────
+function fetchData(){
+  fetch('/api/data')
+    .then(r=>r.json())
+    .then(data=>{
+      allData = data;
+      if(data[curKey]) updatePanels(data[curKey]);
+    })
+    .catch(e=>console.warn('API err:',e));
+}
+fetchData();
+setInterval(fetchData, 90000);
+
+// ── Countdown & Auto-refresh ──────────────────────────────────
 let secs=90;
-setInterval(()=>{secs--;const el=document.getElementById('cd');if(el)el.textContent=secs;if(secs<=0)location.reload();},1000);
+setInterval(()=>{
+  secs--;
+  const el=document.getElementById('cd');
+  if(el) el.textContent=secs;
+  if(secs<=0){ secs=90; fetchData(); }
+},1000);
 </script>
 </body>
 </html>
