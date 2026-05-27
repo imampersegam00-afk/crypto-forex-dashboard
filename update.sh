@@ -7,20 +7,29 @@ BASE="https://raw.githubusercontent.com/imampersegam00-afk/crypto-forex-dashboar
 
 mkdir -p "$DIR/templates"
 
-echo "⬇ Downloading..."
-curl -sL "$BASE/app.py"               -o "$DIR/app.py"                      && echo "  ✅ app.py"
-curl -sL "$BASE/templates/index.html" -o "$DIR/templates/index.html"        && echo "  ✅ index.html"
-curl -sL "$BASE/requirements.txt"     -o "$DIR/requirements.txt"            && echo "  ✅ requirements.txt"
+echo "⬇ Downloading latest files..."
+curl -sL "$BASE/app.py"               -o "$DIR/app.py"               && echo "  ✅ app.py"
+curl -sL "$BASE/templates/index.html" -o "$DIR/templates/index.html" && echo "  ✅ index.html"
+curl -sL "$BASE/requirements.txt"     -o "$DIR/requirements.txt"     && echo "  ✅ requirements.txt"
 
-[ ! -d "$DIR/venv" ] && echo "📦 Creating venv..." && python3 -m venv "$DIR/venv"
+# Setup venv jika belum ada
+if [ ! -d "$DIR/venv" ]; then
+    echo "📦 Creating venv..."
+    python3 -m venv "$DIR/venv"
+fi
 
 echo "📦 Installing deps..."
+"$DIR/venv/bin/pip" install -q --upgrade pip
 "$DIR/venv/bin/pip" install -q flask yfinance ta pandas numpy requests feedparser scikit-learn
 
-pkill -f "python3 app.py" 2>/dev/null; sleep 1
+# Kill proses lama
+pkill -f "python3 app.py" 2>/dev/null
+pkill -f "python.*app.py" 2>/dev/null
+sleep 1
 
 echo ""
-echo "🚀 Dashboard running → http://localhost:8080"
+echo "🚀 Dashboard → http://localhost:8080"
 echo "   Ctrl+C to stop"
 echo ""
-cd "$DIR" && "$DIR/venv/bin/python3" app.py
+cd "$DIR"
+"$DIR/venv/bin/python3" app.py
