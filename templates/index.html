@@ -11,7 +11,6 @@
   --border:rgba(0,200,255,.12);--border2:rgba(0,255,136,.1);
   --fg:#e0f0ff;--muted:#5a7a8a;--muted2:#3a5060;
   --cyan:#00c8ff;--green:#00ff88;--red:#ff3366;--gold:#ffd700;
-  --orange:#ff8c00;--purple:#a855f7;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--bg);color:var(--fg);font-family:'Share Tech Mono',monospace;font-size:11px;height:100vh;overflow:hidden;display:flex;flex-direction:column}
@@ -19,136 +18,124 @@ body{background:var(--bg);color:var(--fg);font-family:'Share Tech Mono',monospac
 /* HEADER */
 .header{background:linear-gradient(90deg,#000d14,#001828,#000d14);border-bottom:1px solid var(--border);padding:4px 12px;display:flex;align-items:center;gap:12px;flex-shrink:0}
 .logo{font-family:'Orbitron',monospace;font-size:13px;font-weight:900;color:var(--cyan);letter-spacing:3px;white-space:nowrap}
-.ticker-wrap{flex:1;overflow:hidden;position:relative}
-.ticker-inner{display:flex;gap:20px;animation:tick 40s linear infinite;white-space:nowrap}
+.ticker-wrap{flex:1;overflow:hidden}
+.ticker-inner{display:flex;gap:20px;animation:tick 45s linear infinite;white-space:nowrap}
 .ticker-item{display:flex;gap:5px;align-items:center;font-size:10px}
 .ti-name{color:var(--muted);font-size:9px}
-.ti-price{color:var(--fg);font-weight:700}
-.ti-chg{font-size:9px}
 .clock{font-family:'Orbitron',monospace;font-size:14px;color:var(--cyan);font-weight:700;white-space:nowrap;letter-spacing:2px}
 @keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 
-/* SESSION BAR */
-.sessions{background:#050f18;border-bottom:1px solid var(--border);padding:2px 12px;display:flex;gap:16px;flex-shrink:0}
+/* SESSIONS */
+.sessions{background:#050f18;border-bottom:1px solid var(--border);padding:2px 12px;display:flex;gap:16px;flex-shrink:0;align-items:center}
 .sess{display:flex;align-items:center;gap:5px;font-size:9px}
-.sess-dot{width:6px;height:6px;border-radius:50%;animation:blink 2s infinite}
-.sess-dot.active{background:var(--green)}
-.sess-dot.inactive{background:var(--muted2)}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.sess-dot{width:6px;height:6px;border-radius:50%}
+.sess-dot.on{background:var(--green);box-shadow:0 0 5px var(--green)}
+.sess-dot.off{background:var(--muted2)}
+.active-pair{margin-left:auto;font-family:'Orbitron',monospace;font-size:10px;color:var(--gold);letter-spacing:2px}
 
 /* LAYOUT */
 .body{display:flex;flex:1;overflow:hidden}
-.sidebar{width:220px;background:var(--bg2);border-right:1px solid var(--border);overflow-y:auto;flex-shrink:0;padding:6px}
+.sidebar{width:210px;background:var(--bg2);border-right:1px solid var(--border);overflow-y:auto;flex-shrink:0;padding:5px}
 .main{flex:1;display:flex;flex-direction:column;overflow:hidden}
-.chart-area{flex:1;overflow:hidden;position:relative}
+.chart-area{flex:1;overflow:hidden}
 .chart-area iframe{width:100%;height:100%;border:none}
-.bottom{height:140px;background:var(--bg2);border-top:1px solid var(--border);display:flex;flex-shrink:0;overflow:hidden}
-.rightsidebar{width:200px;background:var(--bg2);border-left:1px solid var(--border);overflow-y:auto;flex-shrink:0;padding:6px}
+.bottom{height:135px;background:var(--bg2);border-top:1px solid var(--border);display:flex;flex-shrink:0;overflow:hidden}
+.rsidebar{width:198px;background:var(--bg2);border-left:1px solid var(--border);overflow-y:auto;flex-shrink:0;padding:5px}
 
 /* PANEL */
-.panel{background:rgba(0,20,35,.6);border:1px solid var(--border);border-radius:5px;padding:6px;margin-bottom:6px}
-.panel-title{font-family:'Orbitron',monospace;font-size:8px;color:var(--gold);letter-spacing:2px;margin-bottom:5px;display:flex;justify-content:space-between;align-items:center}
-.panel-title span{color:var(--muted);font-size:7px;font-family:'Share Tech Mono',monospace;letter-spacing:0}
+.panel{background:rgba(0,20,35,.6);border:1px solid var(--border);border-radius:4px;padding:5px;margin-bottom:5px}
+.ptitle{font-family:'Orbitron',monospace;font-size:8px;color:var(--gold);letter-spacing:2px;margin-bottom:4px;display:flex;justify-content:space-between;align-items:center}
+.ptitle small{color:var(--muted);font-size:7px;font-family:'Share Tech Mono',monospace;letter-spacing:0}
 
 /* PAIR BUTTONS */
-.pair-btn{display:block;width:100%;padding:4px 6px;margin-bottom:3px;background:rgba(0,200,255,.06);border:1px solid var(--border);border-radius:3px;color:var(--fg);cursor:pointer;font-family:'Share Tech Mono',monospace;font-size:10px;text-align:left;transition:.2s}
-.pair-btn:hover{background:rgba(0,200,255,.15);border-color:var(--cyan)}
-.pair-btn.active{background:rgba(0,255,136,.12);border-color:var(--green);color:var(--green)}
+.pair-btn{display:block;width:100%;padding:4px 7px;margin-bottom:3px;background:rgba(0,200,255,.05);border:1px solid var(--border);border-radius:3px;color:var(--muted);cursor:pointer;font-family:'Share Tech Mono',monospace;font-size:10px;text-align:left;transition:.2s}
+.pair-btn:hover{background:rgba(0,200,255,.12);color:var(--fg)}
+.pair-btn.active{background:rgba(0,255,136,.12);border-color:var(--green);color:var(--green);font-weight:700}
 
-/* SIGNAL BADGE */
-.signal-badge{text-align:center;padding:6px;border-radius:4px;font-family:'Orbitron',monospace;font-size:11px;font-weight:700;letter-spacing:1px;margin-bottom:5px}
-.sig-strong-buy{background:rgba(0,255,136,.2);color:#00ff88;border:1px solid #00ff88}
-.sig-buy{background:rgba(0,200,255,.15);color:#00c8ff;border:1px solid #00c8ff}
-.sig-sell{background:rgba(255,51,102,.15);color:#ff3366;border:1px solid #ff3366}
-.sig-strong-sell{background:rgba(255,51,102,.25);color:#ff3366;border:1px solid #ff3366}
-.sig-neutral{background:rgba(255,255,255,.06);color:#aaa;border:1px solid #444}
+/* SIGNAL */
+.sig-badge{text-align:center;padding:5px;border-radius:4px;font-family:'Orbitron',monospace;font-size:10px;font-weight:700;letter-spacing:1px;margin-bottom:4px}
+.s-sbuy{background:rgba(0,255,136,.2);color:#00ff88;border:1px solid #00ff88}
+.s-buy{background:rgba(0,200,255,.15);color:#00c8ff;border:1px solid #00c8ff}
+.s-ssell{background:rgba(255,51,102,.25);color:#ff3366;border:1px solid #ff3366}
+.s-sell{background:rgba(255,51,102,.15);color:#ff3366;border:1px solid #ff3366}
+.s-neut{background:rgba(255,255,255,.06);color:#888;border:1px solid #444}
 
-/* STAT ROW */
-.stat-row{display:flex;justify-content:space-between;align-items:center;padding:2px 0;border-bottom:1px solid rgba(255,255,255,.04)}
-.stat-lbl{color:var(--muted);font-size:9px}
-.stat-val{font-size:10px;font-weight:700;color:var(--fg)}
+/* STATS */
+.sr{display:flex;justify-content:space-between;align-items:center;padding:2px 0;border-bottom:1px solid rgba(255,255,255,.03)}
+.sl{color:var(--muted);font-size:9px}
+.sv{font-size:10px;font-weight:700;color:var(--fg)}
 
-/* PRICE BIG */
-.price-big{font-family:'Orbitron',monospace;font-size:22px;font-weight:900;color:var(--fg);text-align:center;letter-spacing:1px}
-.price-chg{text-align:center;font-size:10px;margin-bottom:5px}
+/* PRICE */
+.price-big{font-family:'Orbitron',monospace;font-size:20px;font-weight:900;color:var(--fg);text-align:center}
+.price-chg{text-align:center;font-size:10px;margin-bottom:4px}
 
-/* INDICATOR GRID */
-.ind-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-bottom:5px}
-.ind-item{background:rgba(255,255,255,.04);border-radius:3px;padding:3px 5px}
-.ind-lbl{font-size:7px;color:var(--muted2)}
-.ind-val{font-size:10px;font-weight:700;color:var(--cyan)}
+/* INDICATORS */
+.ig{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-bottom:4px}
+.ii{background:rgba(255,255,255,.04);border-radius:3px;padding:3px 5px}
+.il{font-size:7px;color:var(--muted2)}
+.iv{font-size:10px;font-weight:700;color:var(--cyan)}
 
 /* TP/SL */
-.tpsl-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-bottom:5px}
-.tp-item{background:rgba(0,255,136,.06);border:1px solid rgba(0,255,136,.15);border-radius:3px;padding:3px 5px;text-align:center}
-.sl-item{background:rgba(255,51,102,.06);border:1px solid rgba(255,51,102,.15);border-radius:3px;padding:3px 5px;text-align:center;grid-column:1/-1}
-.tp-lbl{font-size:7px;color:var(--muted2)}
-.tp-val{font-size:10px;font-weight:700;color:var(--green)}
-.sl-val{font-size:10px;font-weight:700;color:var(--red)}
+.tg{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-bottom:4px}
+.tp{background:rgba(0,255,136,.06);border:1px solid rgba(0,255,136,.15);border-radius:3px;padding:3px 5px;text-align:center}
+.ts{background:rgba(255,51,102,.06);border:1px solid rgba(255,51,102,.15);border-radius:3px;padding:3px 5px;text-align:center;grid-column:1/-1}
+.tpl{font-size:7px;color:var(--muted2)}
+.tpv{font-size:10px;font-weight:700;color:var(--green)}
+.tsv{font-size:10px;font-weight:700;color:var(--red)}
 
-/* MULTI TF */
-.mtf-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-bottom:5px}
-.mtf-item{background:rgba(255,255,255,.04);border-radius:3px;padding:3px 5px;text-align:center}
-.mtf-lbl{font-size:7px;color:var(--muted2)}
-.mtf-val{font-size:9px;font-weight:700}
-.mtf-buy{color:var(--green)}
-.mtf-sell{color:var(--red)}
-.mtf-neutral{color:var(--muted)}
+/* MTF */
+.mg{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-bottom:4px}
+.mi{background:rgba(255,255,255,.04);border-radius:3px;padding:3px 5px;text-align:center}
+.ml_{font-size:7px;color:var(--muted2)}
+.mv{font-size:9px;font-weight:700}
+.mv.buy{color:var(--green)}.mv.sell{color:var(--red)}.mv.neut{color:var(--muted)}
 
-/* COT BARS */
-.cot-bar-row{margin-bottom:4px}
-.cot-bar-lbl{display:flex;justify-content:space-between;font-size:8px;margin-bottom:2px}
-.cot-bar-lbl .long{color:var(--green)}
-.cot-bar-lbl .short{color:var(--red)}
+/* COT */
+.cot-row{margin-bottom:4px}
+.cot-lbl{display:flex;justify-content:space-between;font-size:8px;margin-bottom:2px}
+.cot-lbl .lg{color:var(--green)}.cot-lbl .sh{color:var(--red)}
 .cot-track{height:7px;background:rgba(255,255,255,.08);border-radius:4px;overflow:hidden;display:flex}
 .cot-long{background:linear-gradient(90deg,#00ff88,#00cc66);height:100%;transition:.5s}
 .cot-short{background:linear-gradient(90deg,#ff3366,#cc0033);height:100%}
-.cot-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-top:5px}
-.cot-stat{background:rgba(255,255,255,.04);border-radius:3px;padding:3px 5px;text-align:center}
-.cot-stat-val{font-size:10px;font-weight:700;color:var(--cyan)}
-.cot-stat-lbl{font-size:7px;color:var(--muted2)}
-.cot-sent{text-align:center;font-family:'Orbitron',monospace;font-size:9px;font-weight:700;padding:4px;border-radius:3px;margin-top:5px;letter-spacing:1px}
-.sent-bull{background:rgba(0,255,136,.15);color:var(--green)}
-.sent-bear{background:rgba(255,51,102,.15);color:var(--red)}
-.sent-neut{background:rgba(255,255,255,.06);color:#aaa}
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:3px;margin-top:4px}
+.ci{background:rgba(255,255,255,.04);border-radius:3px;padding:3px 5px;text-align:center}
+.cv{font-size:10px;font-weight:700;color:var(--cyan)}
+.ck{font-size:7px;color:var(--muted2)}
+.cot-sent{text-align:center;font-family:'Orbitron',monospace;font-size:9px;font-weight:700;padding:4px;border-radius:3px;margin-top:4px}
+.bull{background:rgba(0,255,136,.15);color:var(--green)}
+.bear{background:rgba(255,51,102,.15);color:var(--red)}
+.neut-s{background:rgba(255,255,255,.06);color:#888}
 
 /* GOLD LIVE */
-.gold-live-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px}
-.gl-item{background:rgba(255,215,0,.05);border-radius:3px;padding:3px 5px;text-align:center}
-.gl-val{font-size:10px;font-weight:700;color:var(--gold)}
-.gl-lbl{font-size:7px;color:var(--muted2);margin-top:1px}
+.gg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:3px}
+.gi{background:rgba(255,215,0,.05);border-radius:3px;padding:3px 4px;text-align:center}
+.gv{font-size:10px;font-weight:700;color:var(--gold)}
+.gk{font-size:7px;color:var(--muted2);margin-top:1px}
 
-/* CME STRIP (bottom) */
-.cme-strip{display:flex;gap:6px;padding:6px;overflow-x:auto;align-items:center;flex:1}
-.cme-item{background:rgba(0,20,35,.8);border:1px solid var(--border);border-radius:4px;padding:4px 8px;white-space:nowrap;flex-shrink:0;min-width:100px}
-.cme-name{font-size:8px;color:var(--muted);margin-bottom:2px}
-.cme-price{font-family:'Orbitron',monospace;font-size:11px;font-weight:700;color:var(--fg)}
-.cme-chg{font-size:9px;margin-top:1px}
+/* CME STRIP */
+.cme-strip{display:flex;gap:5px;padding:5px;overflow-x:auto;align-items:center;flex:1}
+.cme-item{background:rgba(0,20,35,.9);border:1px solid var(--border);border-radius:4px;padding:4px 8px;white-space:nowrap;flex-shrink:0;min-width:95px}
+.cn{font-size:8px;color:var(--muted);margin-bottom:2px}
+.cp{font-family:'Orbitron',monospace;font-size:11px;font-weight:700;color:var(--fg)}
+.cc{font-size:9px;margin-top:1px}
 
-/* NEWS (bottom) */
-.news-strip{width:260px;border-left:1px solid var(--border);padding:5px;overflow-y:auto;flex-shrink:0}
-.news-item{padding:3px 0;border-bottom:1px solid rgba(255,255,255,.04)}
-.news-title{font-size:9px;color:var(--fg);line-height:1.3}
-.news-src{font-size:7px;color:var(--gold);margin-top:1px}
+/* NEWS */
+.news-strip{width:250px;border-left:1px solid var(--border);padding:5px;overflow-y:auto;flex-shrink:0}
+.ni{padding:3px 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.nt{font-size:9px;color:var(--fg);line-height:1.3}
+.ns{font-size:7px;color:var(--gold);margin-top:1px}
 
-/* WARROOM (bottom) */
-.warroom{width:130px;border-left:1px solid var(--border);padding:5px;flex-shrink:0}
-.wr-title{font-family:'Orbitron',monospace;font-size:7px;color:var(--gold);letter-spacing:2px;margin-bottom:5px}
-.wr-bias{font-family:'Orbitron',monospace;font-size:10px;font-weight:700;text-align:center;padding:4px;border-radius:3px;margin-bottom:5px}
-.wr-bull{background:rgba(0,255,136,.15);color:var(--green)}
-.wr-bear{background:rgba(255,51,102,.15);color:var(--red)}
-.wr-neut{background:rgba(255,255,255,.06);color:#aaa}
-.wr-row{display:flex;justify-content:space-between;font-size:8px;padding:1px 0}
+/* WARROOM */
+.warroom{width:120px;border-left:1px solid var(--border);padding:5px;flex-shrink:0}
+.wt{font-family:'Orbitron',monospace;font-size:7px;color:var(--gold);letter-spacing:2px;margin-bottom:4px}
+.wb{font-family:'Orbitron',monospace;font-size:9px;font-weight:700;text-align:center;padding:3px;border-radius:3px;margin-bottom:4px}
+.wr{display:flex;justify-content:space-between;font-size:8px;padding:1px 0}
 
-/* CORR (right sidebar) */
+/* CORR */
 .corr-item{display:flex;justify-content:space-between;align-items:center;padding:2px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:9px}
-.corr-val{font-weight:700}
-.corr-pos{color:var(--green)}
-.corr-neg{color:var(--red)}
 
 /* SCROLLBAR */
 ::-webkit-scrollbar{width:3px;height:3px}
-::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 </style>
 </head>
@@ -162,15 +149,14 @@ body{background:var(--bg);color:var(--fg);font-family:'Share Tech Mono',monospac
       {% for a in assets %}
       <div class="ticker-item">
         <span class="ti-name">{{ a }}</span>
-        <span class="ti-price" id="tk-price-{{ loop.index }}">—</span>
-        <span class="ti-chg" id="tk-chg-{{ loop.index }}">—</span>
+        <span id="tk-p-{{ loop.index }}" style="font-weight:700">—</span>
+        <span id="tk-c-{{ loop.index }}" style="font-size:9px">—</span>
       </div>
       {% endfor %}
       {% for a in assets %}
       <div class="ticker-item">
         <span class="ti-name">{{ a }}</span>
-        <span class="ti-price">—</span>
-        <span class="ti-chg">—</span>
+        <span style="font-weight:700">—</span><span style="font-size:9px">—</span>
       </div>
       {% endfor %}
     </div>
@@ -178,317 +164,351 @@ body{background:var(--bg);color:var(--fg);font-family:'Share Tech Mono',monospac
   <div class="clock" id="clock">00:00:00</div>
 </div>
 
-<!-- SESSION BAR -->
+<!-- SESSIONS -->
 <div class="sessions">
-  <div class="sess"><div class="sess-dot" id="dot-tokyo"></div><span>TOKYO</span></div>
-  <div class="sess"><div class="sess-dot" id="dot-london"></div><span>LONDON</span></div>
-  <div class="sess"><div class="sess-dot" id="dot-ny"></div><span>NEW YORK</span></div>
-  <div class="sess" style="margin-left:auto;font-size:9px;color:var(--gold)">
-    CRYPTOFOREXNEWSHUB &nbsp;|&nbsp; <span id="fear-greed">FEAR/GREED —</span>
-  </div>
+  <div class="sess"><div class="sess-dot" id="d-tok"></div><span>TOKYO</span></div>
+  <div class="sess"><div class="sess-dot" id="d-lon"></div><span>LONDON</span></div>
+  <div class="sess"><div class="sess-dot" id="d-ny"></div><span>NEW YORK</span></div>
+  <div class="sess" style="margin-left:8px;color:var(--muted);font-size:9px" id="fg-label">F&G: —</div>
+  <div class="active-pair" id="active-pair-label">{{ default_pair }}</div>
 </div>
 
 <!-- BODY -->
 <div class="body">
 
-  <!-- LEFT SIDEBAR -->
-  <div class="sidebar">
+<!-- LEFT SIDEBAR -->
+<div class="sidebar">
 
-    <!-- PAIR SELECTOR -->
-    <div class="panel">
-      <div class="panel-title">MARKETS</div>
-      {% for a in assets %}
-      <button class="pair-btn{% if a == default_pair %} active{% endif %}"
-              onclick="sw(this,'{{ a }}','{{ a|replace('/','_') }}')"
-              data-tv="{{ a }}">
-        {{ a }}
-      </button>
+  <!-- PAIR LIST -->
+  <div class="panel">
+    <div class="ptitle">MARKETS</div>
+    {% for a in assets %}
+    <button class="pair-btn {% if a==default_pair %}active{% endif %}"
+            onclick="switchPair('{{ a }}')"
+            id="btn-{{ a|replace('/','_')|replace(':','_') }}">
+      {{ a }}
+    </button>
+    {% endfor %}
+  </div>
+
+  <!-- SIGNAL + PRICE -->
+  <div class="panel">
+    <div class="ptitle">SIGNAL <small id="sig-name">{{ default_pair }}</small></div>
+    <div class="price-big" id="sig-price">{{ d.price }}</div>
+    <div class="price-chg">
+      <span id="sig-chg" style="color:{% if d.chg_pct>=0 %}var(--green){% else %}var(--red){% endif %}">
+        {% if d.chg_pct>=0 %}+{% endif %}{{ d.chg_pct }}%
+      </span>
+    </div>
+    <div class="sig-badge {% if 'STRONG BUY' in d.signal %}s-sbuy{% elif 'BUY' in d.signal %}s-buy{% elif 'STRONG SELL' in d.signal %}s-ssell{% elif 'SELL' in d.signal %}s-sell{% else %}s-neut{% endif %}" id="sig-badge">
+      {{ d.signal }}
+    </div>
+    <div class="sr"><span class="sl">HF SIGNAL</span><span class="sv" id="sig-hf">{{ d.hf_signal }}</span></div>
+    <div class="sr"><span class="sl">HF CONF</span><span class="sv" id="sig-hfc">{{ d.hf_conf }}%</span></div>
+    <div class="sr"><span class="sl">ML SIGNAL</span><span class="sv" id="sig-ml">{{ d.ml_signal }}</span></div>
+    <div class="sr"><span class="sl">ML ACC</span><span class="sv" id="sig-mla">{{ d.ml_accuracy }}%</span></div>
+    <div class="sr"><span class="sl">WHALE</span><span class="sv" id="sig-whale">{{ d.whale }}</span></div>
+    <div class="sr"><span class="sl">SCALP</span><span class="sv" id="sig-scalp">{{ d.scalp }}</span></div>
+    <div class="sr"><span class="sl">MACRO</span><span class="sv" id="sig-macro">{{ d.macro }}</span></div>
+    <div class="sr"><span class="sl">LIQUIDITY</span><span class="sv" id="sig-liq">{{ d.liquidity }}</span></div>
+    <div class="sr"><span class="sl">VOL RATIO</span><span class="sv" id="sig-volr">{{ d.vol_ratio }}x</span></div>
+  </div>
+
+  <!-- INDICATORS -->
+  <div class="panel">
+    <div class="ptitle">INDICATORS</div>
+    <div class="ig">
+      <div class="ii"><div class="il">RSI</div><div class="iv" id="i-rsi">{{ d.rsi }}</div></div>
+      <div class="ii"><div class="il">STOCH K</div><div class="iv" id="i-stoch">{{ d.stoch_k }}</div></div>
+      <div class="ii"><div class="il">EMA 20</div><div class="iv" id="i-e20">{{ d.ema20 }}</div></div>
+      <div class="ii"><div class="il">EMA 50</div><div class="iv" id="i-e50">{{ d.ema50 }}</div></div>
+      <div class="ii"><div class="il">MACD</div><div class="iv" id="i-macd">{{ d.macd }}</div></div>
+      <div class="ii"><div class="il">ATR</div><div class="iv" id="i-atr">{{ d.atr }}</div></div>
+      <div class="ii"><div class="il">BB HI</div><div class="iv" id="i-bbh">{{ d.bb_h }}</div></div>
+      <div class="ii"><div class="il">BB LO</div><div class="iv" id="i-bbl">{{ d.bb_l }}</div></div>
+    </div>
+  </div>
+
+  <!-- MULTI TF -->
+  <div class="panel">
+    <div class="ptitle">MULTI TIMEFRAME</div>
+    <div class="mg">
+      {% for tf in ['15m','1h','4h','1d'] %}
+      <div class="mi">
+        <div class="ml_">{{ tf }}</div>
+        <div class="mv {% if d.multi_tf.get(tf)==' BUY' %}buy{% elif d.multi_tf.get(tf)=='SELL' %}sell{% else %}neut{% endif %}"
+             id="mtf-{{ tf }}">{{ d.multi_tf.get(tf,'N/A') }}</div>
+      </div>
       {% endfor %}
     </div>
+  </div>
 
-    <!-- SIGNAL + PRICE -->
-    <div class="panel">
-      <div class="panel-title">SIGNAL <span id="sig-name">{{ default_pair }}</span></div>
-      <div class="price-big" id="sig-price">{{ d.price }}</div>
-      <div class="price-chg">
-        <span id="sig-chg" style="color:{% if d.chg_pct >= 0 %}var(--green){% else %}var(--red){% endif %}">
-          {% if d.chg_pct >= 0 %}+{% endif %}{{ d.chg_pct }}%
+  <!-- TP/SL -->
+  <div class="panel">
+    <div class="ptitle">TARGET / STOP</div>
+    <div class="tg">
+      <div class="tp"><div class="tpl">TP1</div><div class="tpv" id="tp1">{{ d.tp1 }}</div></div>
+      <div class="tp"><div class="tpl">TP2</div><div class="tpv" id="tp2">{{ d.tp2 }}</div></div>
+      <div class="tp"><div class="tpl">TP3</div><div class="tpv" id="tp3">{{ d.tp3 }}</div></div>
+      <div class="ts"><div class="tpl">STOP LOSS</div><div class="tsv" id="sl0">{{ d.sl }}</div></div>
+    </div>
+  </div>
+
+</div><!-- /left sidebar -->
+
+<!-- MAIN -->
+<div class="main">
+  <div class="chart-area">
+    <iframe id="tv-chart"
+      src="https://s.tradingview.com/widgetembed/?symbol={{ default_tv }}&interval=15&theme=dark&style=1&timezone=Asia%2FJakarta&withdateranges=1&hideideas=1&studies=RSI%40tv-basicstudies%1FMACD%40tv-basicstudies%1FBB%40tv-basicstudies&backgroundColor=rgb(3,10,15)"
+      allowtransparency="true" scrolling="no" allowfullscreen>
+    </iframe>
+  </div>
+  <div class="bottom">
+    <!-- CME STRIP -->
+    <div class="cme-strip" id="cme-strip">
+      <span style="font-family:'Orbitron',monospace;font-size:7px;color:var(--gold);writing-mode:vertical-rl;flex-shrink:0;letter-spacing:2px">CME</span>
+    </div>
+    <!-- NEWS -->
+    <div class="news-strip" id="news-strip">
+      <div style="font-family:'Orbitron',monospace;font-size:7px;color:var(--gold);letter-spacing:2px;margin-bottom:4px">⚡ NEWS</div>
+    </div>
+    <!-- WAR ROOM -->
+    <div class="warroom">
+      <div class="wt">WAR ROOM</div>
+      <div class="wb neut-s" id="wr-bias">—</div>
+      <div class="wr"><span style="color:var(--green)">BULL</span><span id="wr-bull">—</span></div>
+      <div class="wr"><span style="color:var(--red)">BEAR</span><span id="wr-bear">—</span></div>
+      <div style="margin-top:5px;font-size:7px;color:var(--muted)">ACTIVE PAIR</div>
+      <div style="font-family:'Orbitron',monospace;font-size:9px;color:var(--gold)" id="wr-pair">{{ default_pair }}</div>
+    </div>
+  </div>
+</div>
+
+<!-- RIGHT SIDEBAR -->
+<div class="rsidebar">
+
+  <!-- GOLD CME LIVE -->
+  <div class="panel">
+    <div class="ptitle">🥇 GOLD CME LIVE</div>
+    <div class="gg">
+      <div class="gi"><div class="gv" id="gl-oi">—</div><div class="gk">OPEN INT</div></div>
+      <div class="gi"><div class="gv" id="gl-vol">—</div><div class="gk">VOLUME</div></div>
+      <div class="gi"><div class="gv" id="gl-bid">—</div><div class="gk">BID</div></div>
+      <div class="gi"><div class="gv" id="gl-ask">—</div><div class="gk">ASK</div></div>
+      <div class="gi"><div class="gv" id="gl-52h">—</div><div class="gk">52W HI</div></div>
+      <div class="gi"><div class="gv" id="gl-52l">—</div><div class="gk">52W LO</div></div>
+    </div>
+    <div style="text-align:center;font-size:7px;color:var(--muted);margin-top:3px">COMEX · 100 troy oz · USD</div>
+  </div>
+
+  <!-- COT REPORT -->
+  <div class="panel">
+    <div class="ptitle">📊 COT REPORT <small id="cot-date">—</small></div>
+
+    <div class="cot-row">
+      <div class="cot-lbl">
+        <span>HEDGE FUNDS</span>
+        <span><span class="lg" id="cot-nc-l">—</span> / <span class="sh" id="cot-nc-s">—</span></span>
+      </div>
+      <div class="cot-track">
+        <div class="cot-long" id="cb-nc-l" style="width:80%"></div>
+        <div class="cot-short" id="cb-nc-s" style="width:20%"></div>
+      </div>
+    </div>
+
+    <div class="cot-row">
+      <div class="cot-lbl">
+        <span>COMMERCIAL</span>
+        <span><span class="lg" id="cot-com-l">—</span> / <span class="sh" id="cot-com-s">—</span></span>
+      </div>
+      <div class="cot-track">
+        <div class="cot-long" id="cb-com-l" style="width:21%"></div>
+        <div class="cot-short" id="cb-com-s" style="width:79%"></div>
+      </div>
+    </div>
+
+    <div class="cot-row">
+      <div class="cot-lbl">
+        <span>RETAIL</span>
+        <span><span class="lg" id="cot-ret-l">—</span> / <span class="sh" id="cot-ret-s">—</span></span>
+      </div>
+      <div class="cot-track">
+        <div class="cot-long" id="cb-ret-l" style="width:75%"></div>
+        <div class="cot-short" id="cb-ret-s" style="width:25%"></div>
+      </div>
+    </div>
+
+    <div class="cg">
+      <div class="ci"><div class="cv" id="cot-oi">—</div><div class="ck">OPEN INT</div></div>
+      <div class="ci"><div class="cv" id="cot-chg">—</div><div class="ck">CHG OI</div></div>
+      <div class="ci"><div class="cv" id="cot-net">—</div><div class="ck">HF NET</div></div>
+      <div class="ci"><div class="cv" id="cot-traders">—</div><div class="ck">TRADERS</div></div>
+    </div>
+    <div class="cot-sent neut-s" id="cot-sent">LOADING...</div>
+  </div>
+
+  <!-- CORRELATION -->
+  <div class="panel">
+    <div class="ptitle">CORRELATION</div>
+    <div id="corr-list">
+      {% for c in corr %}
+      <div class="corr-item">
+        <span style="font-size:8px;color:var(--muted)">{{ c.p1 }}/{{ c.p2 }}</span>
+        <span style="font-weight:700;{% if c.corr>0 %}color:var(--green){% else %}color:var(--red){% endif %}">
+          {{ c.corr }} <span style="font-size:7px;color:var(--muted)">{{ c.rel }}</span>
         </span>
       </div>
-      <div class="signal-badge {% if 'STRONG BUY' in d.signal %}sig-strong-buy{% elif 'BUY' in d.signal %}sig-buy{% elif 'STRONG SELL' in d.signal %}sig-strong-sell{% elif 'SELL' in d.signal %}sig-sell{% else %}sig-neutral{% endif %}" id="sig-badge">
-        {{ d.signal }}
-      </div>
-      <div class="stat-row"><span class="stat-lbl">HF SIGNAL</span><span class="stat-val" id="sig-hf">{{ d.hf_signal }}</span></div>
-      <div class="stat-row"><span class="stat-lbl">ML SIGNAL</span><span class="stat-val" id="sig-ml">{{ d.ml_signal }}</span></div>
-      <div class="stat-row"><span class="stat-lbl">ML ACCURACY</span><span class="stat-val" id="sig-mlacc">{{ d.ml_accuracy }}%</span></div>
-      <div class="stat-row"><span class="stat-lbl">WHALE</span><span class="stat-val" id="sig-whale">{{ d.whale }}</span></div>
-      <div class="stat-row"><span class="stat-lbl">SCALP</span><span class="stat-val" id="sig-scalp">{{ d.scalp }}</span></div>
-      <div class="stat-row"><span class="stat-lbl">MACRO</span><span class="stat-val" id="sig-macro">{{ d.macro }}</span></div>
-      <div class="stat-row"><span class="stat-lbl">LIQUIDITY</span><span class="stat-val" id="sig-liq">{{ d.liquidity }}</span></div>
+      {% endfor %}
     </div>
+  </div>
 
-    <!-- INDICATORS -->
-    <div class="panel">
-      <div class="panel-title">INDICATORS</div>
-      <div class="ind-grid">
-        <div class="ind-item"><div class="ind-lbl">RSI</div><div class="ind-val" id="ind-rsi">{{ d.rsi }}</div></div>
-        <div class="ind-item"><div class="ind-lbl">STOCH K</div><div class="ind-val" id="ind-stoch">{{ d.stoch_k }}</div></div>
-        <div class="ind-item"><div class="ind-lbl">EMA 20</div><div class="ind-val" id="ind-ema20">{{ d.ema20 }}</div></div>
-        <div class="ind-item"><div class="ind-lbl">EMA 50</div><div class="ind-val" id="ind-ema50">{{ d.ema50 }}</div></div>
-        <div class="ind-item"><div class="ind-lbl">MACD</div><div class="ind-val" id="ind-macd">{{ d.macd }}</div></div>
-        <div class="ind-item"><div class="ind-lbl">ATR</div><div class="ind-val" id="ind-atr">{{ d.atr }}</div></div>
-        <div class="ind-item"><div class="ind-lbl">BB HIGH</div><div class="ind-val" id="ind-bbh">{{ d.bb_h }}</div></div>
-        <div class="ind-item"><div class="ind-lbl">BB LOW</div><div class="ind-val" id="ind-bbl">{{ d.bb_l }}</div></div>
-      </div>
-    </div>
-
-    <!-- MULTI TIMEFRAME -->
-    <div class="panel">
-      <div class="panel-title">MULTI TIMEFRAME</div>
-      <div class="mtf-grid">
-        {% for tf in ['15m','1h','4h','1d'] %}
-        <div class="mtf-item">
-          <div class="mtf-lbl">{{ tf }}</div>
-          <div class="mtf-val {% if d.multi_tf.get(tf,'')=='BUY' %}mtf-buy{% elif d.multi_tf.get(tf,'')=='SELL' %}mtf-sell{% else %}mtf-neutral{% endif %}"
-               id="mtf-{{ tf }}">{{ d.multi_tf.get(tf,'N/A') }}</div>
-        </div>
-        {% endfor %}
-      </div>
-    </div>
-
-    <!-- TP/SL -->
-    <div class="panel">
-      <div class="panel-title">TARGET / STOP</div>
-      <div class="tpsl-grid">
-        <div class="tp-item"><div class="tp-lbl">TP1</div><div class="tp-val" id="tp1">{{ d.tp1 }}</div></div>
-        <div class="tp-item"><div class="tp-lbl">TP2</div><div class="tp-val" id="tp2">{{ d.tp2 }}</div></div>
-        <div class="tp-item"><div class="tp-lbl">TP3</div><div class="tp-val" id="tp3">{{ d.tp3 }}</div></div>
-        <div class="sl-item"><div class="tp-lbl">STOP LOSS</div><div class="sl-val" id="sl">{{ d.sl }}</div></div>
-      </div>
-    </div>
-
-  </div><!-- /sidebar -->
-
-  <!-- MAIN -->
-  <div class="main">
-    <div class="chart-area">
-      <iframe id="tv-chart"
-        src="https://s.tradingview.com/widgetembed/?frameElementId=tv-chart&symbol={{ default_tv }}&interval=15&theme=dark&style=1&timezone=Asia%2FJakarta&withdateranges=1&hideideas=1&studies=RSI%40tv-basicstudies%1FMACD%40tv-basicstudies%1FBB%40tv-basicstudies&backgroundColor=rgb(3,10,15)"
-        allowtransparency="true" scrolling="no" allowfullscreen>
-      </iframe>
-    </div>
-    <div class="bottom">
-      <!-- CME FUTURES STRIP -->
-      <div class="cme-strip" id="cme-strip">
-        <span style="font-family:'Orbitron',monospace;font-size:7px;color:var(--gold);writing-mode:vertical-rl;flex-shrink:0;letter-spacing:2px">CME GROUP</span>
-        <span style="color:var(--muted);font-size:9px">Loading futures...</span>
-      </div>
-      <!-- NEWS -->
-      <div class="news-strip" id="news-strip">
-        <div style="font-family:'Orbitron',monospace;font-size:7px;color:var(--gold);letter-spacing:2px;margin-bottom:5px">⚡ LIVE NEWS</div>
-        <div style="color:var(--muted);font-size:9px">Loading...</div>
-      </div>
-      <!-- WARROOM -->
-      <div class="warroom">
-        <div class="wr-title">WAR ROOM</div>
-        <div class="wr-bias wr-neut" id="wr-bias">—</div>
-        <div class="wr-row"><span style="color:var(--green)">BULL</span><span id="wr-bull">—</span></div>
-        <div class="wr-row"><span style="color:var(--red)">BEAR</span><span id="wr-bear">—</span></div>
-        <div style="margin-top:4px;font-size:8px;color:var(--muted)">VOL RATIO</div>
-        <div style="font-size:10px;font-weight:700;color:var(--cyan)" id="sig-volr">{{ d.vol_ratio }}x</div>
-      </div>
-    </div>
-  </div><!-- /main -->
-
-  <!-- RIGHT SIDEBAR -->
-  <div class="rightsidebar">
-
-    <!-- GOLD CME LIVE -->
-    <div class="panel">
-      <div class="panel-title">🥇 GOLD CME LIVE</div>
-      <div class="gold-live-grid">
-        <div class="gl-item"><div class="gl-val" id="gl-oi">—</div><div class="gl-lbl">OPEN INT</div></div>
-        <div class="gl-item"><div class="gl-val" id="gl-vol">—</div><div class="gl-lbl">VOLUME</div></div>
-        <div class="gl-item"><div class="gl-val" id="gl-bid">—</div><div class="gl-lbl">BID</div></div>
-        <div class="gl-item"><div class="gl-val" id="gl-ask">—</div><div class="gl-lbl">ASK</div></div>
-        <div class="gl-item"><div class="gl-val" id="gl-52h">—</div><div class="gl-lbl">52W HI</div></div>
-        <div class="gl-item"><div class="gl-val" id="gl-52l">—</div><div class="gl-lbl">52W LO</div></div>
-      </div>
-      <div style="text-align:center;font-size:8px;color:var(--muted);margin-top:4px">COMEX · 100 troy oz · USD</div>
-    </div>
-
-    <!-- COT REPORT -->
-    <div class="panel">
-      <div class="panel-title">📊 COT REPORT <span id="cot-date">—</span></div>
-
-      <div class="cot-bar-row">
-        <div class="cot-bar-lbl">
-          <span>HEDGE FUNDS</span>
-          <span><span class="long" id="cot-nc-l">—</span> / <span class="short" id="cot-nc-s">—</span></span>
-        </div>
-        <div class="cot-track">
-          <div class="cot-long" id="cot-nc-bar-l" style="width:50%"></div>
-          <div class="cot-short" id="cot-nc-bar-s" style="width:50%"></div>
-        </div>
-      </div>
-
-      <div class="cot-bar-row">
-        <div class="cot-bar-lbl">
-          <span>COMMERCIAL</span>
-          <span><span class="long" id="cot-com-l">—</span> / <span class="short" id="cot-com-s">—</span></span>
-        </div>
-        <div class="cot-track">
-          <div class="cot-long" id="cot-com-bar-l" style="width:20%"></div>
-          <div class="cot-short" id="cot-com-bar-s" style="width:80%"></div>
-        </div>
-      </div>
-
-      <div class="cot-bar-row">
-        <div class="cot-bar-lbl">
-          <span>RETAIL</span>
-          <span><span class="long" id="cot-ret-l">—</span> / <span class="short" id="cot-ret-s">—</span></span>
-        </div>
-        <div class="cot-track">
-          <div class="cot-long" id="cot-ret-bar-l" style="width:50%"></div>
-          <div class="cot-short" id="cot-ret-bar-s" style="width:50%"></div>
-        </div>
-      </div>
-
-      <div class="cot-stat-grid">
-        <div class="cot-stat"><div class="cot-stat-val" id="cot-oi">—</div><div class="cot-stat-lbl">OPEN INT</div></div>
-        <div class="cot-stat"><div class="cot-stat-val" id="cot-chg">—</div><div class="cot-stat-lbl">CHG OI</div></div>
-        <div class="cot-stat"><div class="cot-stat-val" id="cot-net">—</div><div class="cot-stat-lbl">HF NET</div></div>
-        <div class="cot-stat"><div class="cot-stat-val" id="cot-traders">—</div><div class="cot-stat-lbl">TRADERS</div></div>
-      </div>
-      <div class="cot-sent sent-neut" id="cot-sent">LOADING...</div>
-    </div>
-
-    <!-- CORRELATION -->
-    <div class="panel">
-      <div class="panel-title">CORRELATION</div>
-      <div id="corr-list">
-        {% for c in corr %}
-        <div class="corr-item">
-          <span>{{ c.p1 }}/{{ c.p2 }}</span>
-          <span class="corr-val {% if c.corr > 0 %}corr-pos{% else %}corr-neg{% endif %}">
-            {{ c.corr }} <span style="font-size:8px;color:var(--muted)">{{ c.rel }}</span>
-          </span>
-        </div>
-        {% endfor %}
-      </div>
-    </div>
-
-  </div><!-- /rightsidebar -->
-
+</div><!-- /right sidebar -->
 </div><!-- /body -->
 
 <script>
-// ── ASSETS map ───────────────────────────────────────────────
-const TV = {
-  {% for a,v in {'XAU/USD':'XAUUSD','BTC/USD':'BTCUSD','ETH/USD':'ETHUSD','EUR/USD':'EURUSD','NASDAQ':'NASDAQ:NDX','DXY':'TVC:DXY','OIL':'USOIL'}.items() %}
-  '{{ a }}': '{{ v }}',
+// ── Asset map (TV symbols) ────────────────────────────────────
+const TV_MAP = {
+  {% for a,v in asset_tv.items() %}
+  "{{ a }}": "{{ v }}",
   {% endfor %}
 };
+const ASSET_KEYS = {{ assets | tojson }};
 
-// ── Clock ────────────────────────────────────────────────────
-function updateClock(){
-  const now = new Date();
-  document.getElementById('clock').textContent =
-    now.toTimeString().slice(0,8);
+// ── State ─────────────────────────────────────────────────────
+let currentPair = "{{ default_pair }}";
+
+// ── Clock ─────────────────────────────────────────────────────
+function tick(){
+  document.getElementById('clock').textContent = new Date().toTimeString().slice(0,8);
 }
-setInterval(updateClock, 1000); updateClock();
+setInterval(tick,1000); tick();
 
-// ── Sessions ─────────────────────────────────────────────────
+// ── Sessions ──────────────────────────────────────────────────
 function updateSessions(){
   const h = new Date().getUTCHours();
-  document.getElementById('dot-tokyo').className  = 'sess-dot ' + (h>=0&&h<9   ? 'active':'inactive');
-  document.getElementById('dot-london').className = 'sess-dot ' + (h>=7&&h<16  ? 'active':'inactive');
-  document.getElementById('dot-ny').className     = 'sess-dot ' + (h>=12&&h<21 ? 'active':'inactive');
+  document.getElementById('d-tok').className = 'sess-dot '+(h>=0&&h<9?'on':'off');
+  document.getElementById('d-lon').className = 'sess-dot '+(h>=7&&h<16?'on':'off');
+  document.getElementById('d-ny').className  = 'sess-dot '+(h>=12&&h<21?'on':'off');
 }
-setInterval(updateSessions, 60000); updateSessions();
+setInterval(updateSessions,60000); updateSessions();
 
 // ── Helpers ───────────────────────────────────────────────────
+function set(id,v){ const e=document.getElementById(id); if(e) e.textContent=(v===undefined||v===null||v==='')?'—':v; }
+function setColor(id,c){ const e=document.getElementById(id); if(e) e.style.color=c; }
+function setWidth(id,w){ const e=document.getElementById(id); if(e) e.style.width=w; }
 function fmtN(n){
-  if(n===undefined||n===null||n==='N/A'||n==='') return '—';
-  n = parseFloat(n);
-  if(isNaN(n)) return '—';
+  if(n===undefined||n===null||n==='N/A') return '—';
+  n=parseFloat(n); if(isNaN(n)) return '—';
   if(Math.abs(n)>=1e6) return (n/1e6).toFixed(1)+'M';
   if(Math.abs(n)>=1e3) return (n/1e3).toFixed(1)+'K';
   return n.toLocaleString();
 }
-function sigClass(s){
-  if(!s||s==='N/A') return 'sig-neutral';
-  if(s.includes('STRONG BUY'))  return 'sig-strong-buy';
-  if(s.includes('BUY'))         return 'sig-buy';
-  if(s.includes('STRONG SELL')) return 'sig-strong-sell';
-  if(s.includes('SELL'))        return 'sig-sell';
-  return 'sig-neutral';
+function sigCls(s){
+  if(!s||s==='N/A') return 's-neut';
+  if(s.includes('STRONG BUY'))  return 's-sbuy';
+  if(s.includes('BUY'))         return 's-buy';
+  if(s.includes('STRONG SELL')) return 's-ssell';
+  if(s.includes('SELL'))        return 's-sell';
+  return 's-neut';
 }
-function mtfClass(v){ return v==='BUY'?'mtf-buy':v==='SELL'?'mtf-sell':'mtf-neutral'; }
-function setText(id,v){ const e=document.getElementById(id); if(e) e.textContent=v||'—'; }
-function setStyle(id,prop,v){ const e=document.getElementById(id); if(e) e.style[prop]=v; }
+function mtfCls(v){ return v==='BUY'?'mv buy':v==='SELL'?'mv sell':'mv neut'; }
 
-// ── Switch pair ───────────────────────────────────────────────
-function sw(btn, pair, pairKey){
+// ── SWITCH PAIR — core function ───────────────────────────────
+function switchPair(pair){
+  if(pair===currentPair) return;
+  currentPair = pair;
+
+  // Update active button
   document.querySelectorAll('.pair-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  const tv = TV[pair] || 'XAUUSD';
+  const id = 'btn-'+pair.replace(/\//g,'_').replace(/:/g,'_');
+  const btn = document.getElementById(id);
+  if(btn) btn.classList.add('active');
+
+  // Update header labels
+  set('active-pair-label', pair);
+  set('wr-pair', pair);
+
+  // Update TradingView chart
+  const tv = TV_MAP[pair] || 'XAUUSD';
   document.getElementById('tv-chart').src =
-    'https://s.tradingview.com/widgetembed/?frameElementId=tv-chart&symbol='+tv+
-    '&interval=15&theme=dark&style=1&timezone=Asia%2FJakarta&withdateranges=1&hideideas=1'+
+    'https://s.tradingview.com/widgetembed/?symbol='+tv+
+    '&interval=15&theme=dark&style=1&timezone=Asia%2FJakarta'+
+    '&withdateranges=1&hideideas=1'+
     '&studies=RSI%40tv-basicstudies%1FMACD%40tv-basicstudies%1FBB%40tv-basicstudies'+
     '&backgroundColor=rgb(3,10,15)';
-  loadAsset(pair, pairKey);
+
+  // Show loading state
+  set('sig-name', pair);
+  set('sig-badge', '⏳ LOADING...');
+  document.getElementById('sig-badge').className = 'sig-badge s-neut';
+
+  // Fetch all engines for this pair
+  loadAsset(pair);
 }
 
-// ── Load asset data ───────────────────────────────────────────
-function loadAsset(pair, pairKey){
-  fetch('/api/asset/'+pairKey)
+// ── Load all engine data for a pair ───────────────────────────
+function loadAsset(pair){
+  const key = pair.replace(/\//g,'_');
+  fetch('/api/asset/'+key)
     .then(r=>r.json())
     .then(d=>{
-      setText('sig-name',   pair);
-      setText('sig-price',  d.price);
+      // Signal + Price
+      set('sig-name',  pair);
+      set('sig-price', d.price);
       const chgEl = document.getElementById('sig-chg');
-      if(chgEl){ chgEl.textContent=(d.chg_pct>=0?'+':'')+d.chg_pct+'%'; chgEl.style.color=d.chg_pct>=0?'var(--green)':'var(--red)'; }
+      if(chgEl){
+        chgEl.textContent = (d.chg_pct>=0?'+':'')+d.chg_pct+'%';
+        chgEl.style.color  = d.chg_pct>=0?'var(--green)':'var(--red)';
+      }
       const badge = document.getElementById('sig-badge');
-      if(badge){ badge.textContent=d.signal; badge.className='signal-badge '+sigClass(d.signal); }
-      setText('sig-hf',    d.hf_signal);
-      setText('sig-ml',    d.ml_signal);
-      setText('sig-mlacc', d.ml_accuracy+'%');
-      setText('sig-whale', d.whale);
-      setText('sig-scalp', d.scalp);
-      setText('sig-macro', d.macro);
-      setText('sig-liq',   d.liquidity);
-      setText('sig-volr',  d.vol_ratio+'x');
-      setText('ind-rsi',   d.rsi);
-      setText('ind-stoch', d.stoch_k);
-      setText('ind-ema20', d.ema20);
-      setText('ind-ema50', d.ema50);
-      setText('ind-macd',  d.macd);
-      setText('ind-atr',   d.atr);
-      setText('ind-bbh',   d.bb_h);
-      setText('ind-bbl',   d.bb_l);
-      setText('tp1', d.tp1); setText('tp2', d.tp2);
-      setText('tp3', d.tp3); setText('sl',  d.sl);
-      const tfs = d.multi_tf||{};
+      if(badge){ badge.textContent=d.signal; badge.className='sig-badge '+sigCls(d.signal); }
+
+      // Engine outputs
+      set('sig-hf',    d.hf_signal);
+      set('sig-hfc',   d.hf_conf+'%');
+      set('sig-ml',    d.ml_signal);
+      set('sig-mla',   d.ml_accuracy+'%');
+      set('sig-whale', d.whale);
+      set('sig-scalp', d.scalp);
+      set('sig-macro', d.macro);
+      set('sig-liq',   d.liquidity);
+      set('sig-volr',  d.vol_ratio+'x');
+
+      // Indicators
+      set('i-rsi',  d.rsi);
+      set('i-stoch',d.stoch_k);
+      set('i-e20',  d.ema20);
+      set('i-e50',  d.ema50);
+      set('i-macd', d.macd);
+      set('i-atr',  d.atr);
+      set('i-bbh',  d.bb_h);
+      set('i-bbl',  d.bb_l);
+
+      // Multi TF
+      const tfs = d.multi_tf || {};
       ['15m','1h','4h','1d'].forEach(tf=>{
-        const el=document.getElementById('mtf-'+tf);
-        if(el){ el.textContent=tfs[tf]||'N/A'; el.className='mtf-val '+mtfClass(tfs[tf]); }
+        const el = document.getElementById('mtf-'+tf);
+        if(el){ el.textContent=tfs[tf]||'N/A'; el.className=mtfCls(tfs[tf]); }
       });
+
+      // TP/SL
+      set('tp1', d.tp1); set('tp2', d.tp2);
+      set('tp3', d.tp3); set('sl0', d.sl);
     })
-    .catch(()=>{});
+    .catch(()=>{ set('sig-badge','ERROR'); });
 }
 
-// ── Gold CME Live ──────────────────────────────────────────────
+// ── Gold CME Live ─────────────────────────────────────────────
 function loadGold(){
   fetch('/api/gold').then(r=>r.json()).then(d=>{
     if(d.error) return;
-    setText('gl-oi',  d.oi_fmt);
-    setText('gl-vol', d.vol_fmt);
-    setText('gl-bid', d.bid==='N/A'?'—':parseFloat(d.bid).toLocaleString());
-    setText('gl-ask', d.ask==='N/A'?'—':parseFloat(d.ask).toLocaleString());
-    setText('gl-52h', d.high52==='N/A'?'—':parseFloat(d.high52).toLocaleString());
-    setText('gl-52l', d.low52==='N/A'?'—':parseFloat(d.low52).toLocaleString());
+    set('gl-oi',  d.oi_fmt||fmtN(d.oi));
+    set('gl-vol', d.vol_fmt||fmtN(d.volume));
+    set('gl-bid', d.bid==='N/A'?'—':parseFloat(d.bid).toLocaleString());
+    set('gl-ask', d.ask==='N/A'?'—':parseFloat(d.ask).toLocaleString());
+    set('gl-52h', d.high52==='N/A'?'—':parseFloat(d.high52).toLocaleString());
+    set('gl-52l', d.low52==='N/A'?'—':parseFloat(d.low52).toLocaleString());
   }).catch(()=>{});
 }
 
@@ -496,24 +516,32 @@ function loadGold(){
 function loadCOT(){
   fetch('/api/cot').then(r=>r.json()).then(d=>{
     if(d.error) return;
-    setText('cot-date',    d.date);
-    setText('cot-nc-l',   d.nc_long_fmt+'L');
-    setText('cot-nc-s',   'S'+d.nc_short_fmt);
-    setText('cot-com-l',  d.com_long_fmt+'L');
-    setText('cot-com-s',  'S'+d.com_short_fmt);
-    setText('cot-ret-l',  d.ret_long_fmt+'L');
-    setText('cot-ret-s',  'S'+d.ret_short_fmt);
-    setText('cot-oi',     fmtN(d.oi));
-    setText('cot-chg',    d.chg_oi_fmt);
-    setText('cot-net',    d.nc_net_fmt);
-    setText('cot-traders',fmtN(d.traders));
-    // bars
-    const ncT=d.nc_long+d.nc_short, comT=d.com_long+d.com_short, retT=d.ret_long+d.ret_short;
-    if(ncT>0){ setStyle('cot-nc-bar-l','width',(d.nc_long/ncT*100).toFixed(1)+'%'); setStyle('cot-nc-bar-s','width',(d.nc_short/ncT*100).toFixed(1)+'%'); }
-    if(comT>0){ setStyle('cot-com-bar-l','width',(d.com_long/comT*100).toFixed(1)+'%'); setStyle('cot-com-bar-s','width',(d.com_short/comT*100).toFixed(1)+'%'); }
-    if(retT>0){ setStyle('cot-ret-bar-l','width',(d.ret_long/retT*100).toFixed(1)+'%'); setStyle('cot-ret-bar-s','width',(d.ret_short/retT*100).toFixed(1)+'%'); }
+    set('cot-date',  d.date);
+    set('cot-nc-l',  (d.nc_long_fmt||fmtN(d.nc_long))+'L');
+    set('cot-nc-s',  'S'+(d.nc_short_fmt||fmtN(d.nc_short)));
+    set('cot-com-l', (d.com_long_fmt||fmtN(d.com_long))+'L');
+    set('cot-com-s', 'S'+(d.com_short_fmt||fmtN(d.com_short)));
+    set('cot-ret-l', (d.ret_long_fmt||fmtN(d.ret_long))+'L');
+    set('cot-ret-s', 'S'+(d.ret_short_fmt||fmtN(d.ret_short)));
+    set('cot-oi',     fmtN(d.oi));
+    set('cot-chg',    d.chg_oi_fmt||(d.chg_oi>=0?'+':'')+fmtN(d.chg_oi));
+    set('cot-net',    d.nc_net_fmt||(d.nc_net>=0?'+':'')+fmtN(d.nc_net));
+    set('cot-traders',fmtN(d.traders));
+    // Bars
+    function bar(nl,ns,lid,sid){
+      const t=nl+ns; if(t<=0) return;
+      setWidth(lid,(nl/t*100).toFixed(1)+'%');
+      setWidth(sid,(ns/t*100).toFixed(1)+'%');
+    }
+    bar(d.nc_long, d.nc_short, 'cb-nc-l','cb-nc-s');
+    bar(d.com_long,d.com_short,'cb-com-l','cb-com-s');
+    bar(d.ret_long,d.ret_short,'cb-ret-l','cb-ret-s');
+    // Sentiment
     const el=document.getElementById('cot-sent');
-    if(el){ el.textContent=d.sentiment; el.className='cot-sent '+(d.sentiment.includes('BULL')?'sent-bull':d.sentiment.includes('BEAR')?'sent-bear':'sent-neut'); }
+    if(el){
+      el.textContent=d.sentiment;
+      el.className='cot-sent '+(d.sentiment.includes('BULL')?'bull':d.sentiment.includes('BEAR')?'bear':'neut-s');
+    }
   }).catch(()=>{});
 }
 
@@ -522,14 +550,13 @@ function loadCME(){
   fetch('/api/cme').then(r=>r.json()).then(data=>{
     const strip=document.getElementById('cme-strip');
     if(!strip||!data.length) return;
-    strip.innerHTML='<span style="font-family:\'Orbitron\',monospace;font-size:7px;color:var(--gold);writing-mode:vertical-rl;flex-shrink:0;letter-spacing:2px">CME GROUP</span>';
+    strip.innerHTML='<span style="font-family:\'Orbitron\',monospace;font-size:7px;color:var(--gold);writing-mode:vertical-rl;flex-shrink:0;letter-spacing:2px">CME</span>';
     data.forEach(f=>{
-      const item=document.createElement('div');
-      item.className='cme-item';
-      item.innerHTML=`<div class="cme-name">${f.icon} ${f.name}</div>
-        <div class="cme-price">${f.price.toLocaleString()}</div>
-        <div class="cme-chg" style="color:${f.color}">${f.dir} ${f.pct}%</div>`;
-      strip.appendChild(item);
+      const d=document.createElement('div'); d.className='cme-item';
+      d.innerHTML=`<div class="cn">${f.icon} ${f.name}</div>
+        <div class="cp">${f.price.toLocaleString()}</div>
+        <div class="cc" style="color:${f.color}">${f.dir} ${f.pct}%</div>`;
+      strip.appendChild(d);
     });
   }).catch(()=>{});
 }
@@ -539,9 +566,9 @@ function loadNews(){
   fetch('/api/news').then(r=>r.json()).then(data=>{
     const el=document.getElementById('news-strip');
     if(!el||!data.length) return;
-    el.innerHTML='<div style="font-family:\'Orbitron\',monospace;font-size:7px;color:var(--gold);letter-spacing:2px;margin-bottom:5px">⚡ LIVE NEWS</div>';
+    el.innerHTML='<div style="font-family:\'Orbitron\',monospace;font-size:7px;color:var(--gold);letter-spacing:2px;margin-bottom:4px">⚡ NEWS</div>';
     data.forEach(n=>{
-      el.innerHTML+=`<div class="news-item"><div class="news-title"><a href="${n.link}" target="_blank" style="color:var(--fg);text-decoration:none">${n.title}</a></div><div class="news-src">${n.source}</div></div>`;
+      el.innerHTML+=`<div class="ni"><div class="nt"><a href="${n.link}" target="_blank" style="color:var(--fg);text-decoration:none">${n.title}</a></div><div class="ns">${n.source}</div></div>`;
     });
   }).catch(()=>{});
 }
@@ -549,65 +576,60 @@ function loadNews(){
 // ── War Room ──────────────────────────────────────────────────
 function loadWarRoom(){
   fetch('/api/all').then(r=>r.json()).then(data=>{
-    let bulls=0, bears=0;
+    let bull=0,bear=0;
     const keys=Object.keys(data);
     keys.forEach(k=>{
       const s=data[k].signal||'';
-      if(s.includes('BUY'))  bulls++;
-      if(s.includes('SELL')) bears++;
+      if(s.includes('BUY'))  bull++;
+      if(s.includes('SELL')) bear++;
     });
-    const total=bulls+bears;
-    let bias='MIXED', cls='wr-neut';
-    if(total>0){
-      const pct=bulls/total;
-      if(pct>=0.7){ bias='RISK-ON 🟢'; cls='wr-bull'; }
-      else if(pct<=0.3){ bias='RISK-OFF 🔴'; cls='wr-bear'; }
+    const tot=bull+bear;
+    let bias='MIXED',cls='neut-s';
+    if(tot>0){
+      if(bull/tot>=0.7){ bias='RISK-ON 🟢'; cls='bull'; }
+      else if(bull/tot<=0.3){ bias='RISK-OFF 🔴'; cls='bear'; }
     }
     const el=document.getElementById('wr-bias');
-    if(el){ el.textContent=bias; el.className='wr-bias '+cls; }
-    setText('wr-bull', bulls);
-    setText('wr-bear', bears);
-    // update ticker
+    if(el){ el.textContent=bias; el.className='wb '+cls; }
+    set('wr-bull', bull); set('wr-bear', bear);
+    // Update ticker
     keys.forEach((k,i)=>{
       const d=data[k];
-      const priceEl=document.getElementById('tk-price-'+(i+1));
-      const chgEl  =document.getElementById('tk-chg-'+(i+1));
-      if(priceEl) priceEl.textContent=d.price||'—';
-      if(chgEl){
-        chgEl.textContent=(d.chg_pct>=0?'+':'')+d.chg_pct+'%';
-        chgEl.style.color=d.chg_pct>=0?'var(--green)':'var(--red)';
-      }
+      const pe=document.getElementById('tk-p-'+(i+1));
+      const ce=document.getElementById('tk-c-'+(i+1));
+      if(pe) pe.textContent=d.price||'—';
+      if(ce){ ce.textContent=(d.chg_pct>=0?'+':'')+d.chg_pct+'%'; ce.style.color=d.chg_pct>=0?'var(--green)':'var(--red)'; }
     });
   }).catch(()=>{});
 }
 
-// ── Fear & Greed (via CNN alternative free endpoint) ─────────
-function loadFearGreed(){
-  fetch('https://production.dataviz.cnn.io/index/fearandgreed/graphdata').then(r=>r.json()).then(d=>{
-    const v=d.fear_and_greed?.score||d.score||d.current_value;
-    if(v!==undefined){
-      const val=Math.round(parseFloat(v));
-      let lbl=''; if(val<25)lbl='EXTREME FEAR'; else if(val<45)lbl='FEAR'; else if(val<55)lbl='NEUTRAL'; else if(val<75)lbl='GREED'; else lbl='EXTREME GREED';
-      setText('fear-greed','F&G: '+val+' — '+lbl);
-    }
-  }).catch(()=>{ setText('fear-greed','F&G: —'); });
+// ── Fear & Greed ──────────────────────────────────────────────
+function loadFG(){
+  fetch('https://production.dataviz.cnn.io/index/fearandgreed/graphdata')
+    .then(r=>r.json()).then(d=>{
+      const v=Math.round(d.fear_and_greed?.score||d.score||d.current_value||0);
+      const lbl=v<25?'EXT.FEAR':v<45?'FEAR':v<55?'NEUTRAL':v<75?'GREED':'EXT.GREED';
+      set('fg-label','F&G: '+v+' — '+lbl);
+    }).catch(()=>{ set('fg-label','F&G: —'); });
 }
 
-// ── Initial load ──────────────────────────────────────────────
-loadCOT();
+// ── INIT ──────────────────────────────────────────────────────
 loadGold();
+loadCOT();
 loadCME();
 loadNews();
 loadWarRoom();
-loadFearGreed();
+loadFG();
 
-// ── Auto refresh ──────────────────────────────────────────────
-setInterval(loadGold,      120000);   // 2min
-setInterval(loadCME,       120000);   // 2min
-setInterval(loadWarRoom,   120000);   // 2min
-setInterval(loadNews,      300000);   // 5min
-setInterval(loadCOT,    21600000);    // 6h
-setInterval(loadFearGreed, 600000);   // 10min
+setInterval(loadGold,      120000);
+setInterval(loadCME,       120000);
+setInterval(loadWarRoom,   120000);
+setInterval(loadNews,      300000);
+setInterval(loadCOT,    21600000);
+setInterval(loadFG,       600000);
+
+// Auto refresh current pair data every 90s
+setInterval(()=>loadAsset(currentPair), 90000);
 </script>
 </body>
 </html>
