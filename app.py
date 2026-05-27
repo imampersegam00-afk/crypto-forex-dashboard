@@ -9,7 +9,6 @@ import zipfile
 import io
 import csv
 import time
-from datetime import datetime
 
 try:
     from sklearn.ensemble import RandomForestClassifier
@@ -60,7 +59,6 @@ CME_FUTURES = {
     "ZB=F":  {"name": "30Y Bond",        "icon": "🏦"},
 }
 
-# ── helpers ──────────────────────────────────────────────────
 def _iv(d, k):
     try: return int(str(d.get(k,"0")).replace(",","").strip())
     except: return 0
@@ -78,7 +76,6 @@ def _fmt(n):
         return str(int(n))
     except: return str(n)
 
-# ── COT Report (CFTC) ────────────────────────────────────────
 def get_cot():
     now = time.time()
     if now - _cot_cache["ts"] < 21600 and _cot_cache["data"]:
@@ -94,9 +91,8 @@ def get_cot():
              == "GOLD - COMMODITY EXCHANGE INC."],
             key=lambda x: x.get("As of Date in Form YYYY-MM-DD","")
         )
-        if not gold:
-            return {}
-        lat = gold[-1]
+        if not gold: return {}
+        lat   = gold[-1]
         nc_l  = _iv(lat,"Noncommercial Positions-Long (All)")
         nc_s  = _iv(lat,"Noncommercial Positions-Short (All)")
         com_l = _iv(lat,"Commercial Positions-Long (All)")
@@ -112,17 +108,17 @@ def get_cot():
         elif nc_net <  -30000: sent = "BEARISH"
         else:                  sent = "NEUTRAL"
         data = {
-            "date":      lat.get("As of Date in Form YYYY-MM-DD",""),
-            "oi":        oi,  "oi_fmt":  _fmt(oi),
-            "chg_oi":    chg, "chg_oi_fmt": ("+" if chg>=0 else "")+_fmt(chg),
-            "nc_long":   nc_l,  "nc_long_fmt":  _fmt(nc_l),
-            "nc_short":  nc_s,  "nc_short_fmt": _fmt(nc_s),
-            "nc_net":    nc_net,"nc_net_fmt":   ("+" if nc_net>=0 else "")+_fmt(nc_net),
-            "com_long":  com_l, "com_long_fmt":  _fmt(com_l),
-            "com_short": com_s, "com_short_fmt": _fmt(com_s),
-            "ret_long":  ret_l, "ret_long_fmt":  _fmt(ret_l),
-            "ret_short": ret_s, "ret_short_fmt": _fmt(ret_s),
-            "traders":   _iv(lat,"Traders-Total (All)"),
+            "date": lat.get("As of Date in Form YYYY-MM-DD",""),
+            "oi": oi, "oi_fmt": _fmt(oi),
+            "chg_oi": chg, "chg_oi_fmt": ("+" if chg>=0 else "")+_fmt(chg),
+            "nc_long": nc_l,  "nc_long_fmt":  _fmt(nc_l),
+            "nc_short": nc_s, "nc_short_fmt": _fmt(nc_s),
+            "nc_net": nc_net, "nc_net_fmt": ("+" if nc_net>=0 else "")+_fmt(nc_net),
+            "com_long": com_l, "com_long_fmt": _fmt(com_l),
+            "com_short": com_s,"com_short_fmt":_fmt(com_s),
+            "ret_long": ret_l, "ret_long_fmt": _fmt(ret_l),
+            "ret_short": ret_s,"ret_short_fmt":_fmt(ret_s),
+            "traders": _iv(lat,"Traders-Total (All)"),
             "pct_nc_long":  _fv(lat,"% of OI-Noncommercial-Long (All)"),
             "pct_nc_short": _fv(lat,"% of OI-Noncommercial-Short (All)"),
             "pct_com_long": _fv(lat,"% of OI-Commercial-Long (All)"),
@@ -134,42 +130,36 @@ def get_cot():
     except Exception as e:
         return {"error": str(e)}
 
-# ── Gold CME Live (COMEX) ────────────────────────────────────
 def get_gold_live():
     now = time.time()
     if now - _goldlv_cache["ts"] < 120 and _goldlv_cache["data"]:
         return _goldlv_cache["data"]
     try:
-        t  = yf.Ticker("GC=F")
-        fi = t.fast_info
+        t    = yf.Ticker("GC=F")
+        fi   = t.fast_info
         info = t.info
         price = round(fi.last_price, 2)
         prev  = round(fi.previous_close, 2)
         chg   = round(price - prev, 2)
         pct   = round(chg / prev * 100, 2) if prev else 0
         data  = {
-            "price":    price,
-            "chg":      chg,
-            "pct":      pct,
-            "dir":      "▲" if chg >= 0 else "▼",
-            "color":    "#00ff88" if chg >= 0 else "#ff3366",
-            "oi":       info.get("openInterest","N/A"),
-            "oi_fmt":   _fmt(info.get("openInterest","N/A")),
-            "volume":   info.get("volume","N/A"),
-            "vol_fmt":  _fmt(info.get("volume","N/A")),
-            "bid":      info.get("bid","N/A"),
-            "ask":      info.get("ask","N/A"),
-            "high52":   info.get("fiftyTwoWeekHigh","N/A"),
-            "low52":    info.get("fiftyTwoWeekLow","N/A"),
-            "exchange": "COMEX/CME",
-            "contract": "100 Troy Oz",
+            "price": price, "chg": chg, "pct": pct,
+            "dir":   "▲" if chg >= 0 else "▼",
+            "color": "#00ff88" if chg >= 0 else "#ff3366",
+            "oi":    info.get("openInterest","N/A"),
+            "oi_fmt":_fmt(info.get("openInterest","N/A")),
+            "volume":info.get("volume","N/A"),
+            "vol_fmt":_fmt(info.get("volume","N/A")),
+            "bid":   info.get("bid","N/A"),
+            "ask":   info.get("ask","N/A"),
+            "high52":info.get("fiftyTwoWeekHigh","N/A"),
+            "low52": info.get("fiftyTwoWeekLow","N/A"),
         }
         _goldlv_cache.update({"data": data, "ts": now})
         return data
     except Exception as e:
         return {"error": str(e)}
 
-# ── CME Futures strip ────────────────────────────────────────
 def get_cme():
     now = time.time()
     if now - _cme_cache["ts"] < 120 and _cme_cache["data"]:
@@ -184,21 +174,15 @@ def get_cme():
                 chg = round(p - pv, 4)
                 pct = round(chg / pv * 100, 2)
                 result.append({
-                    "sym":   sym,
-                    "name":  info["name"],
-                    "icon":  info["icon"],
-                    "price": round(p, 2),
-                    "chg":   chg,
-                    "pct":   pct,
+                    "sym": sym, "name": info["name"], "icon": info["icon"],
+                    "price": round(p, 2), "chg": chg, "pct": pct,
                     "dir":   "▲" if chg >= 0 else "▼",
                     "color": "#00ff88" if chg >= 0 else "#ff3366",
                 })
-        except:
-            pass
+        except: pass
     _cme_cache.update({"data": result, "ts": now})
     return result
 
-# ── News ─────────────────────────────────────────────────────
 def get_news():
     now = time.time()
     if now - _news_cache["ts"] < 300 and _news_cache["data"]:
@@ -210,14 +194,12 @@ def get_news():
                 t = e.get("title","").strip()
                 if t and t not in seen:
                     seen.add(t)
-                    news.append({"title": t, "link": e.get("link","#"),
-                                 "source": "CryptoForexNewsHub"})
+                    news.append({"title":t,"link":e.get("link","#"),"source":"CryptoForexNewsHub"})
         except: pass
         if len(news) >= 10: break
     _news_cache.update({"data": news[:10], "ts": now})
     return _news_cache["data"]
 
-# ── ML predict ───────────────────────────────────────────────
 def ml_predict(ticker):
     if not ML_AVAILABLE:
         return {"signal":"N/A","accuracy":0,"confidence":50}
@@ -238,7 +220,7 @@ def ml_predict(ticker):
         sp = int(len(X)*0.8)
         clf = RandomForestClassifier(n_estimators=50, random_state=42)
         clf.fit(X[:sp], y[:sp])
-        acc  = round(accuracy_score(y[sp:], clf.predict(X[sp:]))*100,1)
+        acc  = round(accuracy_score(y[sp:], clf.predict(X[sp:]))*100, 1)
         prob = clf.predict_proba(X[-1:].reshape(1,-1))[0]
         pred = int(clf.predict(X[-1:].reshape(1,-1))[0])
         return {"signal":"BUY" if pred==1 else "SELL",
@@ -246,13 +228,12 @@ def ml_predict(ticker):
     except:
         return {"signal":"N/A","accuracy":0,"confidence":50}
 
-# ── Multi TF ────────────────────────────────────────────────
 def multi_tf(ticker):
     out = {}
-    for tf,period in [("15m","5d"),("1h","30d"),("4h","60d"),("1d","180d")]:
+    for tf, period in [("15m","5d"),("1h","30d"),("4h","60d"),("1d","180d")]:
         try:
-            df = yf.download(ticker,period=period,interval=tf,progress=False)
-            if df is None or len(df)<20: out[tf]="N/A"; continue
+            df = yf.download(ticker, period=period, interval=tf, progress=False)
+            if df is None or len(df) < 20: out[tf]="N/A"; continue
             c = df["Close"].values.flatten()
             rsi   = float(ta.momentum.RSIIndicator(pd.Series(c)).rsi().iloc[-1])
             ema20 = float(ta.trend.EMAIndicator(pd.Series(c),20).ema_indicator().iloc[-1])
@@ -262,7 +243,6 @@ def multi_tf(ticker):
         except: out[tf]="N/A"
     return out
 
-# ── Main signal engine ───────────────────────────────────────
 def compute(name, ticker):
     now = time.time()
     if name in _cache and now - _cache_time.get(name,0) < CACHE_TTL:
@@ -278,7 +258,7 @@ def compute(name, ticker):
         vol   = df["Volume"].values.flatten().astype(float)
         open_ = df["Open"].values.flatten().astype(float)
 
-        s  = pd.Series(close)
+        s      = pd.Series(close)
         rsi    = float(ta.momentum.RSIIndicator(s).rsi().iloc[-1])
         ema20  = float(ta.trend.EMAIndicator(s,20).ema_indicator().iloc[-1])
         ema50  = float(ta.trend.EMAIndicator(s,50).ema_indicator().iloc[-1])
@@ -292,12 +272,12 @@ def compute(name, ticker):
         stoch_k= float(stoch.stoch().iloc[-1])
         atr    = float(ta.volatility.AverageTrueRange(pd.Series(high),pd.Series(low),s).average_true_range().iloc[-1])
 
-        price  = float(close[-1])
-        lv     = float(vol[-1])
-        av     = float(np.mean(vol[-20:]))
-        rh     = float(np.max(high[-20:]))
-        rl     = float(np.min(low[-20:]))
-        prev   = float(close[-2]) if len(close)>=2 else price
+        price = float(close[-1])
+        lv    = float(vol[-1])
+        av    = float(np.mean(vol[-20:]))
+        rh    = float(np.max(high[-20:]))
+        rl    = float(np.min(low[-20:]))
+        prev  = float(close[-2]) if len(close)>=2 else price
 
         score = 0
         if rsi<35:    score+=2
@@ -326,56 +306,43 @@ def compute(name, ticker):
             tp1=round(price-atr*1.5,2); tp2=round(price-atr*3,2); tp3=round(price-atr*5,2)
             sl =round(price+atr*1.0,2)
 
-        hf_sig = ("STRONG BUY" if score>=4 else "BUY" if score>=2 else
-                  "STRONG SELL" if score<=-4 else "SELL" if score<=-2 else "NEUTRAL")
-        hf_conf= min(100, abs(score)*20+40)
-
-        ml  = ml_predict(ticker)
-        mtf = multi_tf(ticker)
-
+        hf_sig  = ("STRONG BUY" if score>=4 else "BUY" if score>=2 else
+                   "STRONG SELL" if score<=-4 else "SELL" if score<=-2 else "NEUTRAL")
+        hf_conf = min(100, abs(score)*20+40)
+        ml      = ml_predict(ticker)
+        mtf     = multi_tf(ticker)
         chg_pct = round((price-prev)/prev*100,2) if prev else 0
 
         result = {
-            "name":    name,
-            "ticker":  ticker,
-            "signal":  signal,
-            "score":   score,
-            "price":   round(price,4),
-            "chg_pct": chg_pct,
+            "name":    name, "ticker": ticker,
+            "signal":  signal, "score": score,
+            "price":   round(price,4), "chg_pct": chg_pct,
             "rsi":     round(rsi,1),
-            "ema20":   round(ema20,4),
-            "ema50":   round(ema50,4),
-            "macd":    round(macd,4),
-            "macd_sig":round(macd_s,4),
-            "bb_h":    round(bb_h,4),
-            "bb_l":    round(bb_l,4),
-            "stoch_k": round(stoch_k,1),
-            "atr":     round(atr,4),
-            "volume":  int(lv),
-            "avg_vol": int(av),
+            "ema20":   round(ema20,4), "ema50": round(ema50,4),
+            "macd":    round(macd,4),  "macd_sig": round(macd_s,4),
+            "bb_h":    round(bb_h,4),  "bb_l": round(bb_l,4),
+            "stoch_k": round(stoch_k,1), "atr": round(atr,4),
+            "volume":  int(lv), "avg_vol": int(av),
             "vol_ratio": round(lv/av,2) if av>0 else 1,
             "tp1":tp1,"tp2":tp2,"tp3":tp3,"sl":sl,
-            "recent_high": round(rh,4),
-            "recent_low":  round(rl,4),
-            "hf_signal":   hf_sig,
-            "hf_conf":     hf_conf,
-            "ml_signal":   ml["signal"],
-            "ml_accuracy": ml["accuracy"],
-            "ml_conf":     ml["confidence"],
-            "multi_tf":    mtf,
-            "whale":       "WHALE 🐋" if lv>av*2 else "NORMAL",
-            "scalp":       ("SCALP BUY" if rsi<30 and lv>av else
-                            "SCALP SELL" if rsi>70 and lv>av else "WAIT"),
-            "macro":       ("RISK-ON" if rsi>60 and ema20>ema50 else
-                            "RISK-OFF" if rsi<40 and ema20<ema50 else "NEUTRAL"),
-            "liquidity":   ("RESISTANCE SWEEP" if price>rh*0.995 and lv>av*1.5 else
-                            "SUPPORT SWEEP" if price<rl*1.005 and lv>av*1.5 else "MID RANGE"),
+            "recent_high": round(rh,4), "recent_low": round(rl,4),
+            "hf_signal": hf_sig, "hf_conf": hf_conf,
+            "ml_signal": ml["signal"], "ml_accuracy": ml["accuracy"],
+            "ml_conf":   ml["confidence"],
+            "multi_tf":  mtf,
+            "whale":  "WHALE 🐋" if lv>av*2 else "NORMAL",
+            "scalp":  ("SCALP BUY" if rsi<30 and lv>av else
+                       "SCALP SELL" if rsi>70 and lv>av else "WAIT"),
+            "macro":  ("RISK-ON" if rsi>60 and ema20>ema50 else
+                       "RISK-OFF" if rsi<40 and ema20<ema50 else "NEUTRAL"),
+            "liquidity":("RESISTANCE SWEEP" if price>rh*0.995 and lv>av*1.5 else
+                         "SUPPORT SWEEP" if price<rl*1.005 and lv>av*1.5 else "MID RANGE"),
         }
         _cache[name]      = result
         _cache_time[name] = now
         return result
     except Exception as e:
-        blank = {k:v for k,v in {
+        return _cache.get(name, {
             "name":name,"ticker":ticker,"signal":"N/A","score":0,"price":0,
             "chg_pct":0,"rsi":0,"ema20":0,"ema50":0,"macd":0,"macd_sig":0,
             "bb_h":0,"bb_l":0,"stoch_k":0,"atr":0,"volume":0,"avg_vol":0,
@@ -383,10 +350,8 @@ def compute(name, ticker):
             "recent_low":0,"hf_signal":"N/A","hf_conf":0,"ml_signal":"N/A",
             "ml_accuracy":0,"ml_conf":0,"multi_tf":{},"whale":"N/A",
             "scalp":"N/A","macro":"N/A","liquidity":"N/A","error":str(e)
-        }.items()}
-        return _cache.get(name, blank)
+        })
 
-# ── Correlation ──────────────────────────────────────────────
 def get_corr():
     now = time.time()
     if now - _corr_cache["ts"] < 300 and _corr_cache["data"]:
@@ -408,19 +373,20 @@ def get_corr():
     _corr_cache.update({"data":result,"ts":now})
     return result
 
-# ── Routes ───────────────────────────────────────────────────
+# ── Routes ────────────────────────────────────────────────────
 @app.route("/")
 def home():
-    d       = compute(DEFAULT_PAIR, ASSETS[DEFAULT_PAIR]["ticker"])
-    cot     = get_cot()
-    gold    = get_gold_live()
-    cme     = get_cme()
-    news    = get_news()
-    corr    = get_corr()
-    assets  = list(ASSETS.keys())
+    d    = compute(DEFAULT_PAIR, ASSETS[DEFAULT_PAIR]["ticker"])
+    cot  = get_cot()
+    gold = get_gold_live()
+    cme  = get_cme()
+    news = get_news()
+    corr = get_corr()
     return render_template("index.html",
         d=d, cot=cot, gold=gold, cme=cme, news=news, corr=corr,
-        assets=assets, default_pair=DEFAULT_PAIR,
+        assets=list(ASSETS.keys()),
+        asset_tv={k:v["tv"] for k,v in ASSETS.items()},
+        default_pair=DEFAULT_PAIR,
         default_tv=ASSETS[DEFAULT_PAIR]["tv"])
 
 @app.route("/api/asset/<path:key>")
@@ -434,19 +400,19 @@ def api_asset(key):
     return jsonify(d)
 
 @app.route("/api/cot")
-def api_cot():    return jsonify(get_cot())
+def api_cot():   return jsonify(get_cot())
 
 @app.route("/api/gold")
-def api_gold():   return jsonify(get_gold_live())
+def api_gold():  return jsonify(get_gold_live())
 
 @app.route("/api/cme")
-def api_cme():    return jsonify(get_cme())
+def api_cme():   return jsonify(get_cme())
 
 @app.route("/api/news")
-def api_news():   return jsonify(get_news())
+def api_news():  return jsonify(get_news())
 
 @app.route("/api/corr")
-def api_corr():   return jsonify(get_corr())
+def api_corr():  return jsonify(get_corr())
 
 @app.route("/api/all")
 def api_all():
