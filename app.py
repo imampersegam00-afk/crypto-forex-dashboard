@@ -439,10 +439,11 @@ def _eng_mtf(ticker):
 
 def _eng_ema200(ticker):
     try:
-        df=yf.download(ticker,period="200d",interval="1d",progress=False)
-        if df is None or len(df)<200: return {"ema200":0,"ema200_status":"N/A"}
+        df=yf.download(ticker,period="2y",interval="1d",progress=False)
+        if df is None or len(df)<50: return {"ema200":0,"ema200_status":"N/A"}
         c=df["Close"].squeeze()
-        ema200=float(ta.trend.EMAIndicator(c,200).ema_indicator().iloc[-1])
+        win=min(200,len(c)-1)
+        ema200=float(ta.trend.EMAIndicator(c,win).ema_indicator().iloc[-1])
         price=float(c.iloc[-1])
         status="ABOVE EMA200 📈" if price>ema200 else "BELOW EMA200 📉"
         return {"ema200":round(ema200,4),"ema200_status":status}
