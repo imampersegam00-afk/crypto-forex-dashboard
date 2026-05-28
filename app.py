@@ -406,16 +406,19 @@ def _eng_liquidity(price,high,low,volume):
         return {"liquidity":liq,"recent_high":round(rh,4),"recent_low":round(rl,4)}
     except: return {"liquidity":"N/A","recent_high":0,"recent_low":0}
 
-def _eng_risk(price,atr,score):
+def _eng_risk(price,atr,score,swing_high=0,swing_low=0):
     try:
-        if price>0 and atr>0:
-            if score>0:
-                tp1=round(price+atr*1.5,4); tp2=round(price+atr*3,4); tp3=round(price+atr*5,4); sl=round(price-atr,4)
-            else:
-                tp1=round(price-atr*1.5,4); tp2=round(price-atr*3,4); tp3=round(price-atr*5,4); sl=round(price+atr,4)
-            rr=round(abs(tp1-price)/abs(price-sl),2) if abs(price-sl)>0 else 0
-            return {"tp1":tp1,"tp2":tp2,"tp3":tp3,"sl":sl,"rr":rr}
-        return {"tp1":0,"tp2":0,"tp3":0,"sl":0,"rr":0}
+        if price<=0 or atr<=0: return {"tp1":0,"tp2":0,"tp3":0,"sl":0,"rr":0}
+        buf=round(atr*0.3,4)
+        if score>0:  # BUY
+            sl=round((swing_low-buf) if swing_low>0 else (price-atr*1.2),4)
+            tp1=round(price+atr*1.5,4); tp2=round(price+atr*3,4); tp3=round(price+atr*5,4)
+        else:  # SELL
+            sl=round((swing_high+buf) if swing_high>0 else (price+atr*1.2),4)
+            tp1=round(price-atr*1.5,4); tp2=round(price-atr*3,4); tp3=round(price-atr*5,4)
+        sl_dist=abs(price-sl)
+        rr=round(abs(tp1-price)/sl_dist,2) if sl_dist>0 else 0
+        return {"tp1":tp1,"tp2":tp2,"tp3":tp3,"sl":sl,"rr":rr}
     except: return {"tp1":0,"tp2":0,"tp3":0,"sl":0,"rr":0}
 
 def _eng_mtf(ticker):
@@ -522,12 +525,12 @@ def compute(pair):
         sm=_eng_smartmoney(close,high,low,openp,volume)
         nar=_eng_narrative(close,volume,rsi,ema20,ema50)
         mac=_eng_macro(rsi,ema20,ema50,lv,av)
+        # BOS / CHoCH structure — harus sebelum _eng_risk
+        rh20=float(np.max(high[-20:])); rl20=float(np.min(low[-20:]))
         liq=_eng_liquidity(price,high,low,volume)
-        risk=_eng_risk(price,atr,score)
+        risk=_eng_risk(price,atr,score,swing_high=rh20,swing_low=rl20)
         mtf=_eng_mtf(ticker)
         e200=_eng_ema200(ticker)
-        # BOS / CHoCH detection
-        rh20=float(np.max(high[-20:])); rl20=float(np.min(low[-20:]))
         rh10=float(np.max(high[-10:])); rl10=float(np.min(low[-10:]))
         bos="BOS BULLISH 🔼" if price>rh20 else "BOS BEARISH 🔽" if price<rl20 else "NO BOS"
         choch="CHoCH DETECTED ⚡" if (price>rh10 and ema20<ema50) or (price<rl10 and ema20>ema50) else "NO CHoCH"
