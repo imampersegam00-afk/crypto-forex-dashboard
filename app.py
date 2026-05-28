@@ -19,6 +19,23 @@ except:
 
 app = Flask(__name__)
 
+# ── CACHE per asset (TTL 60 detik) ──
+_asset_cache = {}
+_cache_ts    = {}
+CACHE_TTL    = 60  # detik
+
+def _cached(pair):
+    import time
+    now = time.time()
+    if pair in _asset_cache and (now - _cache_ts.get(pair,0)) < CACHE_TTL:
+        return _asset_cache[pair]
+    return None
+
+def _set_cache(pair, data):
+    import time
+    _asset_cache[pair] = data
+    _cache_ts[pair]    = time.time()
+
 # ═══════════════════════════════════════════════════════════════
 # FULL INSTITUTIONAL ASSET MAP
 # ═══════════════════════════════════════════════════════════════
@@ -611,7 +628,11 @@ def home():
 def api_asset(key):
     key=key.replace("_","/").upper()
     if key not in ASSETS: return jsonify({"error":"not found"}),404
-    return jsonify(compute(key))
+    cached = _cached(key)
+    if cached: return jsonify(cached)
+    data = compute(key)
+    _set_cache(key, data)
+    return jsonify(data)
 
 @app.route("/api/cot")
 def api_cot(): return jsonify(get_cot())
@@ -646,5 +667,21 @@ def api_risk():
                         "risk_amt":risk_amt,"rr":rr,"pip":pip})
     except Exception as e: return jsonify({"error":str(e)})
 
+def _preload_all():
+    """Preload semua pair di background saat startup"""
+    import threading, time
+    def worker():
+        time.sleep(3)  # tunggu app siap
+        for pair in ASSETS:
+            try:
+                data = compute(pair)
+                _set_cache(pair, data)
+                print(f"[CACHE] {pair} ready")
+            except Exception as e:
+                print(f"[CACHE] {pair} error: {e}")
+    t = threading.Thread(target=worker, daemon=True)
+    t.start()
+
 if __name__=="__main__":
-    app.run(host="0.0.0.0",port=8080,debug=False)
+    _preload_all()
+    app.run(host="0.0.0.0",port=8080,debug=False,threaded=True)
