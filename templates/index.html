@@ -1224,44 +1224,117 @@ body::after {
 .news-container {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  max-height: 380px;
+  gap: 12px;
+  max-height: 520px;
   overflow-y: auto;
+  padding-right: 4px;
 }
 .news-item {
-  background: var(--bg-surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
-  padding: 8px 10px;
+  background: rgba(8, 20, 32, 0.85);
+  border: 1px solid rgba(0, 245, 255, 0.16);
+  border-radius: 8px;
+  padding: 12px;
   transition: all 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 .news-item:hover {
-  border-color: rgba(0, 245, 255, 0.3);
-  transform: translateX(2px);
+  border-color: rgba(0, 245, 255, 0.35);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
 }
-.news-title {
-  font-size: 12px;
-  font-weight: 700;
-  color: #fff;
-  text-decoration: none;
-  line-height: 1.4;
-  display: block;
-  transition: color 0.15s ease;
-}
-.news-title:hover {
-  color: var(--cyan);
-}
-.news-summary {
-  font-size: 11px;
-  color: var(--text-dim);
-  margin-top: 4px;
-  line-height: 1.35;
-}
-.news-footer {
+.news-top {
   display: flex;
   align-items: center;
   gap: 6px;
-  margin-top: 6px;
+  flex-wrap: wrap;
+}
+.news-source-tag {
+  font-size: 9px;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--cyan);
+  border: 1px solid rgba(0, 245, 255, 0.2);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.news-time-tag {
+  font-size: 9.5px;
+  color: var(--text-muted);
+  margin-left: auto;
+}
+.news-headline {
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.4;
+  letter-spacing: 0.2px;
+}
+.news-points-card {
+  background: rgba(2, 12, 22, 0.6);
+  border: 1px solid rgba(0, 245, 255, 0.12);
+  border-radius: 6px;
+  padding: 8px 10px;
+}
+.news-points-title {
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--cyan);
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 5px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.news-points-list {
+  margin: 0;
+  padding-left: 16px;
+  color: #d0e0ed;
+  font-size: 11.5px;
+  line-height: 1.45;
+}
+.news-points-list li {
+  margin-bottom: 4px;
+}
+.news-points-list li:last-child {
+  margin-bottom: 0;
+}
+.news-insight-box {
+  background: rgba(255, 183, 3, 0.07);
+  border-left: 3px solid var(--yellow);
+  padding: 6px 10px;
+  border-radius: 0 4px 4px 0;
+  font-size: 11px;
+  line-height: 1.4;
+  color: #fff2cc;
+}
+.insight-badge {
+  font-weight: 800;
+  color: var(--yellow);
+  font-size: 9.5px;
+  display: block;
+  margin-bottom: 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.news-full-body {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px dashed rgba(255, 255, 255, 0.18);
+  border-radius: 6px;
+  padding: 10px;
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: #c0d2e2;
+  margin-top: 4px;
+}
+.news-footer-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 2px;
   flex-wrap: wrap;
 }
 .news-tag {
@@ -1275,7 +1348,37 @@ body::after {
 .tag-neut { background: var(--yellow-glow); color: var(--yellow); border: 1px solid rgba(255, 183, 3, 0.35); }
 .tag-high { background: rgba(255, 0, 85, 0.2); color: var(--red); }
 .tag-med  { background: rgba(255, 183, 3, 0.2); color: var(--yellow); }
-.news-assets { font-size: 9px; color: var(--text-muted); margin-left: auto; font-weight: 600; }
+.news-assets { font-size: 9px; color: var(--text-muted); font-weight: 600; }
+.news-expand-btn {
+  background: rgba(0, 245, 255, 0.1);
+  border: 1px solid rgba(0, 245, 255, 0.3);
+  color: var(--cyan);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.news-expand-btn:hover {
+  background: rgba(0, 245, 255, 0.2);
+  color: #fff;
+}
+.news-src-link {
+  font-size: 9.5px;
+  color: var(--text-muted);
+  text-decoration: none;
+  padding: 3px 6px;
+  border-radius: 4px;
+  margin-left: auto;
+  transition: color 0.15s;
+}
+.news-src-link:hover {
+  color: var(--cyan);
+}
 
 /* CME Futures Grid */
 .cme-grid {
@@ -1462,13 +1565,18 @@ body::after {
   body[data-mob-tab="intel"] .col-right { display: flex; }
   body[data-mob-tab="levels"] .col-center { display: flex; }
   
-  /* When on chart tab, hide lower calculator and extra tables */
-  body[data-mob-tab="chart"] #center-levels,
+  /* When on chart tab, hide only heavy technical tables, keep execution levels & track record */
   body[data-mob-tab="chart"] #center-indicators,
   body[data-mob-tab="chart"] #center-smc,
   body[data-mob-tab="chart"] #center-mtf,
   body[data-mob-tab="chart"] #center-risk {
     display: none;
+  }
+  body[data-mob-tab="chart"] #center-levels {
+    display: flex;
+  }
+  body[data-mob-tab="chart"] #center-track-record {
+    display: flex;
   }
   
   /* When on levels tab, hide the chart iframe to optimize screen */
@@ -1640,8 +1748,10 @@ body::after {
         <div class="eng-row"><span class="eng-lbl">TREND BIAS</span><span class="eng-val ev-neut" id="e-trend">—</span></div>
         <div class="eng-row"><span class="eng-lbl">MOMENTUM</span><span class="eng-val ev-neut" id="e-mom">—</span></div>
         <div class="eng-row"><span class="eng-lbl">HF SIGNAL</span><span class="eng-val ev-neut" id="e-hf">—</span></div>
+        <div id="e-hf-reason" style="display:none;font-size:10px;color:var(--text-dim);padding:2px 8px 4px 8px;line-height:1.2;grid-column:1/-1;"></div>
         <div class="eng-row"><span class="eng-lbl">HF SCORE</span><span class="eng-val mono" id="e-hfs">—</span></div>
         <div class="eng-row"><span class="eng-lbl">ML PREDICTION</span><span class="eng-val ev-neut" id="e-ml">—</span></div>
+        <div id="e-ml-reason" style="display:none;font-size:10px;color:var(--text-dim);padding:2px 8px 4px 8px;line-height:1.2;grid-column:1/-1;"></div>
         <div class="eng-row"><span class="eng-lbl">ML ACCURACY</span><span class="eng-val mono" id="e-mla">—</span></div>
         <div class="eng-row"><span class="eng-lbl">SNIPER ENTRY</span><span class="eng-val ev-neut" id="e-sn">—</span></div>
         <div class="eng-row"><span class="eng-lbl">WHALE TRACKER</span><span class="eng-val ev-neut" id="e-wh">—</span></div>
@@ -1756,6 +1866,36 @@ body::after {
           <span id="rr-sub-entry">Entry: <b id="rr-disp-entry" class="mono">—</b></span>
           <span id="rr-sub-tp">TP2: <b id="rr-disp-tp" class="mono">—</b></span>
         </div>
+    </div>
+
+    <!-- AI MODEL REAL TRACK RECORD PANEL -->
+    <div class="card" id="center-track-record">
+      <div class="card-header" style="display:flex;justify-content:space-between;align-items:center;">
+        <span class="card-title">🏆 AI MODEL REAL TRACK RECORD (3-BAR OUTCOME)</span>
+        <span class="badge badge-cyan mono" id="tr-winrate" style="font-size:12px;font-weight:900;">WIN RATE: —%</span>
+      </div>
+      <div style="display:flex;gap:16px;padding:8px 12px;background:rgba(255,255,255,0.02);border-bottom:1px solid var(--border);flex-wrap:wrap;">
+        <div style="font-size:11px;color:var(--text-dim);">Total Prediksi: <span class="mono" id="tr-total" style="color:#fff;font-weight:700;">—</span></div>
+        <div style="font-size:11px;color:var(--text-dim);">Akurasi Benar: <span class="mono" id="tr-correct" style="color:var(--green);font-weight:700;">—</span></div>
+        <div style="font-size:11px;color:var(--text-dim);">Arsitektur: <span class="mono" style="color:var(--cyan);font-weight:700;">NumPy Logistic Reg (Walk-Forward)</span></div>
+      </div>
+      <div style="max-height:210px;overflow-y:auto;padding:2px 0;">
+        <table style="width:100%;border-collapse:collapse;font-size:11px;" class="mono" id="track-record-table">
+          <thead>
+            <tr style="color:var(--text-dim);border-bottom:1px solid var(--border);text-align:left;">
+              <th style="padding:6px 8px;">WAKTU</th>
+              <th style="padding:6px 8px;">PAIR</th>
+              <th style="padding:6px 8px;">SINYAL</th>
+              <th style="padding:6px 8px;">CONF</th>
+              <th style="padding:6px 8px;">ENTRY</th>
+              <th style="padding:6px 8px;">OUTCOME (3-BAR)</th>
+              <th style="padding:6px 8px;text-align:center;">HASIL</th>
+            </tr>
+          </thead>
+          <tbody id="track-record-tbody">
+            <!-- Populated dynamically via loadTrackRecord() -->
+          </tbody>
+        </table>
       </div>
     </div>
 
@@ -1933,17 +2073,50 @@ body::after {
     <!-- INSTITUTIONAL NEWS FEED -->
     <div class="card">
       <div class="card-header">
-        <span class="card-title">📡 LIVE INSTITUTIONAL NEWS FEED</span>
+        <span class="card-title">📡 LIVE INTEL & NEWS (POIN UTAMA)</span>
       </div>
       <div class="news-container" id="nws">
         {% for item in news %}
         <div class="news-item">
-          <a class="news-title" href="{{ item.link }}" target="_blank" rel="noopener">{{ item.title }}</a>
-          <div class="news-summary">{{ item.summary }}</div>
-          <div class="news-footer">
+          <div class="news-top">
+            <span class="news-source-tag">{{ item.source }}</span>
             <span class="news-tag {{ 'tag-bull' if item.sentiment=='BULLISH' else 'tag-bear' if item.sentiment=='BEARISH' else 'tag-neut' }}">{{ item.sentiment }}</span>
             <span class="news-tag {{ 'tag-high' if item.impact=='HIGH' else 'tag-med' }}">{{ item.impact }} IMPACT</span>
+            <span class="news-time-tag">{{ item.time }}</span>
+          </div>
+
+          <div class="news-headline">{{ item.title }}</div>
+
+          <div class="news-points-card">
+            <div class="news-points-title">📌 RINGKASAN & POIN KUNCI:</div>
+            <ul class="news-points-list">
+              {% for pt in item.bullet_points %}
+              <li>{{ pt }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+
+          {% if item.market_insight %}
+          <div class="news-insight-box">
+            <span class="insight-badge">⚡ ANALISIS DAMPAK PASAR</span>
+            {{ item.market_insight }}
+          </div>
+          {% endif %}
+
+          {% if item.has_more %}
+          <div class="news-full-body" id="news-full-{{ loop.index }}" style="display:none;">
+            {{ item.full_body }}
+          </div>
+          {% endif %}
+
+          <div class="news-footer-row">
             <span class="news-assets">{{ item.assets|join(' · ') }}</span>
+            {% if item.has_more %}
+            <button class="news-expand-btn" onclick="toggleNewsFull('{{ loop.index }}')">
+              <span id="news-toggle-lbl-{{ loop.index }}">📖 Baca Paragraf Lengkap</span>
+            </button>
+            {% endif %}
+            <a class="news-src-link" href="{{ item.link }}" target="_blank" rel="noopener" title="Buka website asli jika ingin memeriksa sumber">🔗 Sumber Asli</a>
           </div>
         </div>
         {% endfor %}
@@ -2193,17 +2366,19 @@ function loadAsset(pair){
 
       var ce = document.getElementById('sigchg');
       var mchg = document.getElementById('mob-chg-val');
-      var chgText = (d.chg_pct >= 0 ? '+' : '') + d.chg_pct + '%';
+      var chgVal = (d.chg_pct != null && !isNaN(d.chg_pct)) ? Number(d.chg_pct) : null;
+      var chgText = (chgVal !== null) ? ((chgVal >= 0 ? '+' : '') + chgVal.toFixed(2) + '%') : '—';
       if(ce){
         ce.textContent = chgText;
-        ce.className = 'hero-chg mono ' + (d.chg_pct >= 0 ? 'up' : 'dn');
+        ce.className = 'hero-chg mono ' + (chgVal !== null ? (chgVal >= 0 ? 'up' : 'dn') : 'neut');
       }
       if(mchg){
         mchg.textContent = chgText;
-        mchg.style.color = d.chg_pct >= 0 ? 'var(--green)' : 'var(--red)';
+        mchg.style.color = chgVal !== null ? (chgVal >= 0 ? 'var(--green)' : 'var(--red)') : 'var(--muted)';
       }
 
-      $s('sigconf', 'CONFIDENCE ' + (d.confidence || 0) + '%');
+      var confVal = (d.confidence != null && !isNaN(d.confidence)) ? Math.round(d.confidence) : null;
+      $s('sigconf', 'CONFIDENCE ' + (confVal !== null ? confVal + '%' : '—%'));
       var bdg = document.getElementById('sigbadge');
       if(bdg){ bdg.textContent = d.signal; bdg.className = sigCls(d.signal); }
 
@@ -2218,8 +2393,19 @@ function loadAsset(pair){
       setEng('e-trend', d.trend_status);
       setEng('e-mom',   d.momentum);
       setEng('e-hf',    d.hf_signal);
-      $s('e-hfs',  (d.hf_score || 0) + '/100');
+      var hfr = document.getElementById('e-hf-reason');
+      if(hfr){
+        if(d.hf_reason){ hfr.textContent = '💡 ' + d.hf_reason; hfr.style.display = 'block'; }
+        else { hfr.style.display = 'none'; }
+      }
+      $s('e-hfs',  (d.hf_score != null ? d.hf_score : 0) + '/100');
+
       setEng('e-ml',   d.ml_signal);
+      var mlr = document.getElementById('e-ml-reason');
+      if(mlr){
+        if(d.ml_reason){ mlr.textContent = '🧠 ' + d.ml_reason; mlr.style.display = 'block'; }
+        else { mlr.style.display = 'none'; }
+      }
       $s('e-mla',  (d.ml_accuracy || 0) + '%');
       setEng('e-sn',   d.sniper);
       setEng('e-wh',   d.whale);
@@ -2319,11 +2505,14 @@ function updateScanItem(pair, d){
   var tkc2El = document.getElementById('tkc2_' + key);
   if(!d) return;
 
-  var chgText = (d.chg_pct >= 0 ? '+' : '') + d.chg_pct + '%';
-  var cls = 'tk-chg mono ' + (d.chg_pct >= 0 ? 'up' : 'dn');
-  if(tkEl) tkEl.textContent = d.price;
+  var priceStr = (d.price != null && !isNaN(d.price) && d.price > 0) ? d.price : '—';
+  var chgVal = (d.chg_pct != null && !isNaN(d.chg_pct)) ? Number(d.chg_pct) : null;
+  var chgText = (chgVal !== null) ? ((chgVal >= 0 ? '+' : '') + chgVal.toFixed(2) + '%') : '—';
+  var cls = 'tk-chg mono ' + (chgVal !== null ? (chgVal >= 0 ? 'up' : 'dn') : 'neut');
+
+  if(tkEl) tkEl.textContent = priceStr;
   if(tkcEl){ tkcEl.textContent = chgText; tkcEl.className = cls; }
-  if(tk2El) tk2El.textContent = d.price;
+  if(tk2El) tk2El.textContent = priceStr;
   if(tkc2El){ tkc2El.textContent = chgText; tkc2El.className = cls; }
 }
 
@@ -2352,9 +2541,11 @@ function buildHeatmap(data){
     else if(sig.includes('SELL'))   cls += 'hm-bear';
     else cls += 'hm-neut';
 
+    var chgVal = (d.chg_pct != null && !isNaN(d.chg_pct)) ? Number(d.chg_pct) : null;
+    var chgText = (chgVal !== null) ? ((chgVal >= 0 ? '+' : '') + chgVal.toFixed(2) + '%') : '—';
     var div = document.createElement('div');
     div.className = cls;
-    div.innerHTML = '<div>' + pair + '</div><div style="font-size:9px">' + (d.chg_pct >= 0 ? '+' : '') + d.chg_pct + '%</div>';
+    div.innerHTML = '<div>' + pair + '</div><div style="font-size:9px">' + chgText + '</div>';
     div.onclick = function(){ sw(pair); };
     el.appendChild(div);
   });
@@ -2370,16 +2561,19 @@ function loadGold(){
 
 function loadCME(){
   fetch('/api/cme').then(function(r){ return r.json(); }).then(function(data){
-    var el = document.getElementById('cme-grid'); if(!el) return;
+    var el = document.getElementById('cme-grid'); if(!el || !Array.isArray(data)) return;
     el.innerHTML = '';
     data.forEach(function(item){
       var div = document.createElement('div');
       div.className = 'cme-cell';
+      var chgVal = (item.chg_pct != null && !isNaN(item.chg_pct)) ? Number(item.chg_pct) : null;
+      var chgStr = (chgVal !== null) ? ((chgVal >= 0 ? '+' : '') + chgVal.toFixed(2) + '%') : (item.pct || '—');
+      var isUp = (chgVal !== null) ? (chgVal >= 0) : (item.up !== false);
       div.innerHTML =
-        '<div class="cme-name">' + item.name + '</div>' +
-        '<div class="cme-price mono">' + item.price + '</div>' +
-        '<div class="cme-chg mono ' + (item.chg_pct >= 0 ? 'up' : 'dn') + '">' +
-          (item.chg_pct >= 0 ? '+' : '') + item.chg_pct + '%' +
+        '<div class="cme-name">' + (item.icon ? item.icon + ' ' : '') + item.name + '</div>' +
+        '<div class="cme-price mono">' + (item.price || '—') + '</div>' +
+        '<div class="cme-chg mono ' + (isUp ? 'up' : 'dn') + '">' +
+          (item.chg ? item.chg + ' ' : '') + '(' + chgStr + ')' +
         '</div>';
       el.appendChild(div);
     });
@@ -2388,34 +2582,101 @@ function loadCME(){
 
 function loadCOT(){
   fetch('/api/cot').then(function(r){ return r.json(); }).then(function(d){
-    $s('cotlong',  d.nc_long_f);  $s('cotshort', d.nc_short_f);
-    $s('cotoi',    d.oi_f);
-    $s('cotdate',  d.date);       $s('cotchg',   d.chg_oi_f);
+    if(!d) return;
+    $s('cotlong',  d.nc_long_f || '—');  $s('cotshort', d.nc_short_f || '—');
+    $s('cotoi',    d.oi_f || '—');
+    $s('cotdate',  d.date || '—');       $s('cotchg',   d.chg_oi_f || '—');
     var se = document.getElementById('cotsent');
     if(se){
-      se.textContent = d.sentiment;
-      se.style.color = d.sentiment && d.sentiment.includes('BULL') ? 'var(--green)' : 'var(--red)';
+      se.textContent = d.sentiment || 'Data COT offline';
+      se.style.color = (d.sentiment && d.sentiment.includes('BULL')) ? 'var(--green)' : (d.sentiment && d.sentiment.includes('BEAR')) ? 'var(--red)' : 'var(--text-dim)';
     }
   }).catch(function(){});
+}
+
+function loadTrackRecord(){
+  fetch('/api/track_record').then(function(r){ return r.json(); }).then(function(data){
+    if(!data) return;
+    $s('tr-winrate', 'WIN RATE: ' + (data.win_rate != null ? data.win_rate : 0) + '%');
+    $s('tr-total', data.total != null ? data.total : 0);
+    $s('tr-correct', data.correct != null ? data.correct : 0);
+    var tb = document.getElementById('track-record-tbody');
+    if(!tb || !Array.isArray(data.records)) return;
+    tb.innerHTML = '';
+    data.records.forEach(function(r){
+      var tr = document.createElement('tr');
+      tr.style.borderBottom = '1px solid rgba(255,255,255,0.04)';
+      var sigCls = (r.signal || '').includes('BUY') ? 'up' : (r.signal || '').includes('SELL') ? 'dn' : 'neut';
+      var isWin = (r.correct === 'Y');
+      tr.innerHTML =
+        '<td style="padding:5px 8px;color:var(--text-dim);">' + (r.timestamp || '—') + '</td>' +
+        '<td style="padding:5px 8px;font-weight:bold;">' + (r.pair || '—') + '</td>' +
+        '<td style="padding:5px 8px;" class="' + sigCls + '">' + (r.signal || '—') + '</td>' +
+        '<td style="padding:5px 8px;">' + (r.confidence ? r.confidence + '%' : '—') + '</td>' +
+        '<td style="padding:5px 8px;">' + (r.entry_price || '—') + '</td>' +
+        '<td style="padding:5px 8px;color:var(--text-dim);">' + (r.outcome || 'Pending...') + '</td>' +
+        '<td style="padding:5px 8px;text-align:center;' + (isWin ? 'color:var(--green);font-weight:bold;' : 'color:var(--red);font-weight:bold;') + '">' +
+          (isWin ? '✅ WIN' : '❌ LOSS') +
+        '</td>';
+      tb.appendChild(tr);
+    });
+  }).catch(function(){});
+}
+
+function toggleNewsFull(idx){
+  playAudioTone(700, 'sine', 0.04);
+  var el = document.getElementById('news-full-' + idx);
+  var lbl = document.getElementById('news-toggle-lbl-' + idx);
+  if(!el) return;
+  if(el.style.display === 'none' || el.style.display === ''){
+    el.style.display = 'block';
+    if(lbl) lbl.textContent = '✖ Tutup Paragraf';
+  } else {
+    el.style.display = 'none';
+    if(lbl) lbl.textContent = '📖 Baca Paragraf Lengkap';
+  }
 }
 
 function loadNews(){
   fetch('/api/news').then(function(r){ return r.json(); }).then(function(data){
     var el = document.getElementById('nws'); if(!el) return;
     el.innerHTML = '';
-    data.forEach(function(item){
+    data.forEach(function(item, idx){
+      var itemIdx = idx + 1;
       var sentTag = item.sentiment === 'BULLISH' ? 'tag-bull' : item.sentiment === 'BEARISH' ? 'tag-bear' : 'tag-neut';
       var impTag  = item.impact === 'HIGH' ? 'tag-high' : 'tag-med';
       var assets  = (item.assets || ['General']).join(' · ');
+      var pts = (item.bullet_points && item.bullet_points.length) ? item.bullet_points : [item.summary];
+      var ptsHtml = pts.map(function(p){ return '<li>' + p + '</li>'; }).join('');
+
+      var insightHtml = item.market_insight ?
+        '<div class="news-insight-box"><span class="insight-badge">⚡ ANALISIS DAMPAK PASAR</span>' + item.market_insight + '</div>' : '';
+
+      var fullHtml = item.has_more ?
+        '<div class="news-full-body" id="news-full-' + itemIdx + '" style="display:none;">' + item.full_body + '</div>' : '';
+
+      var toggleBtn = item.has_more ?
+        '<button class="news-expand-btn" onclick="toggleNewsFull(\'' + itemIdx + '\')"><span id="news-toggle-lbl-' + itemIdx + '">📖 Baca Paragraf Lengkap</span></button>' : '';
+
       var div = document.createElement('div');
       div.className = 'news-item';
       div.innerHTML =
-        '<a class="news-title" href="' + (item.link || '#') + '" target="_blank" rel="noopener">' + item.title + '</a>' +
-        '<div class="news-summary">' + item.summary + '</div>' +
-        '<div class="news-footer">' +
+        '<div class="news-top">' +
+          '<span class="news-source-tag">🔒 ' + (item.source || 'INTEL DESK [DISENSOR]') + '</span>' +
           '<span class="news-tag ' + sentTag + '">' + item.sentiment + '</span>' +
           '<span class="news-tag ' + impTag + '">' + item.impact + ' IMPACT</span>' +
+          '<span class="news-time-tag">' + (item.time || '') + '</span>' +
+        '</div>' +
+        '<div class="news-headline">' + item.title + '</div>' +
+        '<div class="news-points-card">' +
+          '<div class="news-points-title">📌 RINGKASAN & POIN KUNCI:</div>' +
+          '<ul class="news-points-list">' + ptsHtml + '</ul>' +
+        '</div>' +
+        insightHtml +
+        fullHtml +
+        '<div class="news-footer-row">' +
           '<span class="news-assets">' + assets + '</span>' +
+          toggleBtn +
         '</div>';
       el.appendChild(div);
     });
@@ -2519,17 +2780,21 @@ function calcRisk(){
     }).catch(function(){});
 }
 
-function setTF(tf){
+function setTF(tf, el){
   playAudioTone(800, 'sine', 0.05);
   CURRENT_TF = tf;
   document.querySelectorAll('.tf-btn').forEach(function(b){ b.classList.remove('active'); });
-  if(event && event.target) event.target.classList.add('active');
+  var target = el || (typeof event !== 'undefined' && event ? (event.target.closest('.tf-btn') || event.target) : null);
+  if(target && target.classList) target.classList.add('active');
 
   var tv  = TV_MAP[CUR] || 'XAUUSD';
   var exc = getExchange(CUR);
-  var el  = document.getElementById('tvchart');
-  if(el){
-    el.src = 'https://s.tradingview.com/widgetembed/?symbol=' + exc + '%3A' + tv +
+  var chartBadge = document.getElementById('chart-pair-badge');
+  if(chartBadge) chartBadge.textContent = exc + ':' + tv;
+
+  var chartEl = document.getElementById('tvchart');
+  if(chartEl){
+    chartEl.src = 'https://s.tradingview.com/widgetembed/?symbol=' + exc + '%3A' + tv +
       '&interval=' + tf + '&theme=dark&style=1&timezone=Asia%2FJakarta&withdateranges=1&hideideas=1' +
       '&studies=RSI%40tv-basicstudies%1FMACD%40tv-basicstudies%1FBB%40tv-basicstudies%1FEMA%40tv-basicstudies' +
       '&backgroundColor=rgb(2,12,18)';
@@ -2537,13 +2802,14 @@ function setTF(tf){
   showToast('Timeframe diubah ke ' + tf + 'M');
 }
 
-function setMobileTab(tab) {
+function setMobileTab(tab, el) {
   playAudioTone(650, 'sine', 0.05);
   document.body.setAttribute('data-mob-tab', tab);
   document.querySelectorAll('.mob-tab-btn').forEach(function(btn){
     btn.classList.remove('active');
   });
-  if(event && event.target) event.target.classList.add('active');
+  var target = el || (typeof event !== 'undefined' && event ? (event.target.closest('.mob-tab-btn') || event.target) : null);
+  if(target && target.classList) target.classList.add('active');
   window.scrollTo({top: 0, behavior: 'smooth'});
 }
 
@@ -2556,20 +2822,13 @@ function copyTradeSignal() {
   var rr = document.getElementById('rr').textContent;
   var sig = document.getElementById('sigbadge').textContent;
 
-  var text = "⚡ TERMINAL ELITE SIGNAL
-" +
-             "Aset: " + CUR + "
-" +
-             "Sinyal: " + sig + "
-" +
-             "Harga Masuk (Entry): " + price + "
-" +
-             "Target Profit 1 (TP1): " + tp1 + "
-" +
-             "Target Profit 2 (TP2): " + tp2 + "
-" +
-             "Stop Loss (SL): " + sl + "
-" +
+  var text = "⚡ TERMINAL ELITE SIGNAL\n" +
+             "Aset: " + CUR + "\n" +
+             "Sinyal: " + sig + "\n" +
+             "Harga Masuk (Entry): " + price + "\n" +
+             "Target Profit 1 (TP1): " + tp1 + "\n" +
+             "Target Profit 2 (TP2): " + tp2 + "\n" +
+             "Stop Loss (SL): " + sl + "\n" +
              "R:R Ratio: " + rr;
 
   navigator.clipboard.writeText(text).then(function(){
@@ -2654,12 +2913,14 @@ document.addEventListener('DOMContentLoaded', function(){
   loadGold();
   loadCME();
   loadCOT();
+  loadTrackRecord();
   loadNews();
   loadFG();
   loadCurrencyStrength();
   loadAll();
 
   setInterval(function(){ loadAsset(CUR); }, 60000);
+  setInterval(loadTrackRecord, 30000);
   setInterval(loadAll, 120000);
   setInterval(loadGold, 60000);
   setInterval(loadCME, 120000);
