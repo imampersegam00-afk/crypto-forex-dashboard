@@ -48,6 +48,13 @@
 - [x] **3. Endpoint `/api/fear_greed` & Preload Resource**:
   - Menyediakan endpoint Fear & Greed index bawaan dan optimasi preload font css di browser.
 
+### Tahap 4: Integrasi AGENTS.md & Plugin Ekosistem
+- [x] **1. Konfigurasi AGENTS.md**:
+  - Penambahan file panduan instruksi agen otonom di root dan direktori proyek.
+- [x] **2. Instalasi & Verifikasi Plugin**:
+  - Plugin `ponytail` terpasang (`agy plugin install https://github.com/DietrichGebert/ponytail`).
+  - Plugin `caveman` terpasang dan aktif untuk efisiensi respon.
+
 ---
 
 ## 🔍 STATUS VERIFIKASI TERAKHIR
