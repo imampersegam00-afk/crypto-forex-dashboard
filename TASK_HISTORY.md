@@ -54,6 +54,9 @@
 - [x] **2. Instalasi & Verifikasi Plugin**:
   - Plugin `ponytail` terpasang (`agy plugin install https://github.com/DietrichGebert/ponytail`).
   - Plugin `caveman` terpasang dan aktif untuk efisiensi respon.
+- [x] **3. Pull Request GitHub**:
+  - Branch: `docs/add-agents-guide`
+  - PR: [#1 (docs: integrasi panduan agen otonom AGENTS.md)](https://github.com/imampersegam00-afk/crypto-forex-dashboard/pull/1)
 
 ---
 
