@@ -58,6 +58,16 @@
   - Branch: `docs/add-agents-guide`
   - PR: [#1 (docs: integrasi panduan agen otonom AGENTS.md)](https://github.com/imampersegam00-afk/crypto-forex-dashboard/pull/1)
 
+### Tahap 5: Penambahan Hasil Rangkuman Berwarna pada Live Intel & News
+- [x] **1. Kotak Hasil Rangkuman Berwarna per Berita (`.news-summary-box`)**:
+  - Menampilkan ringkasan naratif informatif dengan aksen warna sesuai sentimen (`.sum-bull` hijau neon, `.sum-bear` merah neon, `.sum-neut` cyan neon).
+  - Elemen kartu berita lain (sumber intel, sentimen, impact, judul, poin kunci, analisis dampak pasar, footer) tetap utuh tanpa perombakan radikal.
+- [x] **2. Banner Rangkuman Eksekutif Pasar (`.intel-summary-banner`)**:
+  - Sintesis agregat sentimen dan sorotan makro terkini di bagian atas card Intel & News.
+- [x] **3. Sinkronisasi Real-time di JS (`loadNews`) & Backend (`app.py`)**:
+  - Rendering dinamis JS dan SSR Jinja2 sinkron sempurna.
+  - Fallback ringkasan di backend diperkuat agar teks rangkuman selalu informatif.
+
 ---
 
 ## 🔍 STATUS VERIFIKASI TERAKHIR

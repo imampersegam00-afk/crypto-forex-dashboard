@@ -748,9 +748,14 @@ def _refresh_news_pool():
                             body = _clean_news_text(e.get("summary", ""))
                             sent, s_icon = _news_sentiment(title)
                             imp, i_icon = _news_impact(title)
+                            raw_sum = body[:240].strip()
+                            if raw_sum and len(raw_sum) > 15:
+                                sum_text = raw_sum + ("..." if len(body) > 240 else "")
+                            else:
+                                sum_text = f"Analisis intelijen mencatat aliran modal dan katalis volatilitas pada instrumen {feed_tag} dengan bias sentimen {sent}."
                             pool.append({
                                 "title": title, "feed_tag": feed_tag, "source": default_source,
-                                "summary": body[:240] + ("..." if len(body)>240 else ""),
+                                "summary": sum_text,
                                 "full_body": body if body else title,
                                 "bullet_points": ["Katalis volatilitas pasar global.", "Menunggu konfirmasi arah tren harga."],
                                 "market_insight": "Pasar memantau respon katalis terhadap level resistance dan support.",
