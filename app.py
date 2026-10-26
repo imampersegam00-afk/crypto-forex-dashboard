@@ -14,6 +14,13 @@ from flask import Flask, jsonify, render_template, request
 app = Flask(__name__)
 app.config['TEMPLATES_AUTO_RELOAD'] = True
 
+@app.after_request
+def add_no_cache_headers(response):
+    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 WEIGHTS_FILE = os.path.join(BASE_DIR, "ml_weights.json")
 PREDICTION_LOG_FILE = os.path.join(BASE_DIR, "prediction_log.csv")
