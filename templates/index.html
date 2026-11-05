@@ -1714,6 +1714,211 @@ body::after {
   .levels-grid { grid-template-columns: 1fr 1fr; }
   .mtf-grid { grid-template-columns: repeat(3, 1fr); }
 }
+
+/* ── ECONOMIC CALENDAR CARD ── */
+.cal-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.cal-filter-group {
+  display: flex;
+  gap: 4px;
+}
+.cal-btn {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-dim);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.cal-btn:hover {
+  border-color: var(--cyan);
+  color: #fff;
+}
+.cal-btn.active {
+  background: rgba(0, 245, 255, 0.15);
+  border-color: var(--cyan);
+  color: var(--cyan);
+  box-shadow: 0 0 8px rgba(0, 245, 255, 0.3);
+}
+
+.cal-countdown-banner {
+  background: linear-gradient(90deg, rgba(255, 0, 85, 0.12) 0%, rgba(20, 28, 48, 0.6) 100%);
+  border: 1px solid rgba(255, 0, 85, 0.35);
+  border-left: 3px solid var(--red);
+  border-radius: 6px;
+  padding: 8px 10px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.cal-countdown-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+.cal-countdown-badge {
+  color: var(--red);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.cal-countdown-timer {
+  font-family: 'JetBrains Mono', monospace;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 800;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 0, 85, 0.4);
+}
+.cal-countdown-title {
+  font-size: 11px;
+  color: var(--text-bright);
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.cal-countdown-meta {
+  font-size: 10px;
+  color: var(--text-muted);
+  display: flex;
+  gap: 8px;
+}
+
+.cal-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  max-height: 380px;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+.cal-list-container::-webkit-scrollbar {
+  width: 4px;
+}
+.cal-list-container::-webkit-scrollbar-thumb {
+  background: rgba(0, 245, 255, 0.2);
+  border-radius: 4px;
+}
+
+.cal-item {
+  background: rgba(15, 23, 42, 0.65);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  transition: border-color 0.2s, background 0.2s;
+}
+.cal-item:hover {
+  background: rgba(20, 32, 56, 0.85);
+  border-color: rgba(0, 245, 255, 0.3);
+}
+.cal-item.is-focus {
+  border-color: rgba(0, 245, 255, 0.45);
+  background: rgba(0, 245, 255, 0.04);
+}
+.cal-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  font-size: 10px;
+}
+.cal-tags-left {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+.cal-curr-pill {
+  font-weight: 800;
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-family: 'JetBrains Mono', monospace;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-bright);
+}
+.cal-curr-usd { background: rgba(0, 255, 157, 0.15); color: var(--green); border: 1px solid rgba(0, 255, 157, 0.3); }
+.cal-curr-eur { background: rgba(0, 245, 255, 0.15); color: var(--cyan); border: 1px solid rgba(0, 245, 255, 0.3); }
+.cal-curr-gbp { background: rgba(255, 183, 3, 0.15); color: var(--yellow); border: 1px solid rgba(255, 183, 3, 0.3); }
+.cal-curr-jpy { background: rgba(255, 0, 85, 0.15); color: var(--red); border: 1px solid rgba(255, 0, 85, 0.3); }
+
+.cal-imp-tag {
+  font-size: 9px;
+  font-weight: 800;
+  padding: 1px 5px;
+  border-radius: 3px;
+  text-transform: uppercase;
+}
+.cal-imp-high { background: rgba(255, 0, 85, 0.2); color: #ff3377; border: 1px solid rgba(255, 0, 85, 0.4); }
+.cal-imp-medium { background: rgba(255, 183, 3, 0.2); color: #ffb703; border: 1px solid rgba(255, 183, 3, 0.4); }
+.cal-imp-low { background: rgba(148, 163, 184, 0.15); color: #94a3b8; border: 1px solid rgba(148, 163, 184, 0.3); }
+
+.cal-rel-badge {
+  font-size: 9px;
+  font-weight: 800;
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: rgba(0, 245, 255, 0.12);
+  color: var(--cyan);
+  border: 1px solid rgba(0, 245, 255, 0.35);
+}
+.cal-time-lbl {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-muted);
+  font-size: 10px;
+}
+.cal-event-name {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-bright);
+  line-height: 1.35;
+}
+.cal-metrics-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
+  padding: 4px 6px;
+  margin-top: 2px;
+}
+.cal-metric-col {
+  display: flex;
+  flex-direction: column;
+}
+.cal-metric-lbl {
+  font-size: 9px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+.cal-metric-val {
+  font-size: 10px;
+  font-weight: 700;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-dim);
+}
+.cal-metric-val.cal-act-val {
+  color: var(--cyan);
+}
 </style>
 </head>
 <body data-mob-tab="chart">
@@ -2173,6 +2378,69 @@ body::after {
       <div id="heatmap-list"></div>
     </div>
 
+    <!-- ECONOMIC CALENDAR & MACRO RELEASES -->
+    <div class="card" id="card-economic-calendar">
+      <div class="card-header">
+        <span class="card-title">📅 KALENDER EKONOMI & RILIS MAKRO</span>
+      </div>
+      
+      <div class="cal-header-row">
+        <span style="font-size:10px;color:var(--text-muted);font-weight:700;">JADWAL RILIS PASAR</span>
+        <div class="cal-filter-group">
+          <button class="cal-btn active" id="cal-f-all" onclick="filterCal('all')">Semua</button>
+          <button class="cal-btn" id="cal-f-high" onclick="filterCal('high')">🔴 High</button>
+          <button class="cal-btn" id="cal-f-active" onclick="filterCal('active')">🎯 Aset Aktif</button>
+        </div>
+      </div>
+
+      <!-- COUNTDOWN BANNER UNTUK EVENT TERDEKAT -->
+      <div class="cal-countdown-banner" id="cal-hero-banner">
+        <div class="cal-countdown-header">
+          <span class="cal-countdown-badge">⏳ RILIS HIGH IMPACT TERDEKAT</span>
+          <span class="cal-countdown-timer" id="cal-hero-timer">Memuat…</span>
+        </div>
+        <div class="cal-countdown-title" id="cal-hero-title">Memeriksa jadwal kalender global…</div>
+        <div class="cal-countdown-meta">
+          <span id="cal-hero-curr">USD</span>
+          <span id="cal-hero-time">—</span>
+          <span id="cal-hero-target">Dampak: Pasar Global</span>
+        </div>
+      </div>
+
+      <!-- EVENT LIST -->
+      <div class="cal-list-container" id="cal-list">
+        {% for e in calendar %}
+        <div class="cal-item {% if e.is_relevant %}is-focus{% endif %}">
+          <div class="cal-top-row">
+            <div class="cal-tags-left">
+              <span class="cal-curr-pill cal-curr-{{ e.currency|lower }}">{{ e.currency }}</span>
+              <span class="cal-imp-tag cal-imp-{{ e.importance|lower }}">{{ e.importance }}</span>
+              {% if e.is_relevant %}
+              <span class="cal-rel-badge">{{ e.relevance_badge }}</span>
+              {% endif %}
+            </div>
+            <span class="cal-time-lbl">{{ e.time_wib }} ({{ e.relative }})</span>
+          </div>
+          <div class="cal-event-name">{{ e.name }}</div>
+          <div class="cal-metrics-row">
+            <div class="cal-metric-col">
+              <span class="cal-metric-lbl">Aktual</span>
+              <span class="cal-metric-val cal-act-val">{{ e.actual }}</span>
+            </div>
+            <div class="cal-metric-col">
+              <span class="cal-metric-lbl">Forecast</span>
+              <span class="cal-metric-val">{{ e.forecast }}</span>
+            </div>
+            <div class="cal-metric-col">
+              <span class="cal-metric-lbl">Sebelumnya</span>
+              <span class="cal-metric-val">{{ e.previous }}</span>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
     <!-- INSTITUTIONAL NEWS FEED -->
     <div class="card">
       <div class="card-header">
@@ -2452,6 +2720,7 @@ function sw(pair){
   $s('sigprice', '—'); $s('sigchg', '—'); $s('sigconf', 'CONFIDENCE —%');
 
   loadAsset(pair);
+  loadCalendar();
   showToast('Memuat aset ' + pair);
 }
 
@@ -2826,6 +3095,119 @@ function loadNews(){
   }).catch(function(){});
 }
 
+// ── Economic Calendar & Countdown ──
+var currentCalFilter = 'all';
+var latestCalendarData = [];
+
+function filterCal(type){
+  currentCalFilter = type;
+  document.querySelectorAll('.cal-btn').forEach(function(b){ b.classList.remove('active'); });
+  var activeBtn = document.getElementById('cal-f-' + type);
+  if(activeBtn) activeBtn.classList.add('active');
+  renderCalendarList();
+}
+
+function loadCalendar(){
+  var url = '/api/calendar?asset=' + encodeURIComponent(CUR);
+  fetch(url)
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if(!Array.isArray(data)) return;
+      latestCalendarData = data;
+      renderCalendarList();
+      updateCalendarCountdown();
+    })
+    .catch(function(){});
+}
+
+function renderCalendarList(){
+  var listEl = document.getElementById('cal-list');
+  if(!listEl) return;
+  listEl.innerHTML = '';
+
+  var filtered = latestCalendarData.filter(function(item){
+    if(currentCalFilter === 'high') return item.importance === 'HIGH';
+    if(currentCalFilter === 'active') return item.is_relevant === true;
+    return true;
+  });
+
+  if(filtered.length === 0){
+    listEl.innerHTML = '<div style="padding:15px;text-align:center;color:var(--text-muted);font-size:11px;">Tidak ada jadwal rilis yang cocok dengan filter.</div>';
+    return;
+  }
+
+  filtered.forEach(function(e){
+    var div = document.createElement('div');
+    div.className = 'cal-item' + (e.is_relevant ? ' is-focus' : '');
+    
+    var currLower = (e.currency || 'usd').toLowerCase();
+    var impLower = (e.importance || 'low').toLowerCase();
+    var relHtml = e.is_relevant ? '<span class="cal-rel-badge">' + e.relevance_badge + '</span>' : '';
+    
+    div.innerHTML =
+      '<div class="cal-top-row">' +
+        '<div class="cal-tags-left">' +
+          '<span class="cal-curr-pill cal-curr-' + currLower + '">' + e.currency + '</span>' +
+          '<span class="cal-imp-tag cal-imp-' + impLower + '">' + e.importance + '</span>' +
+          relHtml +
+        '</div>' +
+        '<span class="cal-time-lbl">' + e.time_wib + ' (' + e.relative + ')</span>' +
+      '</div>' +
+      '<div class="cal-event-name">' + e.name + '</div>' +
+      '<div class="cal-metrics-row">' +
+        '<div class="cal-metric-col">' +
+          '<span class="cal-metric-lbl">Aktual</span>' +
+          '<span class="cal-metric-val cal-act-val">' + e.actual + '</span>' +
+        '</div>' +
+        '<div class="cal-metric-col">' +
+          '<span class="cal-metric-lbl">Forecast</span>' +
+          '<span class="cal-metric-val">' + e.forecast + '</span>' +
+        '</div>' +
+        '<div class="cal-metric-col">' +
+          '<span class="cal-metric-lbl">Sebelumnya</span>' +
+          '<span class="cal-metric-val">' + e.previous + '</span>' +
+        '</div>' +
+      '</div>';
+    listEl.appendChild(div);
+  });
+}
+
+function updateCalendarCountdown(){
+  if(!latestCalendarData || latestCalendarData.length === 0) return;
+  var highEvents = latestCalendarData.filter(function(e){
+    return e.importance === 'HIGH' && e.diff_min >= 0;
+  });
+  var target = highEvents.length > 0 ? highEvents[0] : latestCalendarData.find(function(e){ return e.diff_min >= 0; });
+  if(!target) return;
+
+  var titleEl = document.getElementById('cal-hero-title');
+  var timerEl = document.getElementById('cal-hero-timer');
+  var currEl  = document.getElementById('cal-hero-curr');
+  var timeEl  = document.getElementById('cal-hero-time');
+  var tgtEl   = document.getElementById('cal-hero-target');
+
+  if(titleEl) titleEl.textContent = target.name;
+  if(currEl)  currEl.textContent  = target.currency;
+  if(timeEl)  timeEl.textContent  = target.time_wib;
+  if(tgtEl)   tgtEl.textContent   = target.is_relevant ? ('Fokus Aset: ' + CUR) : 'Dampak: Pasar Global';
+
+  if(timerEl && target.time_iso){
+    var eventDate = new Date(target.time_iso);
+    var now = new Date();
+    var diffMs = eventDate - now;
+    if(diffMs > 0){
+      var totalSec = Math.floor(diffMs / 1000);
+      var hours = Math.floor(totalSec / 3600);
+      var mins = Math.floor((totalSec % 3600) / 60);
+      var secs = totalSec % 60;
+      var pad = function(n){ return (n < 10 ? '0' : '') + n; };
+      timerEl.textContent = pad(hours) + 'j ' + pad(mins) + 'm ' + pad(secs) + 's lagi';
+    } else {
+      timerEl.textContent = 'SEDANG BERLANGSUNG';
+    }
+  }
+}
+
 // ── Fear & Greed with SVG Animated Gauge ──
 function loadFG(){
   fetch('https://api.alternative.me/fng/?limit=1')
@@ -3058,6 +3440,7 @@ document.addEventListener('DOMContentLoaded', function(){
   loadCOT();
   loadTrackRecord();
   loadNews();
+  loadCalendar();
   loadFG();
   loadCurrencyStrength();
   loadAll();
@@ -3068,6 +3451,8 @@ document.addEventListener('DOMContentLoaded', function(){
   setInterval(loadGold, 60000);
   setInterval(loadCME, 120000);
   setInterval(loadNews, 180000);
+  setInterval(loadCalendar, 180000);
+  setInterval(updateCalendarCountdown, 10000);
   setInterval(loadCurrencyStrength, 180000);
   setInterval(updateClock, 1000);
   updateClock();
