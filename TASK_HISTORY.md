@@ -79,6 +79,9 @@
 - [x] **4. Pemetaan Relevansi Aset Safe-Haven & Energi**:
   - Berita `GEOPOLITICS` otomatis dipetakan ke aset `XAU/USD`, `OIL`, dan `BRENT` dengan peningkatan skor relevansi.
   - Ringkasan intelijen, analisis dampak pasar, dan poin kunci spesifik kontekstual risiko geopolitik.
+- [x] **5. Pull Request GitHub**:
+  - Branch: `feat/add-aljazeera-news-feed`
+  - PR: [#3 (feat: integrasi feed geopolitik al jazeera dan ketahanan feed intel)](https://github.com/imampersegam00-afk/crypto-forex-dashboard/pull/3)
 
 ---
 
