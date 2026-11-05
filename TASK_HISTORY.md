@@ -81,7 +81,21 @@
   - Ringkasan intelijen, analisis dampak pasar, dan poin kunci spesifik kontekstual risiko geopolitik.
 - [x] **5. Pull Request GitHub**:
   - Branch: `feat/add-aljazeera-news-feed`
-  - PR: [#3 (feat: integrasi feed geopolitik al jazeera dan ketahanan feed intel)](https://github.com/imampersegam00-afk/crypto-forex-dashboard/pull/3)
+  - PR: [#3 (feat: integrasi feed geopolitik al jazeera dan ketahanan feed intel)](https://github.com/imampersegam00-afk/crypto-forex-dashboard/pull/3) (Merged ke `main`)
+
+### Tahap 7: Kalender Ekonomi & Countdown Rilis Makro Real-time
+- [x] **1. Integrasi API Kalender Makro Biquote**:
+  - Endpoint `https://biquote.io/api/calendar/upcoming` terhubung dengan in-memory cache TTL 5 menit dan background thread refresh non-blocking.
+  - Fallback data offline terstruktur jika koneksi upstream terputus.
+- [x] **2. Pemetaan Relevansi ke Aset Aktif**:
+  - Mata uang acara makro (USD, EUR, GBP, JPY, CAD, AUD, CHF, NZD) dipetakan otomatis ke aset terkait.
+  - Penanda badge fokus `🎯 [ASET]` untuk rilis data yang mempengaruhi instrumen aktif (misal NFP/CPI ke XAU/USD).
+- [x] **3. Komponen Banner Hitung Mundur (Countdown Timer)**:
+  - Kotak sorotan rilis High Impact terdekat dengan timer hitung mundur detil (jam, menit, detik) dinamis.
+- [x] **4. Antarmuka UI & Filter Multi-Kategori**:
+  - Filter `Semua`, `🔴 High`, dan `🎯 Aset Aktif`.
+  - Grid metrik per rilis: Aktual, Forecast, dan Sebelumnya (Previous).
+  - Tampilan waktu ganda (WIB & waktu relatif/countdown).
 
 ---
 

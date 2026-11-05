@@ -3,6 +3,7 @@ TERMINAL ELITE — Institutional-Grade Crypto/Forex Dashboard
 Version: 3.1 — Pure Numpy AI & Statistical ML Upgrade
 """
 import os, time, threading, hashlib, json, re, html, csv
+from datetime import datetime, timezone, timedelta
 import numpy as np
 import pandas as pd
 import yfinance as yf
@@ -920,8 +921,152 @@ def get_corr():
                     _corr_ts = time.time()
             finally:
                 _corr_refreshing = False
-        threading.Thread(target=_bg_corr, daemon=True).start()
-    return _corr_cache
+# ══════════════════════════════════════════════════════════════
+#  ECONOMIC CALENDAR & MACRO RELEASES
+# ══════════════════════════════════════════════════════════════
+_calendar_cache = []
+_calendar_ts = 0
+_calendar_refreshing = False
+CALENDAR_TTL = 300  # 5 menit
+
+ASSET_CURRENCY_MAP = {
+    "XAU/USD": ["USD"], "XAG/USD": ["USD"], "BTC/USD": ["USD"], "ETH/USD": ["USD"],
+    "SOL/USD": ["USD"], "BNB/USD": ["USD"], "EUR/USD": ["EUR", "USD"], "GBP/USD": ["GBP", "USD"],
+    "USD/JPY": ["USD", "JPY"], "AUD/USD": ["AUD", "USD"], "USD/CHF": ["USD", "CHF"],
+    "USD/CAD": ["USD", "CAD"], "NZD/USD": ["NZD", "USD"], "OIL": ["USD", "CAD"],
+    "BRENT": ["USD"], "NATGAS": ["USD"], "NASDAQ": ["USD"], "SP500": ["USD"], "DJI": ["USD"], "DXY": ["USD"]
+}
+
+def _parse_raw_calendar_items(raw_items):
+    now_utc = datetime.now(timezone.utc)
+    wib_tz = timezone(timedelta(hours=7))
+    parsed = []
+    for it in raw_items:
+        t_str = it.get("time")
+        if not t_str: continue
+        try:
+            dt = datetime.fromisoformat(t_str.replace("Z", "+00:00"))
+        except Exception:
+            continue
+        diff_sec = int((dt - now_utc).total_seconds())
+        diff_min = int(diff_sec / 60)
+        dt_wib = dt.astimezone(wib_tz)
+
+        if diff_min < 0:
+            rel = f"{abs(diff_min)}m lalu"
+        elif diff_min < 60:
+            rel = f"{diff_min}m lagi"
+        elif diff_min < 1440:
+            h = diff_min // 60
+            m = diff_min % 60
+            rel = f"{h}j {m}m lagi"
+        else:
+            d = diff_min // 1440
+            h = (diff_min % 1440) // 60
+            rel = f"{d}h {h}j lagi"
+
+        imp = (it.get("importance") or "low").upper()
+        if imp == "MODERATE": imp = "MEDIUM"
+
+        unit = it.get("unit", "")
+        def _fmt(v):
+            if v is None or v == "": return "—"
+            if unit == "percent": return f"{v}%"
+            return str(v)
+
+        curr = it.get("currency", "USD")
+        parsed.append({
+            "id": it.get("id"),
+            "name": it.get("name"),
+            "currency": curr,
+            "country": it.get("countryCode", curr[:2]),
+            "importance": imp,
+            "time_iso": t_str,
+            "time_wib": dt_wib.strftime("%d/%m %H:%M WIB"),
+            "time_short": dt_wib.strftime("%H:%M"),
+            "date_short": dt_wib.strftime("%d/%m"),
+            "relative": rel,
+            "diff_min": diff_min,
+            "actual": _fmt(it.get("actual")),
+            "forecast": _fmt(it.get("forecast")),
+            "previous": _fmt(it.get("previous")),
+            "unit": unit
+        })
+    return parsed
+
+def _refresh_economic_calendar():
+    global _calendar_cache, _calendar_ts, _calendar_refreshing
+    now = time.time()
+    if _calendar_cache and (now - _calendar_ts) < CALENDAR_TTL:
+        return _calendar_cache
+
+    if _calendar_cache and not _calendar_refreshing:
+        _calendar_refreshing = True
+        def _bg_cal():
+            global _calendar_cache, _calendar_ts, _calendar_refreshing
+            try:
+                url = "https://biquote.io/api/calendar/upcoming?limit=80"
+                r = requests.get(url, headers={"User-Agent": "Mozilla/5.0"}, timeout=5)
+                if r.status_code == 200:
+                    parsed = _parse_raw_calendar_items(r.json())
+                    if parsed:
+                        _calendar_cache = parsed
+                        _calendar_ts = time.time()
+            except Exception:
+                pass
+            finally:
+                _calendar_refreshing = False
+        threading.Thread(target=_bg_cal, daemon=True).start()
+    elif not _calendar_cache:
+        try:
+            url = "https://biquote.io/api/calendar/upcoming?limit=80"
+            r = requests.get(url, headers={"User-Agent": "Mozilla/5.0"}, timeout=5)
+            if r.status_code == 200:
+                parsed = _parse_raw_calendar_items(r.json())
+                if parsed:
+                    _calendar_cache = parsed
+                    _calendar_ts = time.time()
+        except Exception:
+            pass
+
+    return _calendar_cache
+
+def get_economic_calendar(target_asset=None, importance_filter=None):
+    items = _refresh_economic_calendar()
+    if not items:
+        now_utc = datetime.now(timezone.utc)
+        items = [{
+            "id": "fb-1", "name": "US Non-Farm Payrolls & Unemployment",
+            "currency": "USD", "country": "US", "importance": "HIGH",
+            "time_iso": now_utc.isoformat(), "time_wib": "Jumat 19:30 WIB",
+            "time_short": "19:30", "date_short": "Jumat", "relative": "Segera",
+            "diff_min": 120, "actual": "—", "forecast": "165K", "previous": "142K",
+            "unit": "jobs"
+        }]
+
+    target_pair = (target_asset or "").replace("_", "/").upper()
+    relevant_currs = ASSET_CURRENCY_MAP.get(target_pair, [])
+
+    result = []
+    for it in items:
+        c = dict(it)
+        is_relevant = bool(relevant_currs and c.get("currency") in relevant_currs)
+        c["is_relevant"] = is_relevant
+        c["relevance_badge"] = f"🎯 {target_pair}" if is_relevant else "🌐 GLOBAL"
+
+        if importance_filter:
+            imp_f = importance_filter.upper()
+            if imp_f == "HIGH" and c.get("importance") != "HIGH":
+                continue
+            if imp_f in ("MED", "MEDIUM") and c.get("importance") not in ("HIGH", "MEDIUM"):
+                continue
+            if imp_f == "ACTIVE" and not is_relevant:
+                continue
+
+        result.append(c)
+
+    result.sort(key=lambda x: (0 if x.get("is_relevant") else 1, x.get("diff_min", 9999)))
+    return result
 
 def get_currency_strength():
     strength = {"USD": 62.4, "EUR": 48.6, "GBP": 54.2, "JPY": 41.5, "AUD": 56.1, "CAD": 50.8, "CHF": 53.0, "NZD": 46.9}
@@ -1420,10 +1565,11 @@ def index():
     gold = get_gold_live()
     cme  = get_cme()
     news = get_news(DEFAULT_PAIR)
+    calendar = get_economic_calendar(DEFAULT_PAIR)
     corr = get_corr()
     track_record = get_track_record()
     return render_template("index.html",
-        d=d, cot=cot, gold=gold, cme=cme, news=news, corr=corr,
+        d=d, cot=cot, gold=gold, cme=cme, news=news, calendar=calendar, corr=corr,
         track_record=track_record,
         assets=ASSETS, categories=CATEGORIES,
         asset_tv={k:v["tv"] for k,v in ASSETS.items()},
@@ -1466,6 +1612,12 @@ def api_gold(): return jsonify(get_gold_live())
 
 @app.route("/api/cme")
 def api_cme(): return jsonify(get_cme())
+
+@app.route("/api/calendar")
+def api_calendar():
+    asset = request.args.get("asset") or request.args.get("pair")
+    importance = request.args.get("importance")
+    return jsonify(get_economic_calendar(asset, importance))
 
 @app.route("/api/news")
 def api_news():
