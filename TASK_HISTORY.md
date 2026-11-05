@@ -96,6 +96,9 @@
   - Filter `Semua`, `🔴 High`, dan `🎯 Aset Aktif`.
   - Grid metrik per rilis: Aktual, Forecast, dan Sebelumnya (Previous).
   - Tampilan waktu ganda (WIB & waktu relatif/countdown).
+- [x] **5. Pull Request GitHub**:
+  - Branch: `feat/economic-calendar`
+  - PR: [#4 (feat: tambah kalender ekonomi dan countdown rilis makro)](https://github.com/imampersegam00-afk/crypto-forex-dashboard/pull/4)
 
 ---
 
