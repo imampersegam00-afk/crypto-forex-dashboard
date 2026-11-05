@@ -58,6 +58,31 @@
   - Branch: `docs/add-agents-guide`
   - PR: [#1 (docs: integrasi panduan agen otonom AGENTS.md)](https://github.com/imampersegam00-afk/crypto-forex-dashboard/pull/1)
 
+### Tahap 5: Penambahan Hasil Rangkuman Berwarna pada Live Intel & News
+- [x] **1. Kotak Hasil Rangkuman Berwarna per Berita (`.news-summary-box`)**:
+  - Menampilkan ringkasan naratif informatif dengan aksen warna sesuai sentimen (`.sum-bull` hijau neon, `.sum-bear` merah neon, `.sum-neut` cyan neon).
+  - Elemen kartu berita lain (sumber intel, sentimen, impact, judul, poin kunci, analisis dampak pasar, footer) tetap utuh tanpa perombakan radikal.
+- [x] **2. Banner Rangkuman Eksekutif Pasar (`.intel-summary-banner`)**:
+  - Sintesis agregat sentimen dan sorotan makro terkini di bagian atas card Intel & News.
+- [x] **3. Sinkronisasi Real-time di JS (`loadNews`) & Backend (`app.py`)**:
+  - Rendering dinamis JS dan SSR Jinja2 sinkron sempurna.
+  - Fallback ringkasan di backend diperkuat agar teks rangkuman selalu informatif.
+
+### Tahap 6: Integrasi Feed Geopolitik & Ketahanan Feed Intel
+- [x] **1. Integrasi Feed RSS Geopolitik (Al Jazeera)**:
+  - Feed `https://www.aljazeera.com/xml/rss/all.xml` ditambahkan ke `TARGETED_FEEDS` dengan tag `GEOPOLITICS`.
+- [x] **2. Ketahanan Request Feed**:
+  - Request HTTP via `requests.get` dengan custom User-Agent dan timeout 4s sebelum di-parse `feedparser` agar tidak di-block oleh proteksi bot/WAF.
+- [x] **3. Sensor & Filter Sentimen**:
+  - Sensor otomatis nama media `al jazeera` di `_censor_news_text()` menjadi `[DISENSOR]`.
+  - Penambahan kata kunci high-impact geopolitik: `geopolitics`, `conflict`, `attack`, `military`.
+- [x] **4. Pemetaan Relevansi Aset Safe-Haven & Energi**:
+  - Berita `GEOPOLITICS` otomatis dipetakan ke aset `XAU/USD`, `OIL`, dan `BRENT` dengan peningkatan skor relevansi.
+  - Ringkasan intelijen, analisis dampak pasar, dan poin kunci spesifik kontekstual risiko geopolitik.
+- [x] **5. Pull Request GitHub**:
+  - Branch: `feat/add-aljazeera-news-feed`
+  - PR: [#3 (feat: integrasi feed geopolitik al jazeera dan ketahanan feed intel)](https://github.com/imampersegam00-afk/crypto-forex-dashboard/pull/3)
+
 ---
 
 ## 🔍 STATUS VERIFIKASI TERAKHIR
