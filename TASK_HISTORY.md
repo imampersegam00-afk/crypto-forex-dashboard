@@ -68,6 +68,18 @@
   - Rendering dinamis JS dan SSR Jinja2 sinkron sempurna.
   - Fallback ringkasan di backend diperkuat agar teks rangkuman selalu informatif.
 
+### Tahap 6: Integrasi Feed Geopolitik & Ketahanan Feed Intel
+- [x] **1. Integrasi Feed RSS Geopolitik (Al Jazeera)**:
+  - Feed `https://www.aljazeera.com/xml/rss/all.xml` ditambahkan ke `TARGETED_FEEDS` dengan tag `GEOPOLITICS`.
+- [x] **2. Ketahanan Request Feed**:
+  - Request HTTP via `requests.get` dengan custom User-Agent dan timeout 4s sebelum di-parse `feedparser` agar tidak di-block oleh proteksi bot/WAF.
+- [x] **3. Sensor & Filter Sentimen**:
+  - Sensor otomatis nama media `al jazeera` di `_censor_news_text()` menjadi `[DISENSOR]`.
+  - Penambahan kata kunci high-impact geopolitik: `geopolitics`, `conflict`, `attack`, `military`.
+- [x] **4. Pemetaan Relevansi Aset Safe-Haven & Energi**:
+  - Berita `GEOPOLITICS` otomatis dipetakan ke aset `XAU/USD`, `OIL`, dan `BRENT` dengan peningkatan skor relevansi.
+  - Ringkasan intelijen, analisis dampak pasar, dan poin kunci spesifik kontekstual risiko geopolitik.
+
 ---
 
 ## 🔍 STATUS VERIFIKASI TERAKHIR

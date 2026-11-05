@@ -635,10 +635,11 @@ TARGETED_FEEDS = [
     ("https://feeds.finance.yahoo.com/rss/2.0/headline?s=CL%3DF&region=US&lang=en-US", "OIL", "🔒 INTEL DESK [DISENSOR]"),
     ("https://www.forexlive.com/feed/news", "MACRO", "🔒 INTEL DESK [DISENSOR]"),
     ("https://www.fxstreet.com/rss/news", "MACRO", "🔒 INTEL DESK [DISENSOR]"),
+    ("https://www.aljazeera.com/xml/rss/all.xml", "GEOPOLITICS", "🔒 INTEL DESK [DISENSOR]"),
 ]
 
 ASSET_KEYWORDS = {
-    "XAU/USD": {"direct": ["gold", "xau", "bullion", "precious metal"], "macro": ["fed", "dollar", "yield", "inflation"]},
+    "XAU/USD": {"direct": ["gold", "xau", "bullion", "precious metal"], "macro": ["fed", "dollar", "yield", "inflation", "geopolitics", "war", "conflict"]},
     "XAG/USD": {"direct": ["silver", "xag", "gold", "industrial metal"], "macro": ["dollar", "dxy", "yield"]},
     "NASDAQ": {"direct": ["nasdaq", "tech", "nvidia", "apple", "qqq"], "macro": ["fed", "rate", "earnings"]},
     "SP500": {"direct": ["sp500", "s&p", "equities", "stocks"], "macro": ["fed", "inflation"]},
@@ -668,7 +669,7 @@ ASSET_NEWS_MAP = {
 SENTIMENT_KEYWORDS = {
     "bullish":["rally","surge","jump","gain","rise","strong","bullish","higher"],
     "bearish":["drop","fall","decline","weak","bearish","lower","crash","selloff"],
-    "high_impact":["fed","fomc","inflation","gdp","nfp","rate","war","crisis"],
+    "high_impact":["fed","fomc","inflation","gdp","nfp","rate","war","crisis","geopolitics","conflict","attack","military"],
 }
 
 def _news_sentiment(title):
@@ -684,7 +685,7 @@ def _news_impact(title):
 
 def _censor_news_text(text):
     if not text: return ""
-    patterns = [r'(?i)\b(yahoo(?:\s+finance)?|forexlive|fxstreet|bloomberg|reuters|cnbc|wsj|coindesk|cointelegraph)\b']
+    patterns = [r'(?i)\b(yahoo(?:\s+finance)?|forexlive|fxstreet|bloomberg|reuters|cnbc|wsj|coindesk|cointelegraph|al\s*jazeera)\b']
     for p in patterns:
         text = re.sub(p, '[DISENSOR]', text)
     return text
@@ -746,7 +747,11 @@ def _refresh_news_pool():
                 seen = set()
                 for url, feed_tag, default_source in TARGETED_FEEDS:
                     try:
-                        feed = feedparser.parse(url)
+                        try:
+                            r_feed = requests.get(url, headers={"User-Agent": "Mozilla/5.0"}, timeout=4)
+                            feed = feedparser.parse(r_feed.content)
+                        except Exception:
+                            feed = feedparser.parse(url)
                         for e in feed.entries[:5]:
                             raw_title = e.get("title", "")[:140]
                             title = _censor_news_text(raw_title)
@@ -758,16 +763,28 @@ def _refresh_news_pool():
                             raw_sum = body[:240].strip()
                             if raw_sum and len(raw_sum) > 15:
                                 sum_text = raw_sum + ("..." if len(body) > 240 else "")
+                            elif feed_tag == "GEOPOLITICS":
+                                sum_text = "Analisis intelijen mencatat eskalasi tensi geopolitik global dengan dampak ke pasar safe-haven dan komoditas energi."
                             else:
                                 sum_text = f"Analisis intelijen mencatat aliran modal dan katalis volatilitas pada instrumen {feed_tag} dengan bias sentimen {sent}."
+
+                            if feed_tag == "GEOPOLITICS":
+                                b_pts = ["Perkembangan tensi geopolitik & keamanan global.", "Potensi lonjakan premi risiko safe-haven & komoditas energi."]
+                                m_insight = "Risiko geopolitik cenderung menopang penguatan emas (XAU) dan volatilitas minyak mentah (OIL)."
+                                rel_assets = ["GEOPOLITIK", "XAU/USD", "OIL"]
+                            else:
+                                b_pts = ["Katalis volatilitas pasar global.", "Menunggu konfirmasi arah tren harga."]
+                                m_insight = "Pasar memantau respon katalis terhadap level resistance dan support."
+                                rel_assets = [feed_tag]
+
                             pool.append({
                                 "title": title, "feed_tag": feed_tag, "source": default_source,
                                 "summary": sum_text,
                                 "full_body": body if body else title,
-                                "bullet_points": ["Katalis volatilitas pasar global.", "Menunggu konfirmasi arah tren harga."],
-                                "market_insight": "Pasar memantau respon katalis terhadap level resistance dan support.",
+                                "bullet_points": b_pts,
+                                "market_insight": m_insight,
                                 "sentiment": sent, "sent_icon": s_icon, "impact": imp, "imp_icon": i_icon,
-                                "assets": [feed_tag], "time": "Hari ini", "link": "#",
+                                "assets": rel_assets, "time": "Hari ini", "link": "#",
                                 "search_text": (title + " " + body).lower()
                             })
                     except Exception:
@@ -794,6 +811,7 @@ def get_news(target_asset=None):
     for it in pool:
         sc = 10
         if it.get("feed_tag") == pair: sc += 80
+        if it.get("feed_tag") == "GEOPOLITICS" and pair in ("XAU/USD", "OIL", "BRENT"): sc += 45
         if pair.split("/")[0].lower() in it.get("search_text", ""): sc += 40
         c = dict(it)
         c["relevance_label"] = f"🎯 {pair}" if sc > 40 else "🌐 GLOBAL"
