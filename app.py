@@ -921,6 +921,8 @@ def get_corr():
                     _corr_ts = time.time()
             finally:
                 _corr_refreshing = False
+        threading.Thread(target=_bg_corr, daemon=True).start()
+    return _corr_cache or []
 # ══════════════════════════════════════════════════════════════
 #  ECONOMIC CALENDAR & MACRO RELEASES
 # ══════════════════════════════════════════════════════════════
@@ -1566,7 +1568,7 @@ def index():
     cme  = get_cme()
     news = get_news(DEFAULT_PAIR)
     calendar = get_economic_calendar(DEFAULT_PAIR)
-    corr = get_corr()
+    corr = get_corr() or []
     track_record = get_track_record()
     return render_template("index.html",
         d=d, cot=cot, gold=gold, cme=cme, news=news, calendar=calendar, corr=corr,
