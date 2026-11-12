@@ -100,6 +100,18 @@
   - Branch: `feat/economic-calendar`
   - PR: [#4 (feat: tambah kalender ekonomi dan countdown rilis makro)](https://github.com/imampersegam00-afk/crypto-forex-dashboard/pull/4)
 
+### Tahap 8: Kontroler Kecepatan Auto-Refresh & Mode Hemat Data
+- [x] **1. Kontroler Auto-Refresh Interaktif**:
+  - Dropdown pemilih interval: `⚡ Live (15s)`, `⏱️ Normal (1m)`, `🔋 Hemat (5m)`, dan `⏸️ Jeda (Pause)`.
+  - Tombol manual refresh instan `🔄` dengan animasi putar (spin) dan feedback audio synthesizer.
+  - Timer countdown dinamis real-time (tampilan detik tersisa hingga refresh berikutnya atau status PAUSE).
+- [x] **2. Sinkronisasi Siklus Polling & Mode Hemat Kuota**:
+  - Penjadwalan polling terpusat (central ticker) yang menghormati mode jeda/pause dan interval hemat data.
+  - Penyimpanan preferensi pengguna ke `localStorage` (`agy_refresh_interval`) agar tetap persisten saat halaman dimuat ulang.
+- [x] **3. Pull Request GitHub**:
+  - Branch: `feat/auto-refresh-controller`
+  - PR: [#5 (feat: tambah kontroler kecepatan auto-refresh dan mode hemat data)](https://github.com/imampersegam00-afk/crypto-forex-dashboard/pull/5)
+
 ---
 
 ## 🔍 STATUS VERIFIKASI TERAKHIR

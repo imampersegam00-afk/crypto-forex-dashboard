@@ -239,6 +239,73 @@ body::after {
   gap: 8px;
 }
 
+/* ── REFRESH CONTROLLER & DATA SAVER ── */
+.refresh-control-wrap {
+  display: flex;
+  align-items: center;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 2px 4px;
+  gap: 3px;
+  transition: all 0.2s ease;
+}
+.refresh-control-wrap:hover {
+  border-color: rgba(0, 245, 255, 0.4);
+  box-shadow: 0 0 10px rgba(0, 245, 255, 0.2);
+}
+.refresh-now-btn {
+  background: transparent;
+  border: none;
+  color: var(--cyan);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 6px;
+  border-radius: 3px;
+  transition: background 0.2s;
+}
+.refresh-now-btn:hover {
+  background: rgba(0, 245, 255, 0.15);
+}
+.refresh-spin-icon {
+  display: inline-block;
+  font-size: 11px;
+  transition: transform 0.4s ease;
+}
+.refresh-spin-icon.spinning {
+  animation: spinRefresh 0.7s linear infinite;
+}
+@keyframes spinRefresh {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.refresh-countdown {
+  font-size: 10px;
+  font-weight: 800;
+  color: var(--text-dim);
+  font-family: 'JetBrains Mono', monospace;
+  min-width: 22px;
+}
+.refresh-select {
+  background: var(--bg-card);
+  color: var(--text-bright);
+  border: 1px solid var(--border-subtle);
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 5px;
+  cursor: pointer;
+  outline: none;
+  font-family: inherit;
+}
+.refresh-select:focus {
+  border-color: var(--cyan);
+}
+
 /* Sound Toggle */
 .sound-toggle-btn {
   background: var(--bg-surface);
@@ -1944,6 +2011,20 @@ body::after {
     </div>
 
     <div class="header-actions">
+      <!-- Auto-Refresh Speed & Data Saver Controller -->
+      <div class="refresh-control-wrap">
+        <button class="refresh-now-btn" id="refreshNowBtn" onclick="triggerManualRefresh()" title="Refresh Data Sekarang">
+          <span class="refresh-spin-icon" id="refreshSpinIcon">🔄</span>
+          <span class="refresh-countdown mono" id="refreshCountdown">60s</span>
+        </button>
+        <select class="refresh-select" id="refreshIntervalSelect" onchange="changeRefreshInterval(this.value)" title="Pilih Kecepatan Auto-Refresh">
+          <option value="15">⚡ Live (15s)</option>
+          <option value="60" selected>⏱️ Normal (1m)</option>
+          <option value="300">🔋 Hemat (5m)</option>
+          <option value="0">⏸️ Jeda (Pause)</option>
+        </select>
+      </div>
+
       <!-- Sound Synthesizer Toggle Button -->
       <button class="sound-toggle-btn" id="soundToggleBtn" onclick="toggleSound()" title="Aktifkan/Matikan Audio Efek Terminal">
         <span id="soundIcon">🔊</span>
@@ -2552,6 +2633,12 @@ var CURRENT_TF = '15';
 var PREV_PRICE = null;
 var soundEnabled = localStorage.getItem('agy_sound') !== 'false';
 
+// Auto-Refresh & Data Saver State
+var savedInterval = localStorage.getItem('agy_refresh_interval');
+var REFRESH_INTERVAL = (savedInterval !== null) ? parseInt(savedInterval) : 60;
+var refreshSecondsLeft = REFRESH_INTERVAL > 0 ? REFRESH_INTERVAL : 0;
+var isRefreshing = false;
+
 var CAT_DEFAULT = {
   "FOREX": "EUR/USD",
   "METALS": "XAU/USD",
@@ -2603,6 +2690,67 @@ function showToast(msg) {
   t.innerHTML = '<span>⚡</span> ' + msg;
   t.classList.add('show');
   setTimeout(function(){ t.classList.remove('show'); }, 2600);
+}
+
+// ── Refresh Controller & Data Saver Logic ──
+function changeRefreshInterval(val){
+  REFRESH_INTERVAL = parseInt(val);
+  localStorage.setItem('agy_refresh_interval', REFRESH_INTERVAL);
+  refreshSecondsLeft = REFRESH_INTERVAL > 0 ? REFRESH_INTERVAL : 0;
+  updateRefreshDisplay();
+
+  playAudioTone(800, 'sine', 0.05);
+  if(REFRESH_INTERVAL === 0){
+    showToast('⏸️ Auto-Refresh Dijeda (Mode Hemat Baterai & Data)');
+  } else if(REFRESH_INTERVAL === 15){
+    showToast('⚡ Mode Live Cepat (15s) Aktif');
+  } else if(REFRESH_INTERVAL === 300){
+    showToast('🔋 Mode Hemat Kuota (5m) Aktif');
+  } else {
+    showToast('⏱️ Mode Refresh Normal (1m) Aktif');
+  }
+}
+
+function updateRefreshDisplay(){
+  var cdEl = document.getElementById('refreshCountdown');
+  if(!cdEl) return;
+  if(REFRESH_INTERVAL === 0){
+    cdEl.textContent = 'PAUSE';
+    cdEl.style.color = 'var(--yellow)';
+  } else {
+    cdEl.textContent = refreshSecondsLeft + 's';
+    cdEl.style.color = (refreshSecondsLeft <= 5) ? 'var(--cyan)' : 'var(--text-dim)';
+  }
+}
+
+function triggerManualRefresh(){
+  if(isRefreshing) return;
+  isRefreshing = true;
+
+  playAudioTone(950, 'sine', 0.06);
+  var icon = document.getElementById('refreshSpinIcon');
+  if(icon) icon.classList.add('spinning');
+
+  // Load all terminal data
+  loadAsset(CUR);
+  loadAll();
+  loadTrackRecord();
+  loadGold();
+  loadCME();
+  loadCOT();
+  loadNews();
+  loadCalendar();
+  loadFG();
+  loadCurrencyStrength();
+
+  showToast('🔄 Memperbarui seluruh data pasar…');
+
+  setTimeout(function(){
+    if(icon) icon.classList.remove('spinning');
+    isRefreshing = false;
+    refreshSecondsLeft = REFRESH_INTERVAL > 0 ? REFRESH_INTERVAL : 0;
+    updateRefreshDisplay();
+  }, 800);
 }
 
 // ── Signal Badges ──
@@ -3433,6 +3581,13 @@ document.addEventListener('DOMContentLoaded', function(){
   if(icon) icon.textContent = soundEnabled ? '🔊' : '🔇';
   if(label) label.textContent = soundEnabled ? 'AUDIO' : 'MUTE';
 
+  // Initialize Auto-Refresh Select
+  var refSel = document.getElementById('refreshIntervalSelect');
+  if(refSel && savedInterval !== null){
+    refSel.value = savedInterval;
+  }
+  updateRefreshDisplay();
+
   loadAsset(CUR);
   filterCat('FOREX');
   loadGold();
@@ -3445,16 +3600,29 @@ document.addEventListener('DOMContentLoaded', function(){
   loadCurrencyStrength();
   loadAll();
 
-  setInterval(function(){ loadAsset(CUR); }, 60000);
-  setInterval(loadTrackRecord, 30000);
-  setInterval(loadAll, 120000);
-  setInterval(loadGold, 60000);
-  setInterval(loadCME, 120000);
-  setInterval(loadNews, 180000);
-  setInterval(loadCalendar, 180000);
+  var elapsedSec = 0;
+  setInterval(function(){
+    updateClock();
+    if(REFRESH_INTERVAL === 0){
+      updateRefreshDisplay();
+      return;
+    }
+    elapsedSec++;
+    if(!isRefreshing){
+      refreshSecondsLeft--;
+      if(refreshSecondsLeft <= 0){
+        refreshSecondsLeft = REFRESH_INTERVAL;
+        loadAsset(CUR);
+      }
+      updateRefreshDisplay();
+    }
+    if(elapsedSec % 30 === 0) loadTrackRecord();
+    if(elapsedSec % 60 === 0) loadGold();
+    if(elapsedSec % 120 === 0) { loadAll(); loadCME(); }
+    if(elapsedSec % 180 === 0) { loadNews(); loadCalendar(); loadCurrencyStrength(); }
+  }, 1000);
+
   setInterval(updateCalendarCountdown, 10000);
-  setInterval(loadCurrencyStrength, 180000);
-  setInterval(updateClock, 1000);
   updateClock();
 });
 </script>
