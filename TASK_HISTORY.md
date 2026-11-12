@@ -112,6 +112,19 @@
   - Branch: `feat/auto-refresh-controller`
   - PR: [#5 (feat: tambah kontroler kecepatan auto-refresh dan mode hemat data)](https://github.com/imampersegam00-afk/crypto-forex-dashboard/pull/5)
 
+### Tahap 9: Multi-Mode Pro Chart Station & Alternatif Platform (NEXT TASK / PENDING)
+- [ ] **1. Integrasi Native Lightweight Charts**:
+  - Pasang library Lightweight Charts (TradingView open-source) ke container chart.
+  - Sambungkan ke data OHLCV internal `/api/asset/...` tanpa batasan login akun.
+  - Tambahkan visualisasi indikator neon: Candlestick, Volume bar, EMA 20/50/200, dan Bollinger Bands.
+- [ ] **2. Tab Selector Multi-Mode Chart**:
+  - Navigasi tab switching antara: `📊 Native Pro (Lightweight)`, `📈 TradingView (Widget)`, dan `🌐 Pro Station Bridge`.
+- [ ] **3. Pro Dock Bridge (cTrader, MT5, & GoCharting)**:
+  - Dock tombol integrasi sinkronisasi simbol aset aktif ke cTrader Web, MT5 Web Terminal, dan GoCharting Pro.
+  - Membuka instrumen aktif langsung di platform pro eksternal dalam 1 klik tanpa kendala `X-Frame-Options`.
+- [ ] **4. Pull Request GitHub**:
+  - Branch: `feat/pro-chart-station`
+
 ---
 
 ## 🔍 STATUS VERIFIKASI TERAKHIR
