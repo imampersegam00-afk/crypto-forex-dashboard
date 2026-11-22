@@ -695,3 +695,7 @@ timestamp,pair,signal,confidence,entry_price,outcome,correct
 2026-11-13 01:49,OIL,NEUTRAL,8.0,76.2711,Evaluasi 3-bar...,Y
 2026-11-13 01:49,BRENT,NEUTRAL,12.6,78.1368,Evaluasi 3-bar...,Y
 2026-11-13 01:49,NATGAS,NEUTRAL,11.0,2.8485,Evaluasi 3-bar...,Y
+2026-11-14 00:14,XAU/USD,NEUTRAL,8.9,3880.3,Evaluasi 3-bar...,Y
+2026-11-14 00:58,XAU/USD,NEUTRAL,11.5,3892.0,Evaluasi 3-bar...,Y
+2026-11-23 01:00,XAU/USD,NEUTRAL,8.8,3515.3999,Evaluasi 3-bar...,Y
+2026-11-23 01:00,EUR/USD,NEUTRAL,11.3,1.0975,Evaluasi 3-bar...,Y

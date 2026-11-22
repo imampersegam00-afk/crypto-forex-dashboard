@@ -914,6 +914,241 @@ body::after {
   border: none;
 }
 
+/* ── MULTI-MODE PRO CHART STATION ── */
+.chart-mode-tabs {
+  display: flex;
+  background: rgba(6, 9, 17, 0.95);
+  border-bottom: 1px solid var(--border);
+  padding: 4px 8px;
+  gap: 6px;
+  overflow-x: auto;
+}
+.chart-tab-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-dim);
+  padding: 5px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+.chart-tab-btn:hover {
+  color: var(--text);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+.chart-tab-btn.active {
+  background: rgba(0, 245, 255, 0.12);
+  color: var(--cyan);
+  border-color: rgba(0, 245, 255, 0.4);
+  box-shadow: 0 0 10px rgba(0, 245, 255, 0.15);
+}
+
+.chart-indicators-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.ind-toggle-btn {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--text-dim);
+  padding: 3px 7px;
+  border-radius: 3px;
+  font-size: 10px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.ind-toggle-btn:hover {
+  color: #fff;
+}
+.ind-toggle-btn.active#btn-ind-ema20 {
+  background: rgba(0, 245, 255, 0.15);
+  color: var(--cyan);
+  border-color: var(--cyan);
+}
+.ind-toggle-btn.active#btn-ind-ema50 {
+  background: rgba(255, 183, 3, 0.15);
+  color: var(--yellow);
+  border-color: var(--yellow);
+}
+.ind-toggle-btn.active#btn-ind-ema200 {
+  background: rgba(181, 23, 158, 0.2);
+  color: #e056fd;
+  border-color: #e056fd;
+}
+.ind-toggle-btn.active#btn-ind-bb {
+  background: rgba(0, 255, 157, 0.15);
+  color: var(--green);
+  border-color: var(--green-border);
+}
+.ind-toggle-btn.active#btn-ind-vol {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60a5fa;
+  border-color: #60a5fa;
+}
+
+#native-chart-pane {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+.native-legend {
+  position: absolute;
+  top: 8px;
+  left: 10px;
+  z-index: 10;
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-dim);
+  background: rgba(2, 12, 18, 0.85);
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  pointer-events: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  line-height: 1.4;
+}
+.native-legend span.leg-val {
+  color: var(--text);
+  font-weight: 700;
+}
+.native-loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(2, 12, 18, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+  color: var(--cyan);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}
+
+/* ── PRO DOCK BRIDGE ── */
+#bridge-chart-pane {
+  background: #040913;
+  padding: 16px;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+.bridge-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.bridge-symbol-badge {
+  background: rgba(0, 245, 255, 0.1);
+  border: 1px solid rgba(0, 245, 255, 0.3);
+  color: var(--cyan);
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+}
+.bridge-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.bridge-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: all 0.2s ease;
+}
+.bridge-card:hover {
+  border-color: rgba(0, 245, 255, 0.35);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  transform: translateY(-2px);
+}
+.bridge-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.bridge-icon {
+  font-size: 20px;
+}
+.bridge-name {
+  font-size: 13px;
+  font-weight: 800;
+  color: var(--text);
+}
+.bridge-tag {
+  font-size: 9px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-dim);
+}
+.bridge-desc {
+  font-size: 11px;
+  color: var(--text-dim);
+  line-height: 1.4;
+  margin-bottom: 12px;
+  flex-grow: 1;
+}
+.bridge-launch-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: linear-gradient(135deg, rgba(0, 245, 255, 0.2), rgba(59, 130, 246, 0.2));
+  color: var(--cyan);
+  border: 1px solid rgba(0, 245, 255, 0.3);
+  padding: 7px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 800;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.bridge-launch-btn:hover {
+  background: linear-gradient(135deg, #00f5ff, #3b82f6);
+  color: #000;
+  box-shadow: 0 0 12px rgba(0, 245, 255, 0.4);
+}
+.bridge-copy-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 11px;
+  flex-wrap: wrap;
+}
+
 /* ── TRADE EXECUTION LEVELS (TP/SL) ── */
 .levels-header {
   display: flex;
@@ -2178,6 +2413,14 @@ body::after {
 
     <!-- CHART CARD -->
     <div class="card chart-card" id="chartbox">
+      <!-- Mode Tabs -->
+      <div class="chart-mode-tabs">
+        <button class="chart-tab-btn active" id="chart-mode-btn-native" onclick="switchChartMode('native', this)">📊 Native Pro (Lightweight)</button>
+        <button class="chart-tab-btn" id="chart-mode-btn-tradingview" onclick="switchChartMode('tradingview', this)">📈 TradingView (Widget)</button>
+        <button class="chart-tab-btn" id="chart-mode-btn-bridge" onclick="switchChartMode('bridge', this)">🌐 Pro Station Bridge</button>
+      </div>
+
+      <!-- Toolbar -->
       <div class="chart-toolbar">
         <div class="tf-group">
           <button class="tf-btn" onclick="setTF('1')">1M</button>
@@ -2187,13 +2430,125 @@ body::after {
           <button class="tf-btn" onclick="setTF('240')">4H</button>
           <button class="tf-btn" onclick="setTF('D')">1D</button>
         </div>
+        <div class="chart-indicators-group" id="native-indicators-bar">
+          <button class="ind-toggle-btn active" id="btn-ind-ema20" onclick="toggleIndicator('ema20')">EMA20</button>
+          <button class="ind-toggle-btn active" id="btn-ind-ema50" onclick="toggleIndicator('ema50')">EMA50</button>
+          <button class="ind-toggle-btn active" id="btn-ind-ema200" onclick="toggleIndicator('ema200')">EMA200</button>
+          <button class="ind-toggle-btn active" id="btn-ind-bb" onclick="toggleIndicator('bb')">BB(20,2)</button>
+          <button class="ind-toggle-btn active" id="btn-ind-vol" onclick="toggleIndicator('vol')">VOL</button>
+        </div>
         <div style="font-size:11px;font-weight:800;color:var(--cyan);text-shadow:0 0 8px rgba(0,245,255,0.4)" id="chart-pair-badge">OANDA:XAUUSD</div>
       </div>
-      <div class="chart-frame-wrap">
-        <iframe id="tvchart"
-          src="https://s.tradingview.com/widgetembed/?symbol=OANDA%3AXAUUSD&interval=15&theme=dark&style=1&timezone=Asia%2FJakarta&withdateranges=1&hideideas=1&studies=RSI%40tv-basicstudies%1FMACD%40tv-basicstudies%1FBB%40tv-basicstudies%1FEMA%40tv-basicstudies&backgroundColor=rgb(2,12,18)"
-          allowtransparency="true" frameborder="0" scrolling="no" allowfullscreen>
-        </iframe>
+
+      <div class="chart-frame-wrap" id="chart-viewport-wrap">
+        <!-- Native Lightweight Chart Pane -->
+        <div id="native-chart-pane" style="width:100%; height:100%; position:relative;">
+          <div id="native-chart-container" style="width:100%; height:100%;"></div>
+          <div id="native-chart-legend" class="native-legend">
+            <span>⚡ MEMUAT KANDEL PRO…</span>
+          </div>
+          <div id="native-chart-loading" class="native-loading" style="display:none;">
+            <span>⚡ MEMUAT DATA OHLCV…</span>
+          </div>
+        </div>
+
+        <!-- TradingView Iframe Widget Pane -->
+        <div id="tv-chart-pane" style="width:100%; height:100%; display:none;">
+          <iframe id="tvchart"
+            src="https://s.tradingview.com/widgetembed/?symbol=OANDA%3AXAUUSD&interval=15&theme=dark&style=1&timezone=Asia%2FJakarta&withdateranges=1&hideideas=1&studies=RSI%40tv-basicstudies%1FMACD%40tv-basicstudies%1FBB%40tv-basicstudies%1FEMA%40tv-basicstudies&backgroundColor=rgb(2,12,18)"
+            allowtransparency="true" frameborder="0" scrolling="no" allowfullscreen>
+          </iframe>
+        </div>
+
+        <!-- Pro Station Bridge Dock Pane -->
+        <div id="bridge-chart-pane" style="width:100%; height:100%; display:none;">
+          <div class="bridge-hero">
+            <div>
+              <div style="font-size:10px;font-weight:700;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;">🌐 PRO STATION BRIDGE CONNECTOR</div>
+              <div style="font-size:14px;font-weight:900;color:var(--text);margin-top:2px;">Terminal Eksternal Multi-Platform</div>
+            </div>
+            <div id="bridge-current-badge" class="bridge-symbol-badge">XAU/USD (OANDA:XAUUSD)</div>
+          </div>
+
+          <div class="bridge-grid">
+            <!-- cTrader Web -->
+            <div class="bridge-card">
+              <div>
+                <div class="bridge-card-header">
+                  <span class="bridge-icon">⚡</span>
+                  <div>
+                    <div class="bridge-name">cTrader Web</div>
+                    <span class="bridge-tag">ECN / STP / Level II</span>
+                  </div>
+                </div>
+                <div class="bridge-desc">Platform eksekusi ECN institusional dengan kedalaman pasar (DOM), VWAP tools, dan chart tick ultra-cepat.</div>
+              </div>
+              <a id="bridge-link-ctrader" href="https://app.ctrader.com/" target="_blank" rel="noopener noreferrer" class="bridge-launch-btn">
+                🚀 Buka cTrader Web ↗
+              </a>
+            </div>
+
+            <!-- MT5 Web Terminal -->
+            <div class="bridge-card">
+              <div>
+                <div class="bridge-card-header">
+                  <span class="bridge-icon">📈</span>
+                  <div>
+                    <div class="bridge-name">MetaTrader 5 Web</div>
+                    <span class="bridge-tag">Global Standard Forex</span>
+                  </div>
+                </div>
+                <div class="bridge-desc">Terminal web resmi MQL5 tanpa instalasi software. Mendukung 21 timeframes dan indikator bawaan broker.</div>
+              </div>
+              <a id="bridge-link-mt5" href="https://trade.mql5.com/trade" target="_blank" rel="noopener noreferrer" class="bridge-launch-btn">
+                🚀 Buka MT5 Web ↗
+              </a>
+            </div>
+
+            <!-- GoCharting Pro -->
+            <div class="bridge-card">
+              <div>
+                <div class="bridge-card-header">
+                  <span class="bridge-icon">🔬</span>
+                  <div>
+                    <div class="bridge-name">GoCharting Pro</div>
+                    <span class="bridge-tag">Order Flow & Footprint</span>
+                  </div>
+                </div>
+                <div class="bridge-desc">Analisis Volume Profile, Market Profile, Delta footprint, dan imbalance orderflow tingkat lanjut.</div>
+              </div>
+              <a id="bridge-link-gocharting" href="https://gocharting.com/terminal?ticker=OANDA:XAUUSD" target="_blank" rel="noopener noreferrer" class="bridge-launch-btn">
+                🚀 Buka GoCharting ↗
+              </a>
+            </div>
+
+            <!-- TradingView Advanced -->
+            <div class="bridge-card">
+              <div>
+                <div class="bridge-card-header">
+                  <span class="bridge-icon">📊</span>
+                  <div>
+                    <div class="bridge-name">TradingView Pro</div>
+                    <span class="bridge-tag">Full Interactive Station</span>
+                  </div>
+                </div>
+                <div class="bridge-desc">Kanvas chart TradingView interaktif penuh layar, Pine Script tools, multi-layout, dan drawing tools presisi.</div>
+              </div>
+              <a id="bridge-link-tv" href="https://www.tradingview.com/chart/?symbol=OANDA:XAUUSD" target="_blank" rel="noopener noreferrer" class="bridge-launch-btn">
+                🚀 Buka TradingView Pro ↗
+              </a>
+            </div>
+          </div>
+
+          <!-- Quick Copy Symbol helper -->
+          <div class="bridge-copy-row">
+            <span style="font-weight:800;color:var(--text-dim);">📋 SALIN SIMBOL BROKER:</span>
+            <span id="bridge-copy-symbol-text" class="mono" style="font-weight:900;color:var(--cyan);font-size:12px;">XAUUSD</span>
+            <button class="copy-btn" onclick="copyBridgeSymbol('')" style="padding:3px 8px;font-size:10px;">Salin Standard</button>
+            <button class="copy-btn" onclick="copyBridgeSymbol('.m')" style="padding:3px 8px;font-size:10px;">+ .m (Micro)</button>
+            <button class="copy-btn" onclick="copyBridgeSymbol('pro')" style="padding:3px 8px;font-size:10px;">+ pro</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -2626,6 +2981,7 @@ body::after {
 <!-- ────────────────────────────────────────── -->
 <!-- JAVASCRIPT ENGINE & INTERACTIONS           -->
 <!-- ────────────────────────────────────────── -->
+<script src="/static/js/lightweight-charts.standalone.production.js"></script>
 <script>
 var CUR = "{{ default_pair }}";
 var TV_MAP = {{ tv_map|safe }};
@@ -2638,6 +2994,19 @@ var savedInterval = localStorage.getItem('agy_refresh_interval');
 var REFRESH_INTERVAL = (savedInterval !== null) ? parseInt(savedInterval) : 60;
 var refreshSecondsLeft = REFRESH_INTERVAL > 0 ? REFRESH_INTERVAL : 0;
 var isRefreshing = false;
+
+// Multi-Mode Chart Station State
+var currentChartMode = localStorage.getItem('agy_chart_mode') || 'native';
+var nativeChart = null;
+var candlestickSeries = null;
+var volumeSeries = null;
+var ema20Series = null;
+var ema50Series = null;
+var ema200Series = null;
+var bbUpperSeries = null;
+var bbMiddleSeries = null;
+var bbLowerSeries = null;
+var indState = { ema20: true, ema50: true, ema200: true, bb: true, vol: true };
 
 var CAT_DEFAULT = {
   "FOREX": "EUR/USD",
@@ -2828,6 +3197,332 @@ function getExchange(pair){
   return 'OANDA';
 }
 
+// ══════════════════════════════════════════════════════════════
+//  MULTI-MODE PRO CHART STATION & LIGHTWEIGHT CHARTS ENGINE
+// ══════════════════════════════════════════════════════════════
+function initNativeChart(){
+  var container = document.getElementById('native-chart-container');
+  if(!container || typeof LightweightCharts === 'undefined') return;
+  if(nativeChart) return;
+
+  var w = container.clientWidth || 600;
+  var h = container.clientHeight || 450;
+
+  nativeChart = LightweightCharts.createChart(container, {
+    width: w,
+    height: h,
+    layout: {
+      background: { type: 'solid', color: '#020c12' },
+      textColor: '#8899aa',
+      fontSize: 11,
+      fontFamily: "'JetBrains Mono', monospace",
+    },
+    grid: {
+      vertLines: { color: 'rgba(255, 255, 255, 0.04)' },
+      horzLines: { color: 'rgba(255, 255, 255, 0.04)' },
+    },
+    crosshair: {
+      mode: LightweightCharts.CrosshairMode.Normal,
+      vertLine: {
+        color: 'rgba(0, 245, 255, 0.4)',
+        width: 1,
+        style: LightweightCharts.LineStyle.Dashed,
+        labelBackgroundColor: '#0b1622',
+      },
+      horzLine: {
+        color: 'rgba(0, 245, 255, 0.4)',
+        width: 1,
+        style: LightweightCharts.LineStyle.Dashed,
+        labelBackgroundColor: '#0b1622',
+      },
+    },
+    rightPriceScale: {
+      borderColor: 'rgba(255, 255, 255, 0.08)',
+      scaleMargins: {
+        top: 0.08,
+        bottom: 0.22,
+      },
+    },
+    timeScale: {
+      borderColor: 'rgba(255, 255, 255, 0.08)',
+      timeVisible: true,
+      secondsVisible: false,
+    },
+  });
+
+  volumeSeries = nativeChart.addHistogramSeries({
+    color: 'rgba(0, 245, 255, 0.35)',
+    priceFormat: { type: 'volume' },
+    priceScaleId: '',
+  });
+  volumeSeries.priceScale().applyOptions({
+    scaleMargins: {
+      top: 0.78,
+      bottom: 0,
+    },
+  });
+
+  candlestickSeries = nativeChart.addCandlestickSeries({
+    upColor: '#00ff9d',
+    downColor: '#ff0055',
+    borderUpColor: '#00ff9d',
+    borderDownColor: '#ff0055',
+    wickUpColor: '#00ff9d',
+    wickDownColor: '#ff0055',
+  });
+
+  bbUpperSeries = nativeChart.addLineSeries({
+    color: 'rgba(0, 255, 157, 0.7)',
+    lineWidth: 1,
+    lineStyle: LightweightCharts.LineStyle.Dotted,
+    priceLineVisible: false,
+    lastValueVisible: false,
+  });
+
+  bbMiddleSeries = nativeChart.addLineSeries({
+    color: 'rgba(255, 255, 255, 0.4)',
+    lineWidth: 1,
+    lineStyle: LightweightCharts.LineStyle.Dashed,
+    priceLineVisible: false,
+    lastValueVisible: false,
+  });
+
+  bbLowerSeries = nativeChart.addLineSeries({
+    color: 'rgba(255, 0, 85, 0.7)',
+    lineWidth: 1,
+    lineStyle: LightweightCharts.LineStyle.Dotted,
+    priceLineVisible: false,
+    lastValueVisible: false,
+  });
+
+  ema20Series = nativeChart.addLineSeries({
+    color: '#00f5ff',
+    lineWidth: 1,
+    priceLineVisible: false,
+    lastValueVisible: false,
+  });
+
+  ema50Series = nativeChart.addLineSeries({
+    color: '#ffb703',
+    lineWidth: 1,
+    priceLineVisible: false,
+    lastValueVisible: false,
+  });
+
+  ema200Series = nativeChart.addLineSeries({
+    color: '#e056fd',
+    lineWidth: 2,
+    priceLineVisible: false,
+    lastValueVisible: false,
+  });
+
+  nativeChart.subscribeCrosshairMove(function(param){
+    if(!param || !param.time || !param.seriesData) return;
+    var c = param.seriesData.get(candlestickSeries);
+    var v = param.seriesData.get(volumeSeries);
+    var e20 = param.seriesData.get(ema20Series);
+    var e50 = param.seriesData.get(ema50Series);
+    var e200 = param.seriesData.get(ema200Series);
+    if(c){
+      updateLegendData(
+        c,
+        v ? v.value : null,
+        e20 ? e20.value : null,
+        e50 ? e50.value : null,
+        e200 ? e200.value : null
+      );
+    }
+  });
+
+  if(window.ResizeObserver){
+    var ro = new ResizeObserver(function(entries){
+      if(!entries || !entries.length) return;
+      var cr = entries[0].contentRect;
+      if(cr.width > 0 && cr.height > 0 && nativeChart){
+        nativeChart.applyOptions({ width: cr.width, height: cr.height });
+      }
+    });
+    ro.observe(container);
+  }
+}
+
+function updateLegendData(c, vol, e20, e50, e200){
+  var leg = document.getElementById('native-chart-legend');
+  if(!leg || !c) return;
+  var isUp = c.close >= c.open;
+  var col = isUp ? 'var(--green)' : 'var(--red)';
+  var html = '<span style="color:' + col + ';font-weight:800;">' + (CUR || 'ASSET') + ' ' + CURRENT_TF + (CURRENT_TF === 'D' ? '' : 'M') + '</span>' +
+    '<span>O: <b style="color:' + col + '">' + (c.open != null ? c.open : '—') + '</b></span>' +
+    '<span>H: <b style="color:' + col + '">' + (c.high != null ? c.high : '—') + '</b></span>' +
+    '<span>L: <b style="color:' + col + '">' + (c.low != null ? c.low : '—') + '</b></span>' +
+    '<span>C: <b style="color:' + col + '">' + (c.close != null ? c.close : '—') + '</b></span>';
+  if(vol != null){
+    html += '<span style="color:#60a5fa">V: <b>' + (typeof vol === 'number' ? vol.toLocaleString() : vol) + '</b></span>';
+  }
+  if(e20 != null && indState.ema20){
+    html += '<span style="color:var(--cyan)">EMA20: <b>' + e20 + '</b></span>';
+  }
+  if(e50 != null && indState.ema50){
+    html += '<span style="color:var(--yellow)">EMA50: <b>' + e50 + '</b></span>';
+  }
+  if(e200 != null && indState.ema200){
+    html += '<span style="color:#e056fd">EMA200: <b>' + e200 + '</b></span>';
+  }
+  leg.innerHTML = html;
+}
+
+function renderNativeChart(ohlcvData){
+  if(!nativeChart || !ohlcvData) return;
+  if(ohlcvData.candles && ohlcvData.candles.length){
+    candlestickSeries.setData(ohlcvData.candles);
+  }
+  if(ohlcvData.volume && ohlcvData.volume.length){
+    volumeSeries.setData(ohlcvData.volume);
+  }
+  var ind = ohlcvData.indicators || {};
+  if(ind.ema20 && ind.ema20.length) ema20Series.setData(ind.ema20);
+  if(ind.ema50 && ind.ema50.length) ema50Series.setData(ind.ema50);
+  if(ind.ema200 && ind.ema200.length) ema200Series.setData(ind.ema200);
+  if(ind.bb_upper && ind.bb_upper.length) bbUpperSeries.setData(ind.bb_upper);
+  if(ind.bb_middle && ind.bb_middle.length) bbMiddleSeries.setData(ind.bb_middle);
+  if(ind.bb_lower && ind.bb_lower.length) bbLowerSeries.setData(ind.bb_lower);
+
+  if(ohlcvData.candles && ohlcvData.candles.length){
+    var last = ohlcvData.candles[ohlcvData.candles.length - 1];
+    var lastVol = (ohlcvData.volume && ohlcvData.volume.length) ? ohlcvData.volume[ohlcvData.volume.length - 1].value : null;
+    var lastEma20 = (ind.ema20 && ind.ema20.length) ? ind.ema20[ind.ema20.length - 1].value : null;
+    var lastEma50 = (ind.ema50 && ind.ema50.length) ? ind.ema50[ind.ema50.length - 1].value : null;
+    var lastEma200 = (ind.ema200 && ind.ema200.length) ? ind.ema200[ind.ema200.length - 1].value : null;
+    updateLegendData(last, lastVol, lastEma20, lastEma50, lastEma200);
+  }
+}
+
+function loadNativeOHLCV(pair, tf){
+  var loadingEl = document.getElementById('native-chart-loading');
+  if(loadingEl) loadingEl.style.display = 'flex';
+  fetch('/api/ohlcv/' + pair.replace(/\//g, '_') + '?tf=' + (tf || CURRENT_TF || '15') + '&limit=180')
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if(loadingEl) loadingEl.style.display = 'none';
+      if(d && !d.error){
+        renderNativeChart(d);
+      }
+    })
+    .catch(function(err){
+      if(loadingEl) loadingEl.style.display = 'none';
+      console.warn('Native OHLCV error:', err);
+    });
+}
+
+function switchChartMode(mode, el){
+  playAudioTone(720, 'sine', 0.05);
+  currentChartMode = mode;
+  localStorage.setItem('agy_chart_mode', mode);
+
+  document.querySelectorAll('.chart-tab-btn').forEach(function(b){
+    b.classList.remove('active');
+  });
+  if(el) el.classList.add('active');
+  else {
+    var btn = document.getElementById('chart-mode-btn-' + mode);
+    if(btn) btn.classList.add('active');
+  }
+
+  var nativePane = document.getElementById('native-chart-pane');
+  var tvPane = document.getElementById('tv-chart-pane');
+  var bridgePane = document.getElementById('bridge-chart-pane');
+  var indBar = document.getElementById('native-indicators-bar');
+
+  if(nativePane) nativePane.style.display = (mode === 'native') ? 'block' : 'none';
+  if(tvPane) tvPane.style.display = (mode === 'tradingview') ? 'block' : 'none';
+  if(bridgePane) bridgePane.style.display = (mode === 'bridge') ? 'block' : 'none';
+  if(indBar) indBar.style.display = (mode === 'native') ? 'flex' : 'none';
+
+  if(mode === 'native'){
+    if(!nativeChart){
+      initNativeChart();
+    } else {
+      setTimeout(function(){
+        var container = document.getElementById('native-chart-container');
+        if(container && nativeChart){
+          nativeChart.applyOptions({
+            width: container.clientWidth,
+            height: container.clientHeight
+          });
+          nativeChart.timeScale().fitContent();
+        }
+      }, 50);
+    }
+    loadNativeOHLCV(CUR, CURRENT_TF);
+  } else if(mode === 'bridge'){
+    updateBridgePlatformLinks();
+  }
+}
+
+function toggleIndicator(ind){
+  playAudioTone(800, 'sine', 0.04);
+  indState[ind] = !indState[ind];
+  var active = indState[ind];
+
+  var btn = document.getElementById('btn-ind-' + ind);
+  if(btn) btn.classList.toggle('active', active);
+
+  if(ind === 'ema20' && ema20Series){
+    ema20Series.applyOptions({ visible: active });
+  } else if(ind === 'ema50' && ema50Series){
+    ema50Series.applyOptions({ visible: active });
+  } else if(ind === 'ema200' && ema200Series){
+    ema200Series.applyOptions({ visible: active });
+  } else if(ind === 'vol' && volumeSeries){
+    volumeSeries.applyOptions({ visible: active });
+  } else if(ind === 'bb'){
+    if(bbUpperSeries) bbUpperSeries.applyOptions({ visible: active });
+    if(bbMiddleSeries) bbMiddleSeries.applyOptions({ visible: active });
+    if(bbLowerSeries) bbLowerSeries.applyOptions({ visible: active });
+  }
+}
+
+function updateBridgePlatformLinks(){
+  var tv = TV_MAP[CUR] || 'XAUUSD';
+  var exc = getExchange(CUR);
+  var rawSymbol = (CUR || 'XAUUSD').replace(/[^A-Za-z0-9]/g, '');
+
+  var badgeEl = document.getElementById('bridge-current-badge');
+  if(badgeEl) badgeEl.textContent = CUR + ' (' + exc + ':' + tv + ')';
+
+  var tvLink = document.getElementById('bridge-link-tv');
+  if(tvLink) tvLink.href = 'https://www.tradingview.com/chart/?symbol=' + encodeURIComponent(exc + ':' + tv);
+
+  var goLink = document.getElementById('bridge-link-gocharting');
+  if(goLink){
+    var goTicker = (exc === 'BINANCE' ? 'BINANCE:' + tv : exc + ':' + tv);
+    goLink.href = 'https://gocharting.com/terminal?ticker=' + encodeURIComponent(goTicker);
+  }
+
+  var ctraderLink = document.getElementById('bridge-link-ctrader');
+  if(ctraderLink) ctraderLink.href = 'https://app.ctrader.com/';
+
+  var mt5Link = document.getElementById('bridge-link-mt5');
+  if(mt5Link) mt5Link.href = 'https://trade.mql5.com/trade';
+
+  var symEl = document.getElementById('bridge-copy-symbol-text');
+  if(symEl) symEl.textContent = rawSymbol;
+}
+
+function copyBridgeSymbol(suffix){
+  var rawSymbol = (CUR || 'XAUUSD').replace(/[^A-Za-z0-9]/g, '') + (suffix || '');
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(rawSymbol).then(function(){
+      playAudioTone(1050, 'sine', 0.1);
+      showToast('Simbol disalin: ' + rawSymbol);
+    }).catch(function(){
+      showToast('Simbol: ' + rawSymbol);
+    });
+  } else {
+    showToast('Simbol: ' + rawSymbol);
+  }
+}
+
 // ── Asset Switch ──
 function sw(pair){
   if(!pair) return;
@@ -2863,6 +3558,11 @@ function sw(pair){
       '&backgroundColor=rgb(2,12,18)';
   }
 
+  updateBridgePlatformLinks();
+  if(currentChartMode === 'native'){
+    loadNativeOHLCV(pair, CURRENT_TF);
+  }
+
   var bdg = document.getElementById('sigbadge');
   if(bdg){ bdg.textContent = '⏳ MENGANALISIS PASAR…'; bdg.className = 'sbadge s-neut'; }
   $s('sigprice', '—'); $s('sigchg', '—'); $s('sigconf', 'CONFIDENCE —%');
@@ -2874,7 +3574,7 @@ function sw(pair){
 
 // ── Load Asset Data ──
 function loadAsset(pair){
-  fetch('/api/asset/' + pair.replace(/\//g, '_'))
+  fetch('/api/asset/' + pair.replace(/\//g, '_') + '?tf=' + CURRENT_TF)
     .then(function(r){ return r.json(); })
     .then(function(d){
       if(d.error){ console.warn('Asset error:', d.error); return; }
@@ -3003,6 +3703,10 @@ function loadAsset(pair){
       if(rcEntry) rcEntry.value = d.price;
       var rcSl = document.getElementById('rc-sl');
       if(rcSl && d.sl) rcSl.value = d.sl;
+
+      if(d.ohlcv && currentChartMode === 'native'){
+        renderNativeChart(d.ohlcv);
+      }
     })
     .catch(function(err){ console.error('loadAsset error:', err); });
 }
@@ -3472,7 +4176,12 @@ function setTF(tf, el){
       '&studies=RSI%40tv-basicstudies%1FMACD%40tv-basicstudies%1FBB%40tv-basicstudies%1FEMA%40tv-basicstudies' +
       '&backgroundColor=rgb(2,12,18)';
   }
-  showToast('Timeframe diubah ke ' + tf + 'M');
+
+  if(currentChartMode === 'native'){
+    loadNativeOHLCV(CUR, tf);
+  }
+
+  showToast('Timeframe diubah ke ' + tf + (tf === 'D' ? '' : 'M'));
 }
 
 function setMobileTab(tab, el) {
@@ -3587,6 +4296,11 @@ document.addEventListener('DOMContentLoaded', function(){
     refSel.value = savedInterval;
   }
   updateRefreshDisplay();
+
+  // Initialize Pro Chart Station
+  initNativeChart();
+  switchChartMode(currentChartMode);
+  updateBridgePlatformLinks();
 
   loadAsset(CUR);
   filterCat('FOREX');
