@@ -100,6 +100,31 @@
   - Branch: `feat/economic-calendar`
   - PR: [#4 (feat: tambah kalender ekonomi dan countdown rilis makro)](https://github.com/imampersegam00-afk/crypto-forex-dashboard/pull/4)
 
+### Tahap 8: Kontroler Kecepatan Auto-Refresh & Mode Hemat Data
+- [x] **1. Kontroler Auto-Refresh Interaktif**:
+  - Dropdown pemilih interval: `⚡ Live (15s)`, `⏱️ Normal (1m)`, `🔋 Hemat (5m)`, dan `⏸️ Jeda (Pause)`.
+  - Tombol manual refresh instan `🔄` dengan animasi putar (spin) dan feedback audio synthesizer.
+  - Timer countdown dinamis real-time (tampilan detik tersisa hingga refresh berikutnya atau status PAUSE).
+- [x] **2. Sinkronisasi Siklus Polling & Mode Hemat Kuota**:
+  - Penjadwalan polling terpusat (central ticker) yang menghormati mode jeda/pause dan interval hemat data.
+  - Penyimpanan preferensi pengguna ke `localStorage` (`agy_refresh_interval`) agar tetap persisten saat halaman dimuat ulang.
+- [x] **3. Pull Request GitHub**:
+  - Branch: `feat/auto-refresh-controller`
+  - PR: [#5 (feat: tambah kontroler kecepatan auto-refresh dan mode hemat data)](https://github.com/imampersegam00-afk/crypto-forex-dashboard/pull/5)
+
+### Tahap 9: Multi-Mode Pro Chart Station & Alternatif Platform
+- [x] **1. Integrasi Native Lightweight Charts**:
+  - Pasang library Lightweight Charts (TradingView open-source) ke container chart (`static/js/lightweight-charts.standalone.production.js`).
+  - Sambungkan ke data OHLCV internal `/api/asset/...` dan endpoint baru `/api/ohlcv/...` tanpa batasan login akun.
+  - Menampilkan visualisasi indikator neon: Candlestick, Volume bar, EMA 20/50/200, dan Bollinger Bands dengan toolbar toggle interaktif.
+- [x] **2. Tab Selector Multi-Mode Chart**:
+  - Navigasi tab switching antara: `📊 Native Pro (Lightweight)`, `📈 TradingView (Widget)`, dan `🌐 Pro Station Bridge`.
+- [x] **3. Pro Dock Bridge (cTrader, MT5, & GoCharting)**:
+  - Dock tombol integrasi sinkronisasi simbol aset aktif ke cTrader Web, MT5 Web Terminal, dan GoCharting Pro.
+  - Membuka instrumen aktif langsung di platform pro eksternal dalam 1 klik tanpa kendala `X-Frame-Options` serta helper copy symbol broker.
+- [x] **4. Pull Request GitHub**:
+  - Branch: `feat/pro-chart-station`
+
 ---
 
 ## 🔍 STATUS VERIFIKASI TERAKHIR

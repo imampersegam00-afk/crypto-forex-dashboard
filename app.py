@@ -921,6 +921,8 @@ def get_corr():
                     _corr_ts = time.time()
             finally:
                 _corr_refreshing = False
+        threading.Thread(target=_bg_corr, daemon=True).start()
+    return _corr_cache or []
 # ══════════════════════════════════════════════════════════════
 #  ECONOMIC CALENDAR & MACRO RELEASES
 # ══════════════════════════════════════════════════════════════
@@ -1566,7 +1568,7 @@ def index():
     cme  = get_cme()
     news = get_news(DEFAULT_PAIR)
     calendar = get_economic_calendar(DEFAULT_PAIR)
-    corr = get_corr()
+    corr = get_corr() or []
     track_record = get_track_record()
     return render_template("index.html",
         d=d, cot=cot, gold=gold, cme=cme, news=news, calendar=calendar, corr=corr,
@@ -1578,31 +1580,174 @@ def index():
         tv_map=json.dumps(TV_MAP),
     )
 
+# ══════════════════════════════════════════════════════════════
+#  NATIVE PRO OHLCV & TECHNICAL INDICATORS ENGINE
+# ══════════════════════════════════════════════════════════════
+_ohlcv_chart_cache = {}
+_ohlcv_chart_ts = {}
+OHLCV_CHART_TTL = 30
+
+def _resolve_pair(key):
+    if not key:
+        return None
+    clean = key.split("/")[0].replace("_", "").replace("/", "").upper()
+    if key in ASSETS:
+        return key
+    if key.replace("_", "/").upper() in ASSETS:
+        return key.replace("_", "/").upper()
+    for p in ASSETS:
+        if p.replace("/", "").upper() == clean:
+            return p
+    for p in ASSETS:
+        if p.split("/")[0].upper() == clean:
+            return p
+    return None
+
+def get_ohlcv_data(pair, tf="15", limit=180):
+    matched_pair = _resolve_pair(pair)
+    if not matched_pair:
+        return {"error": "pair not found"}
+    
+    info = ASSETS[matched_pair]
+    ticker = info["ticker"]
+    
+    tf_str = str(tf).strip().upper()
+    if tf_str in ("1", "1M"):
+        period, interval, step = "7d", "1m", 60
+    elif tf_str in ("5", "5M"):
+        period, interval, step = "30d", "5m", 300
+    elif tf_str in ("60", "1H"):
+        period, interval, step = "180d", "60m", 3600
+    elif tf_str in ("240", "4H"):
+        period, interval, step = "365d", "60m", 14400
+    elif tf_str in ("D", "1D", "DAILY"):
+        period, interval, step = "730d", "1d", 86400
+    else:
+        tf_str = "15"
+        period, interval, step = "60d", "15m", 900
+    
+    cache_key = f"{ticker}_{tf_str}_{limit}"
+    now = time.time()
+    if cache_key in _ohlcv_chart_cache and (now - _ohlcv_chart_ts.get(cache_key, 0)) < OHLCV_CHART_TTL:
+        return _ohlcv_chart_cache[cache_key]
+
+    close, high, low, openp, volume = _fetch_ohlcv_resilient(ticker, period=period, interval=interval)
+    n = len(close)
+    if n == 0:
+        return {"error": "no data", "pair": matched_pair, "ticker": ticker, "candles": [], "volume": [], "indicators": {}}
+
+    # If 4H requested and we used 60m data, aggregate every 4 bars
+    if tf_str in ("240", "4H") and n >= 4:
+        rem = n % 4
+        if rem != 0:
+            c_raw, h_raw, l_raw, o_raw, v_raw = close[rem:], high[rem:], low[rem:], openp[rem:], volume[rem:]
+        else:
+            c_raw, h_raw, l_raw, o_raw, v_raw = close, high, low, openp, volume
+        
+        num_bars = len(c_raw) // 4
+        c_agg = np.zeros(num_bars)
+        h_agg = np.zeros(num_bars)
+        l_agg = np.zeros(num_bars)
+        o_agg = np.zeros(num_bars)
+        v_agg = np.zeros(num_bars)
+        for b in range(num_bars):
+            idx0 = b * 4
+            idx1 = idx0 + 4
+            o_agg[b] = o_raw[idx0]
+            c_agg[b] = c_raw[idx1 - 1]
+            h_agg[b] = np.max(h_raw[idx0:idx1])
+            l_agg[b] = np.min(l_raw[idx0:idx1])
+            v_agg[b] = np.sum(v_raw[idx0:idx1])
+        close, high, low, openp, volume = c_agg, h_agg, l_agg, o_agg, v_agg
+        n = len(close)
+
+    now_sec = int(now)
+    times = [now_sec - (n - 1 - i) * step for i in range(n)]
+
+    # Calculate indicators across all bars
+    s = pd.Series(close)
+    ema20_vals = ta.trend.EMAIndicator(s, min(20, max(2, n//2))).ema_indicator().values
+    ema50_vals = ta.trend.EMAIndicator(s, min(50, max(2, n//2))).ema_indicator().values
+    ema200_vals = ta.trend.EMAIndicator(s, min(200, max(2, n//2))).ema_indicator().values
+    bb = ta.volatility.BollingerBands(s, min(20, max(5, n//2)), 2)
+    bb_h_vals = bb.bollinger_hband().values
+    bb_l_vals = bb.bollinger_lband().values
+    bb_m_vals = bb.bollinger_mavg().values
+
+    slice_start = max(0, n - limit)
+    candles = []
+    vol_bars = []
+    ema20 = []
+    ema50 = []
+    ema200 = []
+    bb_upper = []
+    bb_middle = []
+    bb_lower = []
+
+    for i in range(slice_start, n):
+        t = times[i]
+        c = float(close[i])
+        o = float(openp[i])
+        h = float(high[i])
+        l = float(low[i])
+        v = float(volume[i])
+
+        candles.append({"time": t, "open": round(o, 4), "high": round(h, 4), "low": round(l, 4), "close": round(c, 4)})
+        v_col = "rgba(0, 255, 157, 0.45)" if c >= o else "rgba(255, 0, 85, 0.45)"
+        vol_bars.append({"time": t, "value": round(v, 2), "color": v_col})
+
+        if not np.isnan(ema20_vals[i]):
+            ema20.append({"time": t, "value": round(float(ema20_vals[i]), 4)})
+        if not np.isnan(ema50_vals[i]):
+            ema50.append({"time": t, "value": round(float(ema50_vals[i]), 4)})
+        if not np.isnan(ema200_vals[i]):
+            ema200.append({"time": t, "value": round(float(ema200_vals[i]), 4)})
+        if not np.isnan(bb_h_vals[i]):
+            bb_upper.append({"time": t, "value": round(float(bb_h_vals[i]), 4)})
+        if not np.isnan(bb_m_vals[i]):
+            bb_middle.append({"time": t, "value": round(float(bb_m_vals[i]), 4)})
+        if not np.isnan(bb_l_vals[i]):
+            bb_lower.append({"time": t, "value": round(float(bb_l_vals[i]), 4)})
+
+    res = {
+        "pair": matched_pair,
+        "ticker": ticker,
+        "tf": tf_str,
+        "candles": candles,
+        "volume": vol_bars,
+        "indicators": {
+            "ema20": ema20,
+            "ema50": ema50,
+            "ema200": ema200,
+            "bb_upper": bb_upper,
+            "bb_middle": bb_middle,
+            "bb_lower": bb_lower
+        }
+    }
+    _ohlcv_chart_cache[cache_key] = res
+    _ohlcv_chart_ts[cache_key] = now
+    return res
+
 @app.route("/api/asset/<path:key>")
 def api_asset(key):
-    # Support various formats: XAUUSD/1, XAU_USD, XAU/USD, XAUUSD
-    clean = key.split("/")[0].replace("_", "").replace("/", "").upper()
-    matched_pair = None
-    if key in ASSETS:
-        matched_pair = key
-    elif key.replace("_", "/").upper() in ASSETS:
-        matched_pair = key.replace("_", "/").upper()
-    else:
-        for p in ASSETS:
-            if p.replace("/", "").upper() == clean:
-                matched_pair = p
-                break
-    
-    if not matched_pair:
-        for p in ASSETS:
-            if p.split("/")[0].upper() == clean:
-                matched_pair = p
-                break
-
+    matched_pair = _resolve_pair(key)
     if not matched_pair:
         return jsonify({"error": "not found"}), 404
     
-    return jsonify(compute(matched_pair))
+    data = dict(compute(matched_pair))
+    tf = request.args.get("tf", "15")
+    limit = int(request.args.get("limit", 180))
+    data["ohlcv"] = get_ohlcv_data(matched_pair, tf=tf, limit=limit)
+    return jsonify(data)
+
+@app.route("/api/ohlcv/<path:key>")
+def api_ohlcv(key):
+    matched_pair = _resolve_pair(key)
+    if not matched_pair:
+        return jsonify({"error": "not found"}), 404
+    tf = request.args.get("tf", "15")
+    limit = int(request.args.get("limit", 180))
+    return jsonify(get_ohlcv_data(matched_pair, tf=tf, limit=limit))
 
 @app.route("/api/cot")
 def api_cot(): return jsonify(get_cot())
